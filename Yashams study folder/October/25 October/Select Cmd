@@ -1,0 +1,90 @@
+ 1. What is the purpose of the SELECT statement in sqlite3?
+ 	The SELECT statement retrieves specific data (rows/columns) from database tables, forming the foundation of all data querying operations. In sqlite3, it returns a result set (rows matching criteria) without modifying data—purely read-only (DQL). 
+
+ Basic syntax: SELECT column1, column2 FROM table_name; 
+
+ Purpose: View/filter/analyze data, generate reports, drive application logic.
+
+
+ 2. How can you select only specific columns from a table?
+ 	Specify column names instead of * to retrieve only needed fields:
+
+ python
+
+ cursor.execute("SELECT name, age FROM users")  # Only name, age columns
+
+ cursor.execute("SELECT * FROM users")          # All columns
+
+ cursor.execute("SELECT name AS full_name FROM users")  # Aliased output
+
+ Benefits: Reduces bandwidth, improves performance, cleaner output.
+
+
+ 3. What is the use of fetchall() in sqlite3?
+    cursor.fetchall() fetches all remaining rows from the SELECT result as a list of tuples:
+
+ python
+
+ cursor.execute("SELECT * FROM users")
+
+ all_rows = cursor.fetchall()  # [('Alice', 30), ('Bob', 25), ...]
+
+ 
+
+ Exhausts result set—subsequent fetches return [].
+
+
+ 4. How can you use WHERE clause with SELECT in Python?
+
+ 	WHERE filters rows based on conditions before fetching:
+
+ python
+
+ cursor.execute("SELECT * FROM users WHERE age > 25")
+
+ cursor.execute("SELECT name FROM users WHERE city = 'Delhi' AND active = 1")
+
+ cursor.execute("SELECT * FROM orders WHERE total BETWEEN 100 AND 500")
+
+ 
+
+ Python example:
+
+ 
+
+ python
+
+ cursor.execute("SELECT name FROM users WHERE age > ?", (25,))
+
+ results = cursor.fetchall()
+
+
+ 5. What is the difference between fetchone() and fetchall()?
+
+
+ | Method     | Returns             | Memory                  | Use Case              |
+
+ | ---------- | ------------------- | ----------------------- | --------------------- |
+
+ | fetchone() | 1 row tuple or None | Low                     | Row-by-row processing |
+
+ | fetchall() | All rows list or [] | High (loads everything) | Small datasets        |
+
+
+ cursor.execute("SELECT * FROM users")
+
+ print(cursor.fetchone())    # ('Alice', 30)  
+
+ print(cursor.fetchone())    # ('Bob', 25)
+
+ print(cursor.fetchall())    # [('Carol', 35), ...]
+
+
+ # Better for large data:
+
+ for row in cursor:
+
+    print(row)  # Streams, memory efficient
+
+ Best practice: Use fetchone() loop or direct iteration for large tables.
+

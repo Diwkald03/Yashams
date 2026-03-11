@@ -1,0 +1,177 @@
+
+
+1. What is the purpose of the static folder in Flask?
+
+
+Static folder serves unchanging files like CSS, JavaScript, images directly to browser without processing. Flask automatically serves files from /static/ path.
+
+Contains:
+
+static/
+
+├── css/
+
+│   └── style.css
+
+├── js/
+
+│   └── main.js
+
+└── images/
+
+&nbsp;   └── logo.png
+
+
+
+
+
+
+
+2. How do you link CSS from the static folder?
+
+
+
+Use url\_for('static', filename='...') in HTML templates:
+
+
+
+xml
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+&nbsp;   <link rel="stylesheet" href="{{ url\_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+&nbsp;   <h1>My Flask App</h1>
+
+</body>
+
+</html>
+
+
+
+URL becomes: http://localhost:5000/static/css/style.css
+
+
+
+
+
+
+
+3. Difference between static and templates folder?
+
+
+
+| Static                    | Templates                    |
+
+| ------------------------- | ---------------------------- |
+
+| Raw files (CSS/JS/images) | Processed HTML (Jinja2)      |
+
+| Direct browser serving    | Flask renders with variables |
+
+| /static/css/style.css     | /home.html                   |
+
+| No Flask processing       | {{ variable }} → values      |
+
+
+
+Static = Give file as-is ✅
+
+Templates = Fill in blanks 🔄
+
+
+
+
+
+
+
+4. Can Flask serve images from the static folder?
+
+
+
+YES - automatic:
+
+
+
+In HTML:
+
+
+
+xml
+
+<img src="{{ url\_for('static', filename='images/logo.png') }}" alt="Logo">
+
+
+
+In Python route:
+
+
+
+python
+
+return f'<img src="/static/images/photo.jpg">'
+
+
+
+Folder structure:
+
+
+
+static/images/
+
+├── logo.png
+
+├── hero.jpg
+
+└── avatar.png
+
+
+
+
+
+
+
+5. What is `url\_for()` used for?
+
+
+
+	Generates correct URLs dynamically - handles changes if static folder moves or app URL changes.
+
+
+
+| Hardcoded ❌           | url\_for() ✅                                 |
+
+| --------------------- | ------------------------------------------- |
+
+| /static/css/style.css | url\_for('static', filename='css/style.css') |
+
+| Breaks if URL changes | Always works                                |
+
+| Manual updates        | Auto-adjusts                                |
+
+
+
+Examples:
+
+
+
+xml
+
+<link href="{{ url\_for('static', filename='css/main.css') }}" rel="stylesheet">
+
+<script src="{{ url\_for('static', filename='js/app.js') }}"></script>
+
+<img src="{{ url\_for('static', filename='img/logo.png') }}">
+
+
+
+Static folder + url\_for = Professional styling guaranteed! 🎨✨
+

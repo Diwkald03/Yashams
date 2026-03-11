@@ -1,0 +1,119 @@
+1. What is OOPs in Python?
+
+Object-Oriented Programming (OOP) organizes code into classes (blueprints) and objects (instances), bundling data (attributes) and behavior (methods) together. Python's OOP enables modeling complex systems like HR platforms or banking apps.​
+
+Core concept: Real-world entities become code entities:
+
+Employee → Class with name, salary, promote() method
+Alice → Object: Employee("Alice", 500000)
+
+
+
+2. What is the difference between class and object?
+
+| Class                             | Object                                |
+| --------------------------------- | ------------------------------------- |
+| Blueprint/templateclass Employee: | Instance/actual dataemp1 = Employee() |
+| Defines structure                 | Contains specific values              |
+| Created once                      | Multiple instances possible           |
+| No memory until instantiated      | Allocates memory on creation          |
+
+Example:
+
+python
+class Car:                           # Class (blueprint)
+    def __init__(self, brand):
+        self.brand = brand           # Attribute definition
+
+volvo = Car("Volvo")                 # Object 1
+audi = Car("Audi")                   # Object 2 (separate memory)
+
+
+
+3. Why do we use `self` in Python?
+
+self references current object instance, enabling access to its attributes/methods:
+
+python
+class BankAccount:
+    def __init__(self, owner):
+        self.owner = owner          # self.owner = THIS object's owner
+    
+    def deposit(self, amount):         # self = whichever account calls this
+        self.balance += amount        # Updates calling object's balance
+
+account1 = BankAccount("Alice")      # self = account1 inside methods
+account2 = BankAccount("Bob")        # self = account2 inside methods
+
+Without self: Methods couldn't distinguish between different objects' data.
+
+
+
+4. Explain inheritance with an example.
+
+Child classes inherit parent attributes/methods (code reuse):
+
+python
+class Employee:                        # Parent
+    def __init__(self, name, salary):
+        self.name = name
+        self.salary = salary
+    
+    def get_details(self):
+        return f"{self.name}: ₹{self.salary:,}"
+
+class Manager(Employee):              # Child inherits everything
+    def __init__(self, name, salary, team_size):
+        super().__init__(name, salary)  # Parent constructor
+        self.team_size = team_size
+    
+    def get_team_info(self):
+        return f"{self.get_details()} manages {self.team_size}"
+
+bob = Manager("Bob", 1200000, 15)
+print(bob.get_details())      # Inherited method
+print(bob.get_team_info())    # Own method
+
+
+
+5. What are the four pillars of OOPs?
+
+| Pillar        | Definition                            | Example                                     |
+| ------------- | ------------------------------------- | ------------------------------------------- |
+| Encapsulation | Bundle data + methods, hide internals | private __salary, public get_salary()       |
+| Inheritance   | Child gets parent's features          | Manager(Employee)                           |
+| Polymorphism  | Same interface, different behaviors   | Dog.speak() → "Woof!", Cat.speak() → "Meow" |
+| Abstraction   | Show essentials, hide complexity      | API.user_login() hides database logic       |
+
+Production impact:
+
+text
+No OOP → 10K lines procedural mess
+With OOP → 2K lines, 90% reusable, 5x faster maintenance
+
+Streamlit HR System OOP Architecture
+
+python
+class Employee:
+    employee_count = 0  # Class variable
+    
+    def __init__(self, name, salary):
+        self.name = name
+        self.__salary = salary  # Encapsulated
+        Employee.employee_count += 1
+    
+    def get_salary(self):  # Abstraction
+        return self.__salary
+
+class Developer(Employee):
+    def code(self):  # Polymorphism
+        return f"{self.name} writes Python"
+
+class HRSystem:  # Encapsulation
+    def __init__(self):
+        self.employees = []
+    
+    def add_employee(self, emp):  # Interface
+        self.employees.append(emp)
+
+OOP = Professional Python. Every production app uses it. 🏗️✅

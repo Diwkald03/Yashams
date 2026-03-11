@@ -1,0 +1,21 @@
+
+
+1. What is a random forest in simple words?  
+A random forest is an ensemble machine learning algorithm that builds numerous decision trees during training and combines their outputs to enhance prediction accuracy and stability, making it effective for both classification (predicting categories) and regression (predicting continuous values). Each tree votes independently on subsets of data, reducing errors from individual tree biases or overfitting, as the collective "wisdom of the crowd" smooths out inconsistencies. This approach outperforms single models in noisy or complex datasets by averaging predictions rather than relying on one tree's quirks.
+
+
+2. How does a random forest combine results from many trees?  
+Random forests aggregate predictions through majority voting for classification—where the class with the most tree "votes" wins—or averaging numerical outputs for regression, ensuring the final result leverages diverse perspectives from uncorrelated trees. For instance, if 70 out of 100 trees classify an input as "spam," that becomes the prediction; in regression, it might average house price estimates from varied trees. This bagging (bootstrap aggregating) with feature randomness decorrelates trees, minimizing variance while preserving low bias for robust generalization.
+
+
+3. Why do we use random rows and random features?  
+Randomly sampling rows (via bootstrap) and selecting random feature subsets at each split introduces diversity, preventing trees from becoming identical clones that amplify the same errors or overfit to training noise. By limiting feature choices—say, sqrt(total features)—it forces trees to explore different data aspects, enhancing overall forest resilience against outliers and improving performance on unseen data. This controlled randomness mimics natural variation, yielding a balanced, high-variance-reduced ensemble without sacrificing individual tree depth.
+
+4. When would a random forest be better than one decision tree?  
+Random forests excel over lone decision trees in handling overfitting—single trees grow deep and memorize noise, leading to poor test performance—while the ensemble averages out flaws for better accuracy, stability, and generalization on messy real-world data. They're less sensitive to outliers, require minimal tuning, and scale well with high dimensions, whereas one tree might split perfectly on training quirks but fail broadly. Use forests for production tasks like fraud detection where reliability trumps interpretability.
+
+
+
+5. What is feature importance in random forest?  
+Feature importance in random forests measures each variable's contribution to reducing impurity (e.g., Gini or entropy) across all trees, calculated as the average decrease in node impurity weighted by samples affected, then normalized. High-importance features consistently drive quality splits; visualize via bar charts from model attributes like scikit learn's feature importances. This helps practitioners prioritize variables, explain predictions, and refine datasets by dropping low-impact ones.
+

@@ -1,0 +1,135 @@
+1. What is GitHub and why is it important for developers?
+
+GitHub serves as the central hub for code collaboration, hosting 120M+ repositories and 100M+ developers. It's mandatory for job applications (95% of tech roles require GitHub profiles).
+
+Core Value Proposition:
+
+
+No GitHub → Isolated code → No collaboration → Career limitation
+With GitHub → Portfolio + Teamwork + Open Source → Job offers
+
+Final-year project multiplier: GitHub README + Demo Video = 10x interview callbacks.
+
+
+
+2. What is a repository in GitHub?
+
+Repository (repo) = Complete project folder with code, history, issues, documentation:
+
+
+my-streamlit-crud-app/
+├── app.py                 # Main Streamlit app
+├── employees.db           # SQLite database  
+├── requirements.txt       # Dependencies
+├── README.md             # Project documentation
+└── .github/workflows/    # CI/CD pipeline
+
+Repo Types:
+
+| Public               | Private                 | GitHub Pages                |
+| -------------------- | ----------------------- | --------------------------- |
+| PortfolioOpen source | Team projectsCompany IP | Live demoyourname.github.io |
+
+
+
+3. How does GitHub help in team-based development?
+
+GitHub enables parallel development through branches, pull requests, code review:
+
+
+Main Branch (stable) ← Pull Request ← Feature Branch (experiment)
+                    ↑ Review + Test ↑ Code changes
+                    ↑ Merge        ↑ Multiple developers
+
+Production Team Flow:
+
+
+graph TD
+    A[Developer A: auth.py] --> B[Create PR #23]
+    C[Developer B: Reviews] --> D[CI Tests Pass]
+    E[Team Lead: Approves] --> F[Merge to main]
+    F --> G[Deploy to Streamlit Cloud]
+
+Collaboration Features:
+
+    Pull Requests: Code review + discussion
+
+    Issues: Bug tracking + feature requests
+
+    Projects: Kanban boards
+
+    Actions: Automated testing/deployment
+
+
+
+4. What is the difference between Git and GitHub?
+
+| Git                                   | GitHub                           |
+| ------------------------------------- | -------------------------------- |
+| Command-line toolgit commit, git push | Web platformHosts Git repos      |
+| Local version control                 | Cloud collaboration              |
+| Free, open-source                     | Freemium SaaS                    |
+| git clone                             | https://github.com/username/repo |
+
+Relationship: GitHub = Git + Web UI + Collaboration.
+
+
+
+5. How does GitHub help in tracking code changes?
+
+GitHub visualizes complete change history with commit graph, blame view, diff comparison:
+
+
+Commit History:
+commit abc123 → "Add bcrypt auth" → +45/-2 lines
+commit def456 → "Fix SQL injection" → +12/-8 lines
+commit ghi789 → "Deploy to Streamlit" → +3/-1 lines
+
+Tracking Features:
+
+
+🔍 File blame → "Who changed line 42?"
+⏪ Revert → Undo entire commit
+📊 Contribution graph → Weekly commits
+🔀 Compare branches → See all differences
+
+Streamlit Project Tracking Example:
+
+
+Week 1: README + Basic CRUD → 5 commits
+Week 2: Authentication → 8 commits  
+Week 3: Forgot password → 12 commits
+Week 4: Deploy + Polish → 20 commits ✓
+
+Production GitHub Workflow Template
+
+bash
+# 1. Clone project
+git clone https://github.com/yourname/streamlit-crud-app.git
+cd streamlit-crud-app
+
+# 2. Create feature branch
+git checkout -b feature/auth-system
+
+# 3. Make changes + commit
+git add .
+git commit -m "Add bcrypt authentication + forgot password"
+
+# 4. Push + Create PR
+git push origin feature/auth-system
+# → GitHub creates Pull Request automatically
+
+Final Year Project GitHub Checklist
+
+
+✅ Public repository (recruiters must see code)
+✅ Professional README with screenshots
+✅ Requirements.txt (pip install -r)
+✅ Streamlit Cloud deployment link
+✅ Commit history shows weekly progress
+✅ Issues tab for bug tracking
+✅ Pull requests (even solo → professional)
+✅ GitHub Actions CI (bonus points)
+
+GitHub profile = Your coding resume. 80% of tech hiring managers check it first. 🚀💻
+

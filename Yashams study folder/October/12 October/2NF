@@ -1,0 +1,25 @@
+1\. What is partial dependency in 2NF?
+
+##### &nbsp;	Partial dependency occurs in tables with composite primary keys (multiple columns) when a non-key attribute depends on only part of that key, not the entire key—violating 2NF. For example, in an OrderDetails table with primary key (OrderID, ProductID) and columns ProductName, ProductName depends solely on ProductID (not OrderID), creating redundancy: same product name repeats across orders. 2NF requires splitting such tables to eliminate this.
+
+
+2. How does 2NF differ from 1NF?
+1NF ensures basic table structure: atomic values per cell, no repeating groups, unique rows—handles lists/arrays by splitting. 2NF builds on 1NF plus removes partial dependencies in composite key tables, ensuring every non-key attribute depends on the full primary key. 1NF table like OrderDetails above is valid; 2NF requires decomposing into Orders and Products tables.
+
+
+3. Why is 2NF not necessary for tables with a single primary key column?
+2NF is irrelevant for tables with single-column primary keys because partial dependency requires a composite key to have "parts"—a solo key (e.g., StudentID) can't be partially depended upon; all attributes automatically depend on the whole key. Single-key tables satisfying 1NF are automatically 2NF, focusing normalization efforts on 3NF instead.​	
+ 
+
+4. Can a table be in 2NF but not in 3NF?
+Yes—a 2NF table can fail 3NF due to transitive dependencies (non-key attributes depending on other non-keys). Example: Students table (2NF, key=StudentID): StudentID → City → ZipCode. ZipCode depends on City (not directly StudentID), causing redundancy. 3NF splits into Students (StudentID→City) and Cities (City→ZipCode).	
+
+
+5. Give a real-world example of 2NF.
+Consider Library Loans table: composite key (BookID, MemberID), columns BookTitle, Author. BookTitle → Author creates partial dependency (BookTitle depends only on BookID, repeats per member). Violates 2NF. Fix: Split into Books (BookID → BookTitle, Author) and Loans (BookID, MemberID, LoanDate). Now Author stored once per book, eliminating redundancy during multiple loans.​
+
+
+
+
+
+

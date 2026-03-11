@@ -1,0 +1,145 @@
+
+1. Why do we split data into training and testing sets?
+
+Training set teaches model patterns. Testing set measures generalization performance on unseen data, simulating production deployment.
+
+Core Engineering Principle:
+
+Training data → Model parameters (β coefficients)
+Testing data → Unbiased performance estimate (R², accuracy)
+
+Without separation → Overfitting guaranteed (model memorizes training examples).
+
+
+
+2. What happens if we train and test on the same data?
+
+Same data for training + testing produces artificially inflated metrics:
+
+text
+Training R²: 0.98 → Model "perfectly fits" training data
+Testing R²:  0.98 → Same data, no new information
+
+Reality (production): R² = 0.62 → Catastrophic failure
+
+Failure Mechanism:
+
+text
+Model learns: "Record #47 has salary ₹25L" (memorization)
+NOT: "5 years exp → ₹25L salary" (generalization)
+
+Business Impact: ₹100Cr+ payroll errors from over-optimistic hiring models.
+
+
+
+3. Explain the role of `test_size`.
+
+test_size controls proportion of data reserved for unbiased evaluation:
+
+python
+# Industry standards
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, 
+    test_size=0.20,      # 80/20 → Most common [web:850]
+    random_state=42
+)
+
+Optimal Ratios by Dataset Size:
+
+| Samples | test_size | Rationale             |
+| ------- | --------- | --------------------- |
+| 500-1K  | 0.30      | Limited data          |
+| 1K-10K  | 0.20      | Production standard   |
+| 10K+    | 0.15      | Statistical stability |
+
+Constraint: test_size ≥ 0.10 (minimum statistical power).
+
+
+
+4. Why is `random_state` important?
+
+random_state fixes pseudo-random split seed for deterministic results:
+
+python
+# ❌ Different runs → Different splits → Inconsistent evaluation
+X_train1, _, _, _ = train_test_split(X, y)
+X_train2, _, _, _ = train_test_split(X, y)  # Different!
+
+# ✅ Same split across runs → Fair model comparison
+X_train1, _, _, _ = train_test_split(X, y, random_state=42)
+X_train2, _, _, _ = train_test_split(X, y, random_state=42)  # Identical!
+
+Production Requirements:
+
+text
+✅ random_state=42 (universal standard)
+✅ Document seed in model card
+✅ Reproducible across team members
+✅ Git commit hash as fallback
+
+
+
+5. When is Train–Test Split preferred over Cross Validation?
+
+| Scenario              | Train-Test Split ✅        | Cross-Validation ✅         |
+| --------------------- | ------------------------- | -------------------------- |
+| Large datasets (>10K) | Fast baseline (30s)       | Statistical luxury (30min) |
+| Rapid prototyping     | Single evaluation         | k× evaluations             |
+| Production baseline   | Industry standard         | Hyperparameter tuning      |
+| Small datasets (<1K)  | ❌ Insufficient test power | Robust estimate            |
+| Time series           | Time-based split          | Walk-forward CV            |
+
+
+Hybrid Production Strategy:
+
+python
+# Phase 1: Train-test split (baseline)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+# Phase 2: Cross-validation (hyperparameters)
+scores = cross_val_score(model, X_train, y_train, cv=5)
+
+# Phase 3: Final evaluation (test set)
+final_r2 = model.score(X_test, y_test)
+
+Performance Comparison:
+
+text
+Dataset: 5K salary records
+Train-test split: 12s evaluation
+5-fold CV:        58s evaluation (5x cost)
+
+Production Implementation Template
+
+python
+def production_split(X, y, test_size=0.20, random_state=42, stratify=None):
+    """Enterprise-grade train-test split"""
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y,
+        test_size=test_size,
+        random_state=random_state,
+        stratify=stratify
+    )
+    
+    print(f"✅ Train: {len(X_train):,}/{len(X):,} ({100*(1-test_size):.0f}%)")
+    print(f"✅ Test:  {len(X_test):,} ({100*test_size:.0f}%)")
+    
+    # Balance verification
+    if stratify is not None:
+        print("Class balance preserved ✓")
+    
+    return X_train, X_test, y_train, y_test
+
+# Usage
+X_train, X_test, y_train, y_test = production_split(X_salary, y_salary)
+
+Final Year Project Validation Strategy
+
+text
+Week 1: 80/20 train-test split + baseline model
+Week 2: Cross-validation for hyperparameter tuning
+Week 3: Test set → Final production metrics
+Week 4: Model card with reproducible split (random_state=42)
+
+Train-test split = First line of defense against production ML disasters. Skip at your peril. 🎯✅
+

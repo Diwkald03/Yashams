@@ -1,0 +1,131 @@
+
+1. What is a repository in GitHub?
+
+	A GitHub repository (repo) stores all project files, code, documentation, and their complete revision history. It acts as the central hub for collaboration, version control, and issue tracking.
+
+Structure example:
+
+
+my-streamlit-app/
+├── app.py              # Main application
+├── requirements.txt    # Dependencies
+├── README.md          # Documentation
+└── .git/              # Hidden Git history folder
+
+
+
+2. What is the purpose of a commit?
+
+	Commits create version snapshots with descriptive messages, enabling rollback to any previous state:
+
+
+git add app.py
+git commit -m "Add bcrypt authentication + forgot password"
+
+Benefits:
+
+    Time travel: git checkout abc123 → Previous version
+
+    Accountability: Who changed what, when
+
+    Diff comparison: See exact line changes
+
+    Branch point: Starting new features safely
+
+Commit frequency: 3-5 per feature (atomic changes).
+
+
+
+3. Why do developers use branches?
+
+	Branches enable parallel development without breaking main code:
+
+
+main ── A ── B (stable production)
+       │
+     feature/auth ── C ── D (experimentation)
+
+Developer workflow:
+
+git checkout -b feature/hr-dashboard
+# Work → Commit → Test
+git checkout main
+git merge feature/hr-dashboard
+
+Prevents: Developer A breaks login while Developer B builds dashboard.
+
+
+
+4. What is the difference between push and pull?
+
+| Action | Direction                          | Purpose                       |
+| ------ | ---------------------------------- | ----------------------------- |
+| Push   | Local → Remotegit push origin main | Upload your commits to GitHub |
+| Pull   | Remote → Localgit pull origin main | Download latest team changes  |
+
+Daily cycle:
+
+Your laptop → git push (upload your work)
+Team changes → git pull (sync teammates)
+
+Conflicts resolved during pull → Git merge tool.
+
+
+
+5. Why is README important in a project?
+
+	README.md = Project front door read by 95% of visitors (recruiters, collaborators):
+
+
+❌ Empty README → "Dead project?"
+✅ Professional README → "Active developer!"
+
+Required sections:
+
+
+# Streamlit HR Dashboard 👥
+
+[![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
+
+## 🚀 Features
+- Employee CRUD operations
+- bcrypt authentication
+- Power BI integration
+
+## 📊 Live Demo
+https://hr-dashboard.streamlit.app
+
+## 🛠️ Installation
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+
+
+
+## **Production Workflow Template**
+
+```bash
+# 1. Clone project
+git clone https://github.com/username/hr-dashboard.git
+cd hr-dashboard
+
+# 2. Create feature branch
+git checkout -b feature/powerbi-integration
+
+# 3. Work → Commit → Push
+git add .
+git commit -m "Add Power BI salary dashboard"
+git push origin feature/powerbi-integration
+
+# 4. Pull Request → Team review → Merge
+
+Final-year project checklist:
+
+
+✅ 10+ meaningful commits
+✅ Feature branches (not direct main)
+✅ Professional README with demo link
+✅ Pull requests (even solo)
+✅ GitHub Actions CI (bonus)
+
+GitHub repo = Your professional portfolio. Proper commits/branches/README = Interview talking points. 🚀✅

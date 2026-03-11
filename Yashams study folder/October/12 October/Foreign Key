@@ -1,0 +1,38 @@
+ 
+
+ 1. What is the main difference between a Primary Key and a Foreign Key?
+ A Primary Key uniquely identifies each row within its own table, enforcing entity integrity by prohibiting NULLs and duplicates while serving as the reference point for relationships—only one per table, often auto-indexed for speed. A Foreign Key, conversely, is a column (or set) in one table (child) that references the Primary Key of another table (parent), upholding referential integrity by ensuring linked values exist, allowing NULLs/duplicates unless specified otherwise. Primary Keys own records; Foreign Keys link them across tables.
+ 
+
+ 2. Can a table have multiple Foreign Keys?
+ Yes, a table can—and often does—have multiple Foreign Keys to connect to various parent tables, modeling complex relationships like an Order table with customer_id (FK to Customers), product_id (FK to Products), and supplier_id (FK to Suppliers). Each FK operates independently with its own constraints, enabling normalized designs such as star schemas in data warehouses. Limits depend on DBMS (e.g., SQL Server: 1023 columns total), but practical designs rarely exceed 10-20.
+
+ 
+ 3. Can a Foreign Key point to a non-primary column?
+ Typically no—Foreign Keys must reference a UNIQUE or PRIMARY KEY column in the parent for guaranteed uniqueness, preventing orphans like referencing a non-unique email that changes or duplicates. Some DBMS (PostgreSQL) allow FKs to non-unique columns, but this risks inconsistencies; best practice mandates UNIQUE/PRIMARY targets. Example violation: FK (dept_name) REFERENCES Departments(dept_name) fails if dept_name isn't UNIQUE.
+
+ 
+ 4. What happens if the parent record is deleted?
+ Deleting a parent record triggers the Foreign Key's referential action, defaulting to RESTRICT (blocks delete if children exist) or NO ACTION (similar, checked at commit). Without specification, attempts fail with errors like "violates foreign key constraint." Use ON DELETE CASCADE to auto-delete children (cascading removes), SET NULL to nullify FKs (if nullable), or SET DEFAULT to a default value—choose based on business logic to avoid data loss or orphans.
+
+ 
+ 5. How do ON DELETE and ON UPDATE actions work with Foreign Keys?
+ ON DELETE/UPDATE clauses define cascading behaviors for FKs during parent modifications:
+
+    CASCADE: Propagate delete/update to children (e.g., delete customer → delete orders).
+
+
+    SET NULL: Set child FK to NULL (requires nullable FK).
+
+
+    SET DEFAULT: Set to column default.
+
+
+    RESTRICT/NO ACTION: Block operation if children exist (NO ACTION defers check).
+
+    Example: FOREIGN KEY (cust_id) REFERENCES Customers(id) ON DELETE CASCADE ON UPDATE SET NULL—deleting customer removes orders; updating customer ID nulls order references. These ensure integrity during changes, configurable per FK for flexible designs.
+
+
+
+
+

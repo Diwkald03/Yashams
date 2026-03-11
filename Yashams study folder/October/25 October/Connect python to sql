@@ -1,0 +1,68 @@
+ 
+
+ 1. What are the steps to connect Python with MySQL?
+
+1.    Install connector: pip install mysql-connector-python
+   
+   
+2.    Import module: import mysql.connector
+   
+   
+3.    Establish connection: conn = mysql.connector.connect(host='localhost', user='root', password='pass', database='dbname')
+   
+   
+4.    Create cursor: cursor = conn.cursor()
+   
+   
+5.    Execute queries: cursor.execute("SELECT * FROM table")
+   
+   
+6.    Fetch results: rows = cursor.fetchall()
+   
+   
+7.    Commit changes: conn.commit() (for INSERT/UPDATE)
+   
+   
+8.    Close resources: cursor.close(); conn.close()
+
+ 
+
+ Use try-finally or context manager for safety.
+
+
+ 2. What is the role of mysql.connector.connect()?
+   connect() creates a MySQLConnection object using credentials (host, user, password, database, port=3306), establishing TCP/IP or Unix socket link to MySQL server. Returns connection if successful, raises Error on failure (wrong creds, server down). Supports connection pooling and SSL parameters for production.
+
+
+ 3. What does cursor() do in MySQL connection?
+	cursor() creates a cursor object from connection to execute SQL statements and fetch results. Acts as iterator over query results with methods: execute(), executemany(), fetchone(), fetchall(), fetchmany(). Each cursor maintains independent state—multiple cursors per connection possible for parallel operations.
+
+
+ 4. Why is commit() necessary after INSERT or UPDATE?
+	cursor() creates a cursor object from connection to execute SQL statements and fetch results. Acts as iterator over query results with methods: execute(), executemany(), fetchone(), fetchall(), fetchmany(). Each cursor maintains independent state—multiple cursors per connection possible for parallel operations.
+
+
+ 5. What are the differences between sqlite3 and mysql-connector-python?
+
+
+
+ | Aspect       | sqlite3                    | mysql-connector-python                    |
+
+ |  | -- | -- |
+
+ | Server       | File-based (no server)     | Client-server (MySQL)                     |
+
+ | Install      | Built-in Python            | pip install                               |
+
+ | Connection   | sqlite3.connect('file.db') | mysql.connector.connect(host, user, pass) |
+
+ | Concurrency  | Limited (file locks)       | High (server handles)                     |
+
+ | Scale        | Small apps (<1GB)          | Enterprise (100GB+)                       |
+
+ | Setup        | Zero-config                | Server + users                            |
+
+ | Transactions | Implicit                   | Explicit modes                            |
+
+ | Network      | Local only                 | Remote access                             |
+

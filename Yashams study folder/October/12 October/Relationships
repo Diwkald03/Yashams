@@ -1,0 +1,36 @@
+ 1. Explain the difference between 1:1, 1:N, and M:N relationships.
+	One-to-One (1:1) links exactly one record from Table A to one from Table B (and vice versa)—e.g., foreign key in one table matches primary key uniquely, often for splitting large tables. One-to-Many (1:N) allows one A record to connect to multiple B records, but each B links back to only one A—implemented via foreign key in "many" table. Many-to-Many (M:N) permits multiple A records to relate to multiple B records bidirectionally, requiring a junction table to resolve into two 1:N relationships.
+ 
+
+ 2. Why do we use a bridge table in M:N relationships?
+	Bridge (junction/associative) tables eliminate direct M:N by storing pairs of foreign keys from both entities, converting it to two 1:N relationships—e.g., StudentCourses table with student_id (FK to Students) + course_id (FK to Courses) + optional attributes like enrollment_date. Without it, you'd denormalize with repeating groups or arrays, causing redundancy, update anomalies (change student affects all courses), and inefficient queries. Bridge enables clean normalization, flexible many-many modeling.
+ 
+
+ 3. Can you convert a Many-to-Many relationship into multiple One-to-Many relationships?
+	No, you cannot directly convert true M:N into multiple pure 1:N without a junction table—the junction is the conversion mechanism, creating two 1:N (Students 1:N Enrollments, Courses 1:N Enrollments). Attempting pure 1:N forces denormalization (e.g., list courses in Student row), violating 1NF/2NF with redundancy. M:N fundamentally requires the intermediary for relational integrity.​
+
+ 
+ 4. What happens if you delete a parent record with a Foreign Key constraint?
+	Deleting a parent record triggers the FK's ON DELETE action:
+ 
+  RESTRICT/NO ACTION (default): Blocks delete if children exist.
+ 
+  CASCADE: Auto-deletes all children recursively.
+ 
+  SET NULL: Nullifies child FKs (if nullable).
+ 
+  SET DEFAULT: Sets child FK to column default.
+  Example: Delete Customer cascades to delete Orders if ON DELETE CASCADE, preventing orphans but risking data loss—choose per business rules.
+ 
+
+ 5. Give a real-world example for each relationship type.
+  1:1: User ↔ UserProfile (one profile per user; split for security).
+ 
+  1:N: Customer 1 → Many Orders (one customer, multiple purchases; orders.customer_id FK).
+ 
+  M:N: Students * ↔ * Courses (many students per course, many courses per student; Enrollments bridge table with both FKs).
+
+
+
+
+

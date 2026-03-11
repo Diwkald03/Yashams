@@ -1,0 +1,93 @@
+
+1. Explain the core difference between Power BI and Looker.
+
+	Power BI is a visual-first drag-and-drop tool with built-in data modeling (DAX/Power Query). Looker is a code-first platform using LookML (SQL-based modeling language) for centralized data definitions.​
+
+| Power BI                  | Looker                  |
+| ------------------------- | ----------------------- |
+| Visual reports/dashboards | Semantic data layer     |
+| DAX formulas              | LookML (Git-controlled) |
+| Microsoft ecosystem       | Google Cloud native     |
+| Point-and-click           | Developer-focused       |
+
+
+
+2. Which tool is best for cloud-based analytics and why?
+
+Looker wins for cloud analytics:
+
+    Native Google Cloud BigQuery integration
+
+    Real-time SQL querying (no data import)
+
+    Serverless scaling for massive datasets
+
+    Embedded analytics in web apps
+
+Power BI imports data first, creating delays for live cloud data.
+
+
+
+3. Why is Power BI considered beginner-friendly?
+
+Power BI's "no-code" approach:
+
+1. Drag data → Auto-creates visuals
+2. Natural language Q&A ("sales last month")
+3. 1000+ pre-built templates
+4. Excel-like interface
+5. AI visuals (key influencers, decomposition tree)
+
+Looker requires SQL + LookML knowledge = steep learning curve
+
+
+
+4. How does Looker use SQL for reporting?
+
+Looker = SQL + LookML:
+
+1. Write LookML models (metrics, dimensions)
+2. Git version control
+3. Generates SQL automatically
+4. Users explore via drag-drop interface
+5. Changes to model → All reports update
+
+Example LookML:
+
+measure: total_sales {
+  type: sum
+  sql: ${sale_amount} ;;
+}
+
+Benefit: Single source of truth - change metric definition once, everywhere updates.
+
+
+
+5. When should a company choose Looker over Power BI?
+
+| Scenario              | Why Looker          |
+| --------------------- | ------------------- |
+| Data team exists      | LookML expertise    |
+| Google Cloud user     | BigQuery native     |
+| Enterprise governance | Centralized metrics |
+| Embedded analytics    | Websites/apps       |
+| Developer culture     | Git workflows       |
+
+
+Choose Power BI when:
+
+    Small/medium business
+
+    Microsoft 365 users
+
+    Non-technical analysts
+
+    Rapid dashboard deployment
+
+    Budget constraints
+
+text
+Startups/SMBs → Power BI ($10/user)
+Enterprises → Looker (usage-based)
+
+Power BI = Fast visuals, Looker = Data governance! 📊🔧

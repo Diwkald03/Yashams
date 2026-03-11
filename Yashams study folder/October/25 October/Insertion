@@ -1,0 +1,64 @@
+
+1. What is the purpose of the INSERT INTO command in SQL?
+	
+	INSERT INTO adds new rows (records) to an existing database table, populating specified or all columns with provided values. It's a DML (Data Manipulation Language) command essential for data entry, ETL processes, seeding test data, and populating normalized tables from source systems. Without INSERT, tables remain empty after CREATE TABLE.
+
+Syntax: INSERT INTO table_name (col1, col2) VALUES (val1, val2);
+
+
+
+2. How is INSERT INTO used differently with and without column names?
+	
+	With column names: Explicitly target columns, allowing NULLs/defaults for omitted ones, skipping auto-increment PKs, and matching order flexibly.
+
+sql
+INSERT INTO users (name, email) VALUES ('Alice', 'alice@email.com');
+-- id auto-generates, other columns use defaults/NULL
+
+	Without column names: Insert into ALL columns in exact table order—must provide exact count/values matching schema.
+
+sql
+INSERT INTO users VALUES (1, 'Bob', 'bob@email.com', NULL);
+-- Fails if column count mismatches or wrong order
+
+Best practice: Always specify columns for clarity, safety against schema changes.
+
+
+
+3. What happens if we don’t use commit() after an insert in sqlite3?
+
+	Changes remain in transaction buffer/memory—appear successful during session but silently discarded on conn.close(), crash, or power loss (auto-rollback). Other connections/processes can't see uncommitted data. Critical bug source: "data disappeared after script ran."
+
+Always: cursor.execute("INSERT..."); conn.commit();
+
+
+
+4. What is the use of executemany() in Python’s sqlite3?
+
+	Purpose: cursor.executemany(sql, data_list) executes one SQL template repeatedly against multiple parameter sets (list of tuples/lists)—ideal for bulk inserts from CSV/JSON/API data.
+
+Example:
+
+python
+data = [('Alice', 30), ('Bob', 25), ('Carol', 35)]
+cursor.executemany("INSERT INTO users (name, age) VALUES (?, ?)", data)
+
+Benefits: 10-100x faster than looped execute(), single SQL parse, atomic batch with one commit().
+
+
+
+5. Can you insert NULL values using INSERT INTO? If yes, how?
+
+	Yes, explicitly via NULL keyword or omit nullable columns:
+
+sql
+-- Explicit NULL
+INSERT INTO users (name, email, phone) VALUES ('David', NULL, NULL);
+
+-- Omit nullable columns (uses default NULL)
+INSERT INTO users (name) VALUES ('Eve');
+
+-- Python parameterized
+cursor.execute("INSERT INTO users (name, phone) VALUES (?, ?)", ("Frank", None))
+
+Notes: PRIMARY KEY/UNIQUE/NOT NULL columns reject NULLs; auto-increment PKs ignore explicit NULL (generate ID).

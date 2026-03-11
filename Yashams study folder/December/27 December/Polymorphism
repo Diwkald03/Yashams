@@ -1,0 +1,147 @@
+1. What is polymorphism in Python?
+
+Polymorphism ("many forms") lets objects of different classes respond to the same method call in class-specific ways. Same interface, different implementations.​
+
+Core principle: "Same message, different behaviors":
+
+python
+def make_sound(animal):    # Works with ANY animal
+    print(animal.sound())  # Calls correct method automatically
+
+
+
+2. Explain polymorphism with a real-life example.
+
+Zoo simulation where one function handles all animals polymorphically:
+
+python
+class Dog:
+    def sound(self):
+        return "Woof! 🐶"
+
+class Cat: 
+    def sound(self):
+        return "Meow! 😺"
+
+class Cow:
+    def sound(self):
+        return "Moo! 🐮"
+
+# Polymorphic function
+def zoo_sound(animal):
+    print(f"{animal.__class__.__name__} says: {animal.sound()}")
+
+# Same function call → Different results
+dog = Dog()
+cat = Cat() 
+cow = Cow()
+zoo_sound(dog)  # Dog says: Woof!
+zoo_sound(cat)  # Cat says: Meow!
+zoo_sound(cow)  # Cow says: Moo!
+
+Production power: One function handles unlimited animal types.
+
+
+
+3. How does method overriding support polymorphism?
+
+Child classes redefine parent methods for specific behaviors:
+
+python
+class Animal:                     # Parent
+    def sound(self):
+        return "Generic animal sound"
+
+class Dog(Animal):                # Overrides for polymorphism
+    def sound(self):
+        return "Woof!"
+
+class Cat(Animal):
+    def sound(self):
+        return "Meow!"
+
+animals = [Dog(), Cat(), Animal()]
+for animal in animals:
+    print(animal.sound())         # Polymorphic dispatch
+# Output: Woof!, Meow!, Generic animal sound
+
+Runtime magic: Python calls correct overridden method based on actual object type.
+
+
+
+4. What is the role of `super()` in polymorphism?
+
+super() extends parent behavior before/after child-specific logic:
+
+python
+class Employee:
+    def __init__(self, name):
+        self.name = name
+        print(f"Employee {self.name} created")
+
+class Manager(Employee):
+    def __init__(self, name, team_size):
+        super().__init__(name)     # Parent first
+        self.team_size = team_size
+        print(f"Manager team size: {self.team_size}")
+    
+    def work(self):
+        print(f"Manager {self.name} delegates")  # Child behavior
+    
+    def report(self):
+        super().work()             # Parent behavior
+        self.work()                # Child behavior
+
+mgr = Manager("Bob", 15)
+mgr.report()
+# Employee Bob created
+# Manager team size: 15  
+# Manager Bob delegates  (inherited)
+# Manager Bob delegates  (overridden)
+
+
+
+5. Difference between polymorphism and inheritance.
+
+| Aspect       | Inheritance               | Polymorphism                              |
+| ------------ | ------------------------- | ----------------------------------------- |
+| Relationship | "Is-a" (Dog IS-A Animal)  | Same interface (all make sound)           |
+| Code Reuse   | Child gets parent methods | Same function processes different classes |
+| Mechanism    | Class hierarchy           | Method overriding + duck typing           |
+| Purpose      | Structure + reuse         | Flexibility + extensibility               |
+
+Key distinction:
+
+
+Inheritance: Dog(Employee) → Gets salary, get_details()
+Polymorphism: process_employee([dev, mgr]) → Calls correct work() method
+
+Production HR Polymorphism System
+
+python
+class Employee:
+    def work(self):
+        return "Working on tasks"
+    
+    def calculate_bonus(self):
+        return self.salary * 0.1
+
+class Developer(Employee):
+    def work(self):                    # Polymorphic override
+        return "Writing Python code"
+    
+    def calculate_bonus(self):
+        super().calculate_bonus()      # Base + extra
+        return self.salary * 0.15
+
+class Manager(Employee):
+    def work(self):
+        return "Managing team"
+
+# Polymorphic processing
+employees = [Developer("Alice", 500000), Manager("Bob", 1200000)]
+
+for emp in employees:
+    print(f"{emp.work()} | Bonus: ₹{emp.calculate_bonus():,}")
+
+Polymorphism = Production scalability. Add new Employee types without changing HR processing code. 🎭✅

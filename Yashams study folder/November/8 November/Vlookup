@@ -1,0 +1,67 @@
+
+1. What is the main use of VLOOKUP in Google Sheets?
+
+	VLOOKUP searches for a value in the first column of a range and returns a value from the same row in a specified column. Perfect for lookup tables like price lists, employee data.​
+
+Example:
+
+=VLOOKUP("Apple", A1:D10, 3, FALSE)
+# Finds "Apple" in col A, returns value from 3rd column same row
+
+
+
+2. How is VLOOKUP different from HLOOKUP?
+
+| VLOOKUP                        | HLOOKUP                        |
+| ------------------------------ | ------------------------------ |
+| Vertical search (down column)  | Horizontal search (across row) |
+| Lookup value in first column   | Lookup value in first row      |
+| =VLOOKUP(A1, B1:F10, 3, FALSE) | =HLOOKUP(A1, B1:J5, 2, FALSE)  |
+
+VLOOKUP: 📋↓     HLOOKUP: ➡️📋
+Col A search     Row 1 search
+
+
+
+3. Why do we use `$` signs in a VLOOKUP range?
+
+	$ locks references when copying formulas (absolute reference):
+
+❌ =VLOOKUP(A2, B$1:D10, 2, FALSE)  # Row shifts
+✅ =VLOOKUP(A2, $B$1:$D$10, 2, FALSE) # Locked range
+✅ =VLOOKUP(A2, B1:$D$10, 2, FALSE)  # Lock columns only
+
+Copy down 100 rows → Table range stays B1:D10!
+
+
+
+4. Can VLOOKUP work across different sheets?
+
+	YES - simple sheet reference:
+
+text
+=VLOOKUP(A2, 'Price List'!A1:D100, 2, FALSE)
+=VLOOKUP(B1, Sheet2!A:C, 3, FALSE)
+
+Even different files:
+
+text
+=VLOOKUP(A1, IMPORTRANGE("sheet_url", "Data!A:D"), 3, FALSE)
+
+
+
+5. What happens when the search value doesn’t exist in the range?
+
+Returns #N/A error. Handle with IFERROR:
+
+✅ =IFERROR(VLOOKUP(A1, B1:D10, 2, FALSE), "Not Found")
+✅ =IFERROR(VLOOKUP(A1, B1:D10, 2, FALSE), 0)
+✅ =IF(ISNA(VLOOKUP(A1, B1:D10, 2, FALSE)), "Missing", VLOOKUP(A1, B1:D10, 2, FALSE))
+
+Common Error Causes:
+
+❌ Extra spaces: "Apple " vs "Apple"
+❌ Wrong data type: Text vs Number
+❌ Range doesn't include lookup column
+
+VLOOKUP = Spreadsheet superpower for matching data! 🔍✅

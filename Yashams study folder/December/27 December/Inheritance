@@ -1,0 +1,161 @@
+
+1. What is inheritance in Python?
+
+Inheritance creates a child class (subclass/derived) that automatically receives all attributes and methods from a parent class (superclass/base). Promotes DRY principle (Don't Repeat Yourself).​
+
+Syntax:
+
+python
+class Parent:                    # Base class
+    def speak(self):
+        return "Speaking"
+
+class Child(Parent):            # Child inherits everything
+    pass
+
+
+
+2. Explain single inheritance with example.
+
+One child → One parent relationship:
+
+python
+class Employee:                    # Parent
+    def __init__(self, name, id):
+        self.name = name
+        self.id = id
+    
+    def get_details(self):
+        return f"ID: {self.id}, Name: {self.name}"
+
+class Developer(Employee):         # Child inherits Employee
+    def __init__(self, name, id, language):
+        super().__init__(name, id)  # Call parent constructor
+        self.language = language
+    
+    def code(self):
+        return f"{self.name} codes in {self.language}"
+
+# Usage
+dev = Developer("Alice", 123, "Python")
+print(dev.get_details())  # Inherited: ID: 123, Name: Alice
+print(dev.code())         # Own method
+
+Result: Developer gets name, id, get_details() for free.
+
+
+
+3. What is multiple inheritance?
+
+One child → Multiple parents (Python specialty):
+
+python
+class Flyer:
+    def fly(self):
+        return "Flying high!"
+
+class Swimmer:
+    def swim(self):
+        return "Swimming fast!"
+
+class Duck(Flyer, Swimmer):    # Inherits BOTH
+    pass
+
+duck = Duck()
+print(duck.fly())     # Flying high!
+print(duck.swim())    # Swimming fast!
+
+Method Resolution Order (MRO): Duck → Flyer → Swimmer determines which parent method runs first.
+
+
+
+4. Difference between method overriding and method overloading.
+
+| Concept        | Overriding                         | Overloading                       |
+| -------------- | ---------------------------------- | --------------------------------- |
+| Definition     | Child redefines parent method      | Same method, different parameters |
+| Python Support | ✅ Native                           | ❌ Not supported (use *args)       |
+| Example        | Child.speak() hides Parent.speak() | calculate(a) + calculate(a,b)     |
+
+Overriding example:
+
+python
+class Animal:
+    def speak(self):
+        return "Generic sound"
+
+class Dog(Animal):
+    def speak(self):           # Overrides parent
+        return "Woof!"
+
+dog = Dog()
+print(dog.speak())         # Woof! (not Generic sound)
+
+Overloading workaround:
+
+python
+class Calculator:
+    def add(self, a, b=None, c=None):
+        if c: return a + b + c
+        if b: return a + b
+        return a
+
+
+
+5. Why do we use `super()`?
+
+super() calls parent methods without hardcoding class names:
+
+python
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+class Employee(Person):
+    def __init__(self, name, salary):
+        super().__init__(name)     # Clean parent call
+        self.salary = salary
+
+class Manager(Employee):
+    def __init__(self, name, salary, team_size):
+        super().__init__(name, salary)  # Calls Employee.__init__
+        self.team_size = team_size
+
+Benefits:
+
+✅ Works with multiple inheritance
+✅ No hardcoded class names
+✅ Maintainable (parent changes don't break child)
+
+
+Production HR Inheritance Hierarchy
+
+python
+class Employee:
+    def __init__(self, name, salary):
+        self.name = name
+        self.salary = salary
+    
+    def get_annual_ctc(self):
+        return self.salary * 12
+
+class Developer(Employee):
+    def __init__(self, name, salary, tech_stack):
+        super().__init__(name, salary)
+        self.tech_stack = tech_stack
+
+class Manager(Employee):
+    def __init__(self, name, salary, team_size):
+        super().__init__(name, salary)
+        self.team_size = team_size
+    
+    def get_team_ctc(self):
+        return self.salary * 12 * 1.2  # 20% bonus
+
+hr_system = [
+    Developer("Alice", 500000, "Python, Streamlit"),
+    Manager("Bob", 1200000, 15)
+]
+
+
+Inheritance = Code reuse multiplier. 70% less code for HR systems. 🔄✅

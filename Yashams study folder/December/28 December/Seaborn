@@ -1,0 +1,116 @@
+1. What is Seaborn used for?
+
+Seaborn simplifies statistical data visualization in Python with attractive defaults and high-level functions built on Matplotlib, making complex plots accessible with minimal code.
+1. Seaborn Purpose
+
+Seaborn creates statistical graphics like heatmaps, violin plots, and pair plots for data analysis. Perfect for exploring datasets quickly with publication-ready visuals.​
+
+Common uses:
+
+    Correlation heatmaps (multicollinearity detection)
+
+    Distribution plots (outliers + skewness)
+
+    Box plots (comparing groups)
+
+    Regression plots (trends + confidence intervals)
+
+
+
+2. Why is Seaborn preferred over Matplotlib?
+
+| Aspect             | Matplotlib            | Seaborn                               |
+| ------------------ | --------------------- | ------------------------------------- |
+| Code length        | 20+ lines for boxplot | 1 line: sns.boxplot()                 |
+| Default style      | Basic, manual styling | Beautiful themes out-of-box           |
+| Statistical plots  | Manual calculations   | Built-in (violin, swarm) newhorizons​ |
+| Pandas integration | Manual data prep      | Direct df.plot()                      |
+
+
+Example comparison:
+
+python
+# Matplotlib (verbose)
+plt.boxplot(df['salary'])
+plt.title("Salary Distribution")
+
+# Seaborn (1 line)
+sns.boxplot(y=df['salary'])
+
+
+
+3. Which plot is best to find outliers?
+
+Box plots reveal outliers automatically (1.5 × IQR rule):
+
+text
+Median: Middle line
+Box: 25th-75th percentile (middle 50%)
+Whiskers: 1.5×IQR range
+Dots: Outliers (CEOs, interns)
+
+HR Salary example:
+
+Box plot shows:
+• Typical range: ₹5-12L
+• Outliers: 2 CEOs (₹45L), 3 interns (₹2L)
+
+python
+sns.boxplot(y=df['salary'])
+# Instantly reveals salary anomalies
+
+
+
+4. Can Seaborn work with CSV files?
+
+Direct pandas → Seaborn pipeline (production-ready):
+
+python
+import seaborn as sns
+import pandas as pd
+
+df = pd.read_csv('hr_data.csv')
+sns.boxplot(data=df, x='department', y='salary')  # 2 lines total
+
+Streamlit HR Dashboard:
+
+python
+df = pd.read_csv('employees.csv')
+sns.boxplot(data=df, x='department', y='salary')
+st.pyplot(plt.gcf())  # Perfect EDA
+
+
+
+5. Why do we use Matplotlib for pie charts?
+
+Matplotlib handles pie charts better (Seaborn doesn't support them):
+
+python
+# Matplotlib pie (works perfectly)
+dept_counts = df['department'].value_counts()
+plt.pie(dept_counts.values, labels=dept_counts.index, autopct='%1.1f%%')
+
+Seaborn limitation: Focuses on statistical/relational plots, not proportions.
+Production HR Analytics Pipeline
+
+python
+# 1. Load + EDA
+df = pd.read_csv('employees.csv')
+sns.pairplot(df[['salary', 'experience', 'age']])  # Correlations
+
+# 2. Outlier detection  
+sns.boxplot(data=df, x='department', y='salary')  # CEO outliers
+
+# 3. Department distribution
+dept_counts = df['department'].value_counts()
+plt.pie(dept_counts.values, labels=dept_counts.index)
+
+Final-year project deliverable:
+
+Seaborn: 5 EDA plots (box, violin, heatmap)
+Matplotlib: Pie charts + custom styling
+Power BI: Executive dashboards
+
+Seaborn = EDA superpower. 80% faster insights, 10x better visuals. 📊✨
+
+

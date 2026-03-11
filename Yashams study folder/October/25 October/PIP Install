@@ -1,0 +1,102 @@
+ 
+
+ 1. What is pip and why do we use it in Python?
+	pip (recursive acronym: "pip installs packages") is Python's standard package manager—a command-line tool for installing, upgrading, uninstalling, and managing third-party Python libraries/packages from PyPI (Python Package Index) and other repositories. Python 3.4+ includes it by default.​
+
+
+
+Used for: Installing numpy, pandas, requests, flask, mysql-connector-python etc.—anything beyond Python's standard library.
+
+
+ 2. How can you install and uninstall a Python package using pip?
+
+1) Install package
+
+pip install package_name
+
+pip install requests==2.28.1      # Specific version
+
+pip install "package>=1.0"        # Version range
+
+2) Uninstall 
+
+pip uninstall package_name
+
+pip uninstall requests numpy       # Multiple
+
+3) List installed
+
+pip list
+
+pip freeze > requirements.txt     # Export dependencies
+
+
+ 3. What is the difference between pip install and pip install --upgrade?
+
+
+| Command                   | Action                                       |
+
+| ------------------------- | -------------------------------------------- |
+
+| pip install pkg           | Installs if missing, skips if exists         |
+
+| pip install --upgrade pkg | Always upgrades to latest compatible version |
+
+
+pip install requests           # Installs 2.28.1 (if missing)
+
+pip install --upgrade requests # Upgrades to 2.31.0 (latest)
+
+
+ 4. How can you check if a package is already installed?
+
+1) List all packages
+
+pip list
+
+pip list | grep requests
+
+2) Check specific package details
+
+pip show requests
+
+pip show flask
+
+3) Search available packages
+
+pip search pandas     # (Deprecated, use PyPI website)
+
+Programmatically:
+
+python
+
+import pkg_resources
+
+pkg_resources.get_distribution("requests").version
+
+
+ 5. Why is pip important for Python developers?
+
+1.    Dependency Management: Automatically resolves/installs required libraries
+   
+2.    Environment Replication: pip install -r requirements.txt recreates exact project setup
+   
+3.    Version Control: Pin versions (requests==2.28.1) for stability
+   
+4.    Global Access: 400,000+ packages on PyPI—NumPy, Django, TensorFlow
+   
+5.    Virtual Environments: pip + venv isolates projects cleanly
+   
+6.     Production Deployment: Docker/Dockerfile uses pip for reproducible builds
+
+Real workflow
+
+python -m venv myproject
+
+source myproject/bin/activate    # Linux/Mac
+
+pip install -r requirements.txt
+
+
+Without pip: Manual downloads, version hell, dependency conflicts. With pip: Professional, reproducible Python development.​
+

@@ -1,0 +1,19 @@
+ 1. What is the main difference between 2NF and 3NF?
+ 2NF eliminates partial dependencies where non-key attributes depend on only part of a composite primary key, requiring full key dependency—applies only to tables with multi-column keys. 3NF builds on 2NF by removing transitive dependencies where non-key attributes depend on other non-key attributes (not directly on the key), ensuring all non-keys depend solely on the primary key for complete independence.
+
+ 
+ 2. What is a transitive dependency? Give an example.
+ A transitive dependency occurs when a non-key attribute indirectly depends on the primary key through another non-key: Key → NonKey1 → NonKey2. Example: Employees table (PK: EmpID): EmpID → Department → DeptLocation. DeptLocation depends on Department (not directly EmpID), repeating "HQ" for all HQ employees. Violates 3NF—split into Employees (EmpID→Department) and Departments (DeptID→Location).
+
+ 
+3. Why do we split data into multiple tables in 3NF?
+Splitting eliminates redundancy and anomalies: insert (add department without employees), update (change location once, not per employee), delete (remove employee without losing department info). Results in smaller, focused tables joined efficiently—e.g., query employee locations via Employees JOIN Departments. Reduces storage, boosts integrity, simplifies maintenance.​
+
+ 
+4. Can a table be in 3NF but not in BCNF? Explain.
+Yes—BCNF is stricter: every determinant must be a candidate key. Example: Teaching table {Course, Instructor, Student} where FDs: Course → Instructor (one teacher per course), {Student, Course} → Instructor. Candidate key: {Student, Course}. It's 3NF (no transitive FDs), but Course → Instructor violates BCNF since Course isn't a superkey. Fix: split into CourseInstructor + StudentCourse.	
+
+ 
+5. How does 3NF improve data consistency?
+3NF ensures updates propagate once (no transitive chains), preventing inconsistencies like mismatched department locations across employees. Normalized structure enforces single truth sources via keys, reduces anomalies during concurrent transactions, and supports ACID properties—critical for financial systems where one bad update could cascade errors.​
+

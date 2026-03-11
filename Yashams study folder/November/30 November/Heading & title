@@ -1,0 +1,92 @@
+
+1. What is the difference between st.title() and st.header()?
+
+st.title() creates largest, boldest heading (app main title). st.header() is slightly smaller for section titles.
+
+| Function                | Size         | Use Case      |
+| ----------------------- | ------------ | ------------- |
+| st.title("Dashboard")   | Largest      | App name      |
+| st.header("Sales Data") | Medium-large | Page sections |
+
+st.title("🚀 Sales Dashboard")    # Top of app
+st.header("📊 Monthly Report")     # Section header
+
+
+
+2. How can you create custom-size headings using Markdown?
+
+Use # symbols in st.markdown():
+
+python
+st.markdown("# H1 - Largest")      # Title size
+st.markdown("## H2 - Header size") 
+st.markdown("### H3 - Subheader")
+st.markdown("#### H4 - Smaller")
+
+Full control:
+
+python
+st.markdown("""
+# 🎯 Main Title
+## 📈 Section 1
+### 📋 Sub-section
+""")
+
+
+
+3. Why are headings important in a Streamlit app?
+
+Structure + Navigation for users:
+
+    Visual hierarchy (scan page quickly)
+
+    Section separation (data vs charts vs controls)
+
+    Professional look (not wall of text)
+
+    Mobile friendly (clear sections)
+
+text
+No headings = 📄 Wall of text
+With headings = 📋 Organized dashboard
+
+
+
+4. How does st.subheader() help in structuring an app?
+
+subheader() creates third-level headings for sub-sections within headers:
+
+python
+st.title("Sales Dashboard")
+st.header("2026 Data")
+st.subheader("Q1 Results")    # Under 2026 Data
+st.line_chart(q1_data)
+
+st.subheader("Q2 Results")    # Same level
+st.line_chart(q2_data)
+
+Perfect for: Grouping related charts/controls.
+
+
+
+5. Can we mix Markdown and Streamlit functions for headings? Explain.
+
+YES - combine freely for perfect control:
+
+python
+# Streamlit functions
+st.title("🏢 Company Dashboard")
+st.header("📈 Revenue")
+st.subheader("Monthly Breakdown")
+
+# Markdown for custom
+st.markdown("### 💰 Profit Margin")
+st.markdown("#### 📊 By Product")
+
+# Mix in same section
+st.header("Charts")
+st.markdown("## **Interactive Widgets**")
+
+Pro tip: Use st.title() once at top, then mix st.header() + markdown for sections.
+
+Headings = Professional dashboard structure! 🎯📋

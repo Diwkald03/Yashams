@@ -1,0 +1,40 @@
+ 
+
+ 1 What is the eval function used for?
+
+ Python's eval() function dynamically evaluates and executes a string as valid Python code, parsing the expression and returning its result—such as converting '2 + 3*4' into the computed value 14 It operates within the current global and local namespaces, allowing flexible code generation from strings, like user-input formulas in calculators or dynamic configuration parsing Unlike exec(), which handles statements and loops, eval() focuses solely on expressions, making it suitable for safe mathematical computations when inputs are controlled
+
+
+
+
+
+ 2 Why should you be careful when using eval?
+
+  Be extremely careful with eval() because it executes arbitrary code from strings, exposing programs to severe security risks like code injection if untrusted inputs (eg, user data) are passed—attackers could run del sysmodules or __import__('os')system('rm -rf /') to delete files or crash systems It also hinders performance since parsing strings repeatedly is slower than direct code, and debugging becomes nightmare-ish with opaque dynamic errors; always validate/sanitize inputs or use astliteral_eval() for safer literal parsing instead
+
+
+
+
+
+ 3 Give one example where eval is helpful
+
+  Eval shines in interactive tools like a simple calculator app where users input expressions dynamically: result = eval(input("Enter math expression: ")) lets someone type sin(30) + 5**2 (after importing math), instantly computing without predefined buttons, streamlining prototyping or educational demos This avoids hardcoding every operation, enabling rapid formula testing in scripts or Jupyter notebooks
+
+  
+
+
+
+    4 Can eval use variables you already defined?
+
+    Yes, eval() seamlessly uses variables from the current scope by default, pulling from local and global namespaces— for example, with x = 10, eval('x * 2 + y') works if y exists too, returning 25 if y=5 You can customize via optional globals and locals dicts like eval(expr, {"x": 10}, {"y": 5}) for restricted environments, preventing access to sensitive globals while enabling modular expression evaluation
+
+
+
+
+
+ 5 What happens if you give eval a string that is not Python code?
+
+ If the string isn't valid Python syntax or code—like 'abc * def' without defined abc/def, or malformed '2 + +3'—eval() raises a SyntaxError for parsing issues or NameError for undefined names, halting execution without partial results Malicious or broken inputs trigger these exceptions immediately, underscoring why input validation (eg, regex for math-only) is essential before calling it, as it never "forgives" invalid code
+
+ 
+

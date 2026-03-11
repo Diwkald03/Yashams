@@ -1,0 +1,115 @@
+
+1. What is Power BI and why is it used?
+
+Power BI enables non-technical users to create professional dashboards from diverse data sources (Excel, SQL, APIs). Used by 85% of Fortune 500 companies for KPI tracking, sales analysis, and executive reporting.​
+
+Primary Use Cases:
+
+    Sales performance dashboards
+
+    HR attrition analysis
+
+    Financial forecasting
+
+    Supply chain monitoring
+
+
+
+2. Explain the Power BI workflow.
+
+
+1. Connect → Excel, SQL, APIs, web
+2. Transform → Power Query (cleaning)
+3. Model → Relationships + DAX measures  
+4. Visualize → Reports (multi-page)
+5. Pin → Dashboard (single page overview)
+6. Share → Power BI Service + Apps
+
+Production Pipeline:
+
+
+graph LR
+    A[Raw Data] --> B[Power Query ETL]
+    B --> C[Data Model DAX]
+    C --> D[Reports Multi-page]
+    D --> E[Dashboards Single-page]
+    E --> F[Power BI Service]
+    F --> G[Teams/Slack/Email]
+
+
+
+3. What is Power Query used for?
+
+Power Query handles ETL (Extract, Transform, Load) with no-code interface:
+
+| Function  | Example                   |
+| --------- | ------------------------- |
+| Clean     | Remove duplicates, nulls  |
+| Transform | Split columns, pivot data |
+| Merge     | Join Excel + SQL tables   |
+| Schedule  | Daily refresh automation  |
+
+M Code Example:
+
+
+// Remove null salaries + promote headers
+Table.SelectRows(Source, each [Salary] <> null)
+Table.PromoteHeaders(_, [PromotedHeaders=true])
+
+
+
+4. Difference between report and dashboard in Power BI.
+
+| Feature       | Report                     | Dashboard                         |
+| ------------- | -------------------------- | --------------------------------- |
+| Pages         | Multi-page analysis        | Single page overview newhorizons​ |
+| Edit          | Power BI Desktop           | Power BI Service (pin only)       |
+| Interactivity | Full (drill-down, slicers) | Limited (tiles only)              |
+| Data Source   | Single dataset             | Multiple reports                  |
+| Audience      | Analysts (deep dive)       | Executives (KPI glance)           |
+
+Production Strategy: Reports → Detailed analysis | Dashboards → Executive summary.
+
+
+
+5. How does data modeling help in Power BI?
+
+Data modeling creates semantic layer with relationships + DAX measures:
+
+
+Raw Tables → Star Schema → Fast queries + Reusable metrics
+
+Key Benefits:
+
+
+✅ Single source of truth (no Excel chaos)
+✅ Reusable measures (Sales YOY, Attrition Rate)
+✅ Fast performance (1M+ rows)
+✅ Role-based security (Finance sees revenue only)
+
+DAX Example:
+
+
+// Reusable measure across all visuals
+Total Salary = SUM(Employees[Salary])
+YOY Growth = 
+DIVIDE(
+    [Total Salary] - CALCULATE([Total Salary], SAMEPERIODLASTYEAR('Date'[Date])),
+    CALCULATE([Total Salary], SAMEPERIODLASTYEAR('Date'[Date]))
+)
+
+Production Power BI Implementation
+
+Week 1: Connect 5 data sources + Power Query ETL
+Week 2: Star schema + 10 DAX measures
+Week 3: 5-page report + Executive dashboard
+Week 4: Power BI Service + App workspace + Mobile layout
+
+Final Deliverable Structure:
+
+├── HR_Dashboard.pbix          # Source file
+├── Power BI Service URL      # Live dashboard
+├── Mobile layout             # Executive phones
+└── PDF Export                # Stakeholder review
+
+Power BI = Excel on steroids. Turns raw HR data → Executive insights in 4 weeks. 📊🚀

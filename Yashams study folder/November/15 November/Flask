@@ -1,0 +1,85 @@
+
+1. What is Flask and why is it called a lightweight framework?
+
+Flask is a minimalist Python web framework for building web apps and APIs. Called lightweight because it provides only core essentials (routing, templates) without built-in database, admin panel, or ORM - you add only what you need.​
+
+Lightweight = Freedom:
+
+✅ No forced structure
+✅ Tiny core (few KB)
+✅ Pick your database/tools
+❌ No bloat like Django
+
+
+
+2. What is the purpose of `app.route()` in Flask?
+
+Maps URLs to Python functions. Decorator tells Flask: "When user visits this URL, run this code".
+
+python
+@app.route('/')           # http://localhost/
+def home():
+    return 'Welcome!'
+
+@app.route('/user/<id>')  # http://localhost/user/123
+def user(id):
+    return f'User {id}'
+
+
+
+3. What is the difference between Flask and Django?
+
+| Aspect    | Flask               | Django                          |
+| --------- | ------------------- | ------------------------------- |
+| Size      | Micro (lightweight) | Full-stack (batteries included) |
+| Learning  | Easy (1 file apps)  | Steeper (many concepts)         |
+| Structure | Flexible            | Rigid (MVC enforced)            |
+| Speed     | Faster prototyping  | Enterprise-ready                |
+| Use Case  | APIs, small apps    | Large complex sites             |
+
+Flask: Quick blog API = 1 hour
+Django: Full e-commerce = 1 month
+
+
+
+4. How do you run a Flask app from the terminal?
+
+Terminal commands:
+
+bash
+# Method 1 (Simple)
+python app.py
+
+# Method 2 (Flask CLI)
+export FLASK_APP=app.py
+flask run
+
+# With debug mode
+flask run --debug
+
+Success output:
+
+* Running on http://127.0.0.1:5000
+* Debug mode: on
+
+
+
+5. What type of applications can be built using Flask?
+
+| Type          | Examples                   |
+| ------------- | -------------------------- |
+| REST APIs     | Netflix, Lyft APIs         |
+| Dashboards    | Internal tools             |
+| Microservices | Small focused services     |
+| Prototypes    | Quick MVPs                 |
+| ML APIs       | Model serving (TensorFlow) |
+| Static sites  | Simple blogs               |
+
+Real Companies:
+
+✅ Netflix (recommendations)
+✅ Airbnb (internal tools) 
+✅ Pinterest (parts)
+✅ LinkedIn (services)
+
+Flask = Perfect for APIs + rapid development! 🚀🐍

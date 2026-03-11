@@ -1,0 +1,89 @@
+
+1. What is data cleaning and why is it important in Streamlit apps?
+
+Data cleaning fixes messy data (missing values, duplicates, wrong formats) before analysis/visualization. Critical for Streamlit because dirty data = broken charts + wrong insights in interactive apps.
+
+Real Impact:
+
+Raw data → 30% missing → Charts fail ❌
+Clean data → 100% complete → Perfect dashboard ✅
+
+
+
+2. How do you handle missing values while cleaning data?
+
+Pandas methods in Streamlit:
+
+python
+# Check missing
+st.write(df.isnull().sum())
+
+# Drop rows with missing
+df_clean = df.dropna()
+
+# Fill with average
+df['age'].fillna(df['age'].mean(), inplace=True)
+
+# Forward fill
+df.fillna(method='ffill', inplace=True)
+
+
+
+3. What is the difference between dropna() and fillna()?
+
+| Method   | Action                       | When to Use                      |
+| -------- | ---------------------------- | -------------------------------- |
+| dropna() | Delete rows/columns with NaN | Few missing values (<5%)         |
+| fillna() | Replace NaN with value       | Most data is good, preserve rows |
+
+python
+# Drop all rows with ANY missing
+df.dropna(inplace=True)
+
+# Fill only specific column
+df['salary'].fillna(50000, inplace=True)
+
+
+
+4. How do you remove duplicate rows in a dataset?
+
+python
+# Remove exact duplicates
+df.drop_duplicates(inplace=True)
+
+# Remove duplicates based on specific columns
+df.drop_duplicates(subset=['email'], inplace=True)
+
+# Streamlit example
+if st.button("Remove Duplicates"):
+    df = df.drop_duplicates()
+    st.success(f"Removed {len(df_original) - len(df)} duplicates")
+
+Check first:
+
+python
+st.write(f"Duplicates found: {df.duplicated().sum()}")
+
+
+
+5. Why is clean data important for dashboards and machine learning?
+
+Dashboards:
+
+Dirty data → Charts show NaN → Users confused ❌
+Clean data → Smooth visuals → Professional app ✅
+
+Machine Learning:
+
+Missing values → Model crashes
+Duplicates → Biased predictions  
+Wrong types → Training fails
+
+Streamlit Reality:
+
+Users upload ANY CSV → Your app must handle mess → Clean first!
+
+Golden Rule: Clean → Analyze → Visualize (always this order!)
+
+Clean data = Trustworthy dashboard + happy users! ✨📊
+

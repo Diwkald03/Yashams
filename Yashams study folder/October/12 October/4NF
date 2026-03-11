@@ -1,0 +1,51 @@
+ 
+
+ 1. What is a multi-valued dependency? Give an example.
+
+ A multi-valued dependency occurs when one attribute determines multiple independent values of another attribute, independent of other attributes in the relation—denoted as X↠YX↠Y, meaning for each X value, a fixed set of Y values exists regardless of Z values. Unlike functional dependencies (one-to-one), MVDs handle one-to-many scenarios where facts are unrelated; it requires at least three attributes and implies certain tuples must exist to avoid anomalies. This constraint addresses redundancy in tables with multiple multi-valued facts tied to a single determinant.
+
+ 
+
+ Example: Consider an Employee table with columns: Emp_ID, Project, Skill. For Emp_ID=101:
+
+ 
+
+    Projects: {P1, P2}, Skills: {SQL, Python}.
+
+ 
+
+    MVD: Emp_ID ↠↠ Project and Emp_ID ↠↠ Skill (skills independent of projects).
+
+    Unnormalized: Row repeats combinations (101, P1, SQL), (101, P1, Python), (101, P2, SQL), etc., causing redundancy. Normalize by splitting into Employee-Projects and Employee-Skills tables.
+
+ 
+2. How does 4NF differ from 3NF?
+
+ Third Normal Form (3NF) eliminates transitive functional dependencies (non-key attributes depending only on other non-keys), assuming single multi-valued attributes per determinant. Fourth Normal Form (4NF) builds on 3NF by removing non-trivial multi-valued dependencies, ensuring no table has two or more independent multi-valued facts on the same key—requiring decomposition into separate relations if MVDs exist. 3NF allows MVDs (e.g., one table for employee-projects-skills); 4NF forbids them to prevent combinatorial redundancy.
+
+ 
+3. Why do we split tables in 4NF?
+ Splitting decomposes tables with MVDs into smaller, independent relations to eliminate redundancy and anomalies: insert (add project without skill), update (change skill affects unrelated projects), delete (lose project info when removing skill). For the employee example, split into:
+
+ 
+    EmpProjects(Emp_ID, Project)
+
+ 
+
+    EmpSkills(Emp_ID, Skill)
+
+    This avoids explosion (2 projects × 2 skills = 4 rows → 2+2 rows), preserves independence, improves query efficiency via joins, and scales better for real data like student-course-hobby scenarios.
+
+ 
+ 4. Can a table be in 3NF but not in 4NF?
+ Yes, absolutely—a table in 3NF can violate 4NF if it has multi-valued dependencies. Example: The Emp_ID-Project-Skill table above is in 3NF (no transitive FDs; key is Emp_ID assuming composites handled), but not 4NF due to MVDs causing redundancy. 3NF ignores MVDs, focusing only on FDs; 4NF detects and resolves them, making it stricter for complex multi-valued data.
+
+
+ 5. Is 4NF always necessary in real-world databases? Why or why not?
+
+ No, 4NF is rarely necessary in most real-world databases because MVDs are uncommon outside academic examples, and denormalization often prioritizes query performance over perfect normalization—e.g., reporting tables keep combined data for fast reads. It's useful in specialized cases like product-attribute catalogs or metadata systems with independent multi-values, but higher costs (more joins, complexity) outweigh benefits in OLTP/OLAP where 3NF suffices. Apply selectively when redundancy truly impacts storage/maintenance.
+
+
+
+
+

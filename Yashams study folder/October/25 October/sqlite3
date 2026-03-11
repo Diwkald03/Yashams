@@ -1,0 +1,190 @@
+ 
+
+ 1. What is sqlite3 and why is it used in Python?
+
+
+
+	sqlite3 is Python's built-in module providing a lightweight, serverless, file-based relational database engine. It stores entire database as a single .db file—no separate server setup required.
+
+
+
+Used for: Prototyping, desktop/mobile apps, testing, small web apps, embedded systems where simplicity trumps scalability (under 1GB data).
+
+
+
+
+
+ 2. How do you create and connect to a SQLite database?
+
+
+
+python
+
+import sqlite3
+
+
+
+ Creates 'mydb.db' if doesn't exist, connects if exists
+
+conn = sqlite3.connect('mydb.db')
+
+
+
+ In-memory database (temporary, :memory: keyword)
+
+temp_conn = sqlite3.connect(':memory:')
+
+
+
+ Context manager (auto-closes)
+
+with sqlite3.connect('mydb.db') as conn:
+
+    work here
+
+   pass   Connection auto-closes
+
+
+
+
+
+ 3. What is the role of a cursor in sqlite3?
+
+
+
+	Cursor = your database pointer/handle for executing SQL:
+
+
+
+python
+
+cursor = conn.cursor()
+
+cursor.execute("CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT)")
+
+
+
+Cursor methods:
+
+
+
+    execute(sql) - Run SQL
+
+
+
+    fetchall() - Get all results
+
+
+
+    fetchone() - Get 1 row
+
+
+
+    executemany() - Bulk operations
+
+
+
+
+
+ 4. How can you insert and fetch data from a table using sqlite3?
+
+
+
+python
+
+import sqlite3
+
+
+
+with sqlite3.connect('users.db') as conn:
+
+   cursor = conn.cursor()
+
+   
+
+    Create table
+
+   cursor.execute('''
+
+       CREATE TABLE IF NOT EXISTS users (
+
+           id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+           name TEXT NOT NULL,
+
+           age INTEGER
+
+       )
+
+   ''')
+
+   
+
+    Insert data
+
+   cursor.execute("INSERT INTO users (name, age) VALUES (?, ?)", ("Alice", 30))
+
+   cursor.execute("INSERT INTO users VALUES (NULL, 'Bob', 25)")
+
+   conn.commit()   Save changes
+
+   
+
+    Fetch data
+
+   cursor.execute("SELECT * FROM users")
+
+   print(cursor.fetchall())   [(1, 'Alice', 30), (2, 'Bob', 25)]
+
+   
+
+    Filtered fetch
+
+   cursor.execute("SELECT name FROM users WHERE age > ?", (20,))
+
+   print(cursor.fetchall())   [('Alice',), ('Bob',)]
+
+
+
+
+
+
+
+ 5. What is the difference between commit() and close() in sqlite3?
+
+
+
+| Method   | Purpose                            | Effect                                          |
+
+| -------- | ---------------------------------- | ----------------------------------------------- |
+
+| commit() | Saves INSERT/UPDATE/DELETE to disk | Makes changes permanent                         |
+
+| close()  | Closes connection                  | Rolls back uncommitted changes, frees resources |
+
+
+
+
+
+ Wrong - data lost!
+
+cursor.execute("INSERT...")
+
+conn.close()   Auto-rollback!
+
+
+
+ Correct
+
+cursor.execute("INSERT...")
+
+conn.commit()   Saved!
+
+conn.close()
+
+
+
+Best practice: Use with sqlite3.connect(): - auto-commits and closes safely.
+
+
+

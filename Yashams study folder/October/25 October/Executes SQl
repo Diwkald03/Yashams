@@ -1,0 +1,44 @@
+ 
+
+ 1. What is the role of the execute() function in sqlite3?
+	The execute() method on a cursor object runs a single SQL statement against the database—whether DDL (CREATE TABLE), DML (INSERT/UPDATE/DELETE), or DQL (SELECT). It takes an SQL string as the first parameter and optional parameterized values (tuple/list) as the second to prevent SQL injection: cursor.execute("INSERT INTO users (name) VALUES (?)", ("Alice",)). Returns the cursor itself for chaining; for SELECT, use fetch methods afterward.
+
+
+ 2. Why do we need to commit() after inserting data?
+	SQLite uses implicit transactions—INSERT/UPDATE/DELETE execute successfully but remain in memory buffer until conn.commit() flushes to disk permanently. Without commit, changes are lost on close() or crash (auto-rollback). SELECT queries don't need commit (read-only). Always conn.commit() after modifications or use context managers (with conn: auto-commits).
+
+
+ 3. What is the purpose of using cursor in sqlite3?
+	A cursor is your "database pointer"—created via cursor = conn.cursor(), it serves as the interface for executing SQL, holding query results, and iterating rows. Think of it as a highlighter/pen navigating table contents: manages statement execution, parameter binding, result sets, and state between calls. Multiple cursors per connection allow parallel operations without interference.
+
+
+ 4. How can we fetch all rows from a table in Python?
+	Use cursor.fetchall() after execute("SELECT * FROM table") to retrieve all remaining rows as a list of tuples:
+
+
+ python
+
+ cursor.execute("SELECT name, age FROM users")
+
+ rows = cursor.fetchall()  # [(name1, age1), (name2, age2), ...]
+
+
+ Alternatives: fetchone() (next row), fetchmany(size) (batched). Always after SELECT; errors on non-queries.
+
+
+ 5. What is the difference between execute() and executemany()?
+
+ | Method        | Purpose                                         | Parameters                                 | Use Case                                                                         |
+
+ | ------------- | ----------------------------------------------- | ------------------------------------------ | -------------------------------------------------------------------------------- |
+
+ | execute()     | Runs 1 SQL statement once                       | Single tuple: ("Alice", 30)                | Individual inserts, single queries                                               |
+
+ | executemany() | Runs 1 SQL template against many parameter sets | List of tuples: [("Alice",30), ("Bob",25)] | Bulk operations: cursor.executemany("INSERT INTO users VALUES (?,?)", data_list) |
+
+
+
+
+
+ Performance: executemany() 10-100x faster for bulk inserts vs looped execute(); same SQL parsed once. Both need commit() after.
+

@@ -1,0 +1,21 @@
+ 
+
+ 1. What is Normalization and why is it important?
+	Database normalization structures data into related tables following normal forms (1NF-5NF) to minimize duplication, ensure integrity, and avoid anomalies—such as updating one customer's phone across multiple rows or losing order data when deleting a product. By Edgar Fodd's design rules, it enables efficient querying, scalable storage, and reliable transactions in relational systems like banking or e-commerce, where consistency trumps performance trade-offs.
+
+
+ 2. What is the difference between 1NF, 2NF, and 3NF?
+	1NF requires atomic values (no lists/arrays in cells), unique rows, and no repeating groups—e.g., split "skills: SQL,Python" into separate rows or tables. 2NF (builds on 1NF) eliminates partial dependencies where non-key attributes depend on part of a composite primary key. 3NF removes transitive dependencies (non-keys depending on other non-keys, not the full key). Progression: 1NF fixes structure → 2NF handles composite keys → 3NF ensures full key dependency.
+
+
+ 3. What are partial and transitive dependencies?
+	Partial dependency: Non-prime attribute relies on part of a composite primary key—e.g., key (OrderID, ProductID), but ProductName depends only on ProductID. Violates 2NF. Transitive dependency: Non-prime attribute depends on another non-prime via the key—e.g., key=StudentID, but Address → City → ZipCode (City depends on Address, not directly StudentID). Violates 3NF. Both cause redundancy/anomalies; normalize by splitting tables.​
+
+
+ 4. What is denormalization and when is it used?
+	Denormalization intentionally reintroduces redundancy by combining tables or adding derived columns to boost read performance in analytics/reporting systems—e.g., storing customer name in Orders table instead of joining Customers. Use in data warehouses (OLAP), high-read APIs, or when join overhead exceeds storage costs; common in NoSQL or dimensional modeling (star schemas). Trade integrity for speed, refreshing denorm data via ETL.
+
+ 
+ 5. Can a table be in 3NF but not in BCNF? Explain.
+	Yes—a table in 3NF can fail Boyce-Codd Normal Form (BCNF) when a non-prime attribute functionally determines another non-prime, but no single candidate key determines everything. Example: Table Schedule: {Student, Course, Instructor} with FDs: Course→Instructor (each course has one teacher), Student+Course→Instructor. Candidate keys: {Student,Course}. It's 3NF (no transitive deps), but Course→Instructor violates BCNF since Course isn't a superkey. Fix: split into Course-Instructor + Schedule tables.​
+

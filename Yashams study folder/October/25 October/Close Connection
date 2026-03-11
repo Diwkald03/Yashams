@@ -1,0 +1,37 @@
+ 
+
+ 1. What is the purpose of using close() in sqlite3?
+	The close() method on a sqlite3 Connection object explicitly terminates the database connection, releasing file handles, memory, and locks associated with it. It rolls back any uncommitted changes and frees resources, preventing the database file from remaining locked which blocks other processes or concurrent access.
+
+
+
+
+
+ 2. What happens if we don’t close a database connection in Python?
+	Not calling close() leads to resource leaks: database files stay locked (preventing writes/deletes), memory isn't freed, and zombie connections accumulate in long-running apps. In single scripts it might not crash immediately, but causes "database is locked" errors in multi-threaded/multi-process scenarios or when files get corrupted from unclean shutdowns.
+
+ 
+
+ 3. Is it necessary to close the connection if the program ends automatically?
+	Not always reliable—Python's garbage collector may close connections via finalizers, but timing is unpredictable (especially multi-threaded), pending transactions might rollback unexpectedly, and OS cleanup varies. Always explicitly close for production code; relying on program exit risks data loss on crashes or server restarts.	
+
+ 
+
+ 4. Can we perform SQL commands after closing the connection?
+    No—attempting cursor.execute() or queries after conn.close() raises sqlite3.ProgrammingError: Cannot operate on a closed database. The connection and all cursors become unusable. Reconnect with sqlite3.connect() for further operations.	
+
+ 
+
+ 5. What is the difference between commit() and close()?
+    commit(): Saves all pending transactions (INSERT/UPDATE/DELETE) to disk permanently; doesn't close connection—subsequent operations continue normally.
+
+ 
+
+    close(): Closes connection entirely (rolls back uncommitted changes), releases resources; irreversible until reconnect.
+
+ 
+
+ Best practice: conn.commit(); conn.close() or use with sqlite3.connect('file.db') as conn: for auto-handling both.​
+
+ 
+

@@ -1,0 +1,170 @@
+ 
+
+ 1. What is the syntax of the IF function?
+
+	Syntax: =IF(logical_expression, value_if_true, value_if_false)
+
+Parameter	Description	Example
+
+logical_expression	Condition to test	A1>50, B2="Pass"
+
+value_if_true	Result if TRUE	"Pass", A1*0.9
+
+value_if_false	Result if FALSE (optional)	"Fail", 0, ""
+
+
+Examples:
+
+
+text
+
+=IF(A1>50, "Pass", "Fail")
+
+=IF(B2="", "Empty", "Filled") 
+
+=IF(C1>=75, "A", "B")
+
+
+ 2. How do you keep a cell blank when a condition is not true?
+
+	Use empty string "" as value_if_false:
+
+
+text
+
+=IF(A1>=50, "Pass", "")  ← Shows NOTHING when false
+
+=IF(B2>100, B2*0.1, "")  ← Blank instead of 0
+
+=IF(C1="Done", "Complete", "")  ← Clean report
+
+
+Visual Result:
+
+text
+
+Marks | Result
+
+75   | Pass     ✅
+
+45   | (blank)  ✅ No "Fail" text
+
+92   | Pass     ✅
+
+Pro Tip: "" > 0 > "No" for cleaner spreadsheets!
+
+
+ 3. Can IF function be used inside Conditional Formatting?
+	NO - Conditional Formatting has built-in dropdowns, not custom formulas like IF.
+
+
+✅ DO THIS instead:
+
+Goal	Conditional Formatting Rule
+
+Pass/Fail	Text contains → Pass
+
+Marks >50	Greater than → 50
+
+Top 10%	Top → 10%
+
+
+For Complex Logic → Custom Formula:
+
+text
+
+Format → Conditional formatting → Custom formula
+
+=AND(A1>=50, A1<75)  ← Green for 50-74 range
+
+
+IF Alternative: Use IFS() in cell formulas, not formatting rules.
+
+
+ 4. What is a nested IF statement?
+
+	Multiple IFs inside each other - checks conditions sequentially:
+
+text
+
+=IF(A1>=90, "A+",
+
+  IF(A1>=80, "A",
+
+     IF(A1>=70, "B",
+
+        IF(A1>=60, "C", "F"))))
+
+
+Flow:
+
+text
+
+A1=85 → 85>=90? No → 85>=80? YES → "A"
+
+A1=45 → All conditions fail → "F"
+
+
+Better Alternative → IFS():
+
+text
+
+=IFS(A1>=90,"A+", A1>=80,"A", A1>=70,"B", A1>=60,"C", TRUE,"F")
+
+
+Nested IF Limit: 64 levels max (avoid deep nesting!)
+
+
+ 5. Write a formula that shows “Pass” if marks ≥50, else blank.
+
+	Answer: =IF(A1>=50, "Pass", "")
+
+Complete Example:
+
+text
+
+  A     B
+
+1  75   =IF(A1>=50,"Pass","")
+
+2  45   =IF(A2>=50,"Pass","") 
+
+3  62   =IF(A3>=50,"Pass","")
+
+
+Result:
+
+
+text
+
+Marks | Result
+
+75   | Pass
+
+45   | (blank)
+
+62   | Pass
+
+
+Copy Down: Drag B1 → Auto-adjusts to A2>=50, A3>=50 etc.
+
+
+Advanced Version:
+
+
+text
+
+=IF(A1>=50, "Pass", IF(A1=0, "", "Fail"))
+
+
+text
+
+75 → Pass
+
+45 → Fail  
+
+0  → (blank)
+
+
+Perfect for grade sheets, clean reports! 🎯
+

@@ -1,0 +1,105 @@
+
+1. How does a for loop work in Flask templates?
+
+	For loops iterate over lists/dicts passed from Flask, generating dynamic HTML for each item. Uses Jinja2 syntax {% for item in list %}.​
+
+Example:
+
+xml
+<!-- Python: return render_template('users.html', users=['Rahul', 'Priya', 'Amit']) -->
+<ul>
+{% for user in users %}
+  <li>{{ user }}</li>
+{% endfor %}
+</ul>
+
+Output: <li>Rahul</li><li>Priya</li><li>Amit</li>
+
+
+
+2. What is the purpose of the loop object in Jinja2?
+
+	loop object provides loop metadata (index, length, first/last item) inside {% for %} blocks.
+
+xml
+{% for user in users %}
+  {{ loop.index }}. {{ user }}  <!-- 1. Rahul, 2. Priya -->
+  {% if loop.first %}First user!{% endif %}
+  {% if loop.last %}Last one!{% endif %}
+{% endfor %}
+
+Key Properties:
+
+    loop.index (1-based)
+
+    loop.index0 (0-based)
+
+    loop.first/loop.last (boolean)
+
+    loop.length (total items)
+
+
+
+3. Why are loops important in dynamic web pages?
+
+	Loops create personalized content without hardcoding:
+
+| Static HTML ❌              | Dynamic Loop ✅                                           |
+| -------------------------- | -------------------------------------------------------- |
+| <li>John</li><li>Jane</li> | {% for user in users %} <li>{{ user }}</li> {% endfor %} |
+| 500 users = 500 lines      | 500 users = 2 lines                                      |
+| Update list → rewrite HTML | Update Python list → auto-updates                        |
+
+Real examples: Product catalogs, user lists, order history.
+
+
+
+4. How do you pass lists from Flask to HTML?
+
+In Flask route:
+
+python
+@app.route('/users')
+def users():
+    user_list = ['Rahul', 'Priya', 'Amit', 'Sneha']
+    return render_template('users.html', users=user_list)
+
+In HTML template:
+
+xml
+<h1>Our Users</h1>
+<ul>
+{% for user in users %}
+  <li>{{ user }}</li>
+{% endfor %}
+</ul>
+
+Dicts work too:
+
+python
+users = [{'name': 'Rahul', 'age': 25}, {'name': 'Priya', 'age': 28}]
+{% for user in users %}
+  {{ user.name }} ({{ user.age }})
+{% endfor %}
+
+
+
+5. What happens if you forget `{% endfor %}` in a template?
+
+Template fails to render - Flask shows TemplateSyntaxError:
+
+TemplateSyntaxError: expected token 'end of statement block', got 'something else'
+
+Visual Effect:
+
+{% for user in users %}
+  <li>{{ user }}</li>  <!-- Missing {% endfor %} -->
+HTML cuts off here ❌
+
+Always pair tags:
+
+{% for %}  →  {% endfor %}
+{% if %}   →  {% endif %}
+{% block %}→  {% endblock %}
+
+Loops = Dynamic lists in 3 lines of code! 🔄✨

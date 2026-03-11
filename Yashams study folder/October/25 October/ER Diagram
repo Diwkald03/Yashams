@@ -1,0 +1,84 @@
+ 
+
+ 1. What is an ER Diagram and why is it important?
+
+	An Entity-Relationship (ER) Diagram is a visual blueprint that models the logical structure of a database by showing entities (like Customer, Order), their attributes (name, date), and relationships between them (customer places order). Created during the conceptual design phase, it captures business requirements before physical implementation, preventing costly redesigns.
+
+ 
+
+ Importance: Identifies data redundancies early, clarifies relationships for stakeholders, serves as contract between business analysts and DBAs, auto-generates SQL schemas via tools (Lucidchart, MySQL Workbench), and reduces anomalies through normalization planning. Essential for scalable systems like e-commerce or banking.
+
+
+ 2. What are the main components of an ER Diagram?
+
+	ER Diagrams use standardized symbols (Chen or Crow's Foot notation):
+
+    Entities: Rectangles representing objects/tables (Customer, Product) 
+
+    Attributes: Ovals connected to entities (customer_id, name, email; primary keys underlined)
+
+    Relationships: Diamonds showing connections ("places", "contains")
+
+    Cardinality: Line notations (1:1, 1:N, M:N) indicating multiplicity
+
+    Weak Entities: Double rectangles (depend on strong entities, like OrderLine)
+
+    Multivalued Attributes: Double ovals (phone numbers array)
+
+    Derived Attributes: Dashed ovals (age from birthdate)
+
+ These create intuitive maps from business rules to relational schemas.
+
+
+ 3. Explain the difference between Entity and Attribute.
+
+	Entity vs Attribute Difference
+
+ Entity = "What" (nouns/objects we store): Customer, Order, Product—becomes database tables with independent existence and primary keys.
+
+ Attribute = "Properties of what" (descriptors): For Customer entity → customer_id (PK), name, email, phone—becomes table columns with data types and constraints.
+
+ Key distinction: Entities have identity (PK uniquely identifies); attributes describe without standalone existence. Example: "Customer" table stores multiple customer records; "name" column holds string values for each record.​
+
+
+ 4. What are different types of relationships in ER Diagram?
+
+
+ | Type | Description                                    | Example                    | Implementation     |
+
+ | - | ---------------------------------------- | -------------------------- | ------------------ |
+
+ | 1:1  | One entity instance links to exactly one other | Person ↔ Passport          | FK in one table    |
+
+ | 1:N  | One links to many, many link to one            | Department 1 → N Employees | FK in "many" table |
+
+ | N:1  | Many link to one (inverse 1:N)                 | Employees N → 1 Department | Same as 1:N        |
+
+ | M:N  | Many link to many bidirectionally              | Students ↔ Courses         | Junction table     |
+
+
+ Additional: Recursive (Employee manages Employee), Ternary (Supplier-Parts-Projects), Total Participation (double line: must relate).​
+
+
+ 5. How can you convert an ER Diagram into database tables?
+
+
+1. Entities → Tables: Customer entity → CREATE TABLE Customers (customer_id INT PRIMARY KEY, name VARCHAR(100));
+   
+2. Attributes → Columns: Map ovals to columns with types/constraints (PK underlined → PRIMARY KEY)
+   
+3. 1:1 Relationships: Add FK to one table (choose based on optionality)
+   
+4. 1:N Relationships: Add FK column to "many-side" table (Employees.dept_id → Departments.id)
+   
+5. M:N Relationships: Create junction table with both FKs as composite PK: StudentCourses(student_id, course_id)
+   
+6. Weak Entities: FK to owner + partial discriminator key
+   
+7.    Multivalued: Separate table (Phones: customer_id, phone_number)
+
+
+ Example: Customer(1:N)Orders(M:N)Products → Customers, Orders(customer_id FK), OrderItems(order_id, product_id composite PK)
+
+ 
+

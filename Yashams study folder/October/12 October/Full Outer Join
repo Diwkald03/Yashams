@@ -1,0 +1,29 @@
+1. What is the main difference between INNER JOIN and FULL OUTER JOIN?
+	INNER JOIN returns only rows where there's a match in both tables based on the ON condition—e.g., customers with orders only, excluding unmatched customers or orders. FULL OUTER JOIN returns all rows from both tables: matches appear normally, unmatched left table rows get NULLs in right columns, and unmatched right rows get NULLs in left columns. INNER focuses on intersection; FULL OUTER captures union with NULLs for gaps.
+
+
+2. When would you use FULL OUTER JOIN in a real project?
+ 	Use FULL OUTER JOIN in data reconciliation projects comparing datasets—like matching employee records between HR and Payroll systems to spot missing entries on either side, or merging sales reports from different regions where some products sold in one but not others. Ideal for audits (complete diff of old vs new data), master data management (unifying customer lists), or completeness checks in ETL pipelines ensuring no records dropped accidentally.
+
+
+3. Can FULL OUTER JOIN be replaced with a UNION of LEFT and RIGHT JOIN?
+ 	Yes, FULL OUTER JOIN equals LEFT JOIN UNION RIGHT JOIN (anti-joined parts handled by UNION ALL minus INNER JOIN duplicates):
+ 
+ text
+ SELECT * FROM t1 LEFT JOIN t2 ON t1.id = t2.id
+ UNION ALL
+ SELECT * FROM t1 RIGHT JOIN t2 ON t1.id = t2.id
+ WHERE t1.id IS NULL;
+
+
+4. What happens when there are no matches on both sides in FULL OUTER JOIN?
+ 	When no matches exist on either side, FULL OUTER JOIN returns all rows from both tables with comprehensive NULLs: left table rows have NULLs across all right columns, right table rows have NULLs across left columns—no rows dropped. Example: Customers (C1,C2) vs Products (P1,P2) with no links yields 4 rows: (C1,NULLs), (C2,NULLs), (NULLs,P1), (NULLs,P2). Captures total dataset scope.
+
+
+5. Is FULL OUTER JOIN supported by all SQL databases? If not, why?
+ 	No, FULL OUTER JOIN isn't universal: MySQL lacks native support (emulate via UNION), SQLite unsupported, while PostgreSQL, SQL Server, Oracle fully implement it. MySQL's omission stems from historical optimizer limitations handling massive NULL result sets; workarounds exist but perform worse. Always verify DBMS docs—use UNION emulation for portability.
+
+
+
+
+

@@ -1,0 +1,35 @@
+Data Analysis & Visualization Notes- 6 Sep
+
+1. How do you create a DataFrame from a dictionary?
+
+
+To create a Pandas DataFrame from a dictionary, use pd.DataFrame(data), where data is a dict with keys as column names and values as lists or arrays of row data. The loc indexer selects data by labels (row/column names), while iloc uses integer positions (zero-based indices).
+Creating DataFrame from Dictionary
+
+Import Pandas first with import pandas as pd. Pass a dictionary where keys become column labels and values populate the rows—for example:
+
+python
+>data = {'Name': ['Alice', 'Bob'], 'Age': [25, 30]}
+>df = pd.DataFrame(data)
+
+This produces a DataFrame with two columns and matching row lengths.
+
+
+2. What is the difference between loc and iloc?
+
+Use df.loc[row_label, col_label] for label-based access, which includes slice endpoints and supports booleans or names. df.iloc[row_pos, col_pos] relies on positions, follows Python slicing (excludes end), and ignores labels.
+
+| Aspect    | loc                          | iloc                  |
+| --------- | ---------------------------- | --------------------- |
+| Selection | Labels (e.g., 'row1':'row3') | Positions (e.g., 0:3) |
+| Slice End | Inclusive                    | Exclusive             |
+| Example   | df.loc['A', 'col1']          | df.iloc[0, 0]         |
+
+Both handle singles, lists, or slices but differ in flexibility—loc can expand DataFrames, unlike iloc.
+
+
+
+
+
+
+

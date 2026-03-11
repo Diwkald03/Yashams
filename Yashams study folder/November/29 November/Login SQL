@@ -1,0 +1,97 @@
+
+1. Why do we use a separate file (SQLITE3.py) for database logic?
+
+	Separation of concerns - keeps database logic isolated from main Flask routes, making code organized, reusable, and maintainable.
+
+app.py          → Routes + HTML rendering
+SQLITE3.py      → Database functions only
+
+Benefits:
+
+    Clean app.py (no SQL clutter)
+
+    Reuse check_user() across routes
+
+    Easy testing/debugging
+
+    Team collaboration (different files)
+
+
+
+2. How does `INSERT OR IGNORE` help while adding the default admin user?
+
+	Prevents duplicate admin users - if admin already exists, ignores insert without error.
+
+python
+# First run: Creates admin user
+INSERT OR IGNORE INTO users VALUES (1, 'admin', 'secret123')
+
+# Second run: Admin exists → No error, no duplicate
+INSERT OR IGNORE → Skips silently ✅
+
+Without it: UNIQUE constraint failed error crashes app.
+
+
+
+3. What are the advantages of using SQLite for a small login system?
+
+| Advantage       | Why Perfect                |
+| --------------- | -------------------------- |
+| Zero config     | Single .db file, no server |
+| Lightweight     | <1MB for 1000s users       |
+| Built-in Python | import sqlite3 → Ready     |
+| No installation | Works on any machine       |
+| Fast enough     | 1000 logins/sec            |
+
+Production: PostgreSQL
+Development/Login prototype: SQLite ✅
+
+
+
+4. How does `check_user()` work internally?
+
+Queries database and compares credentials:
+
+python
+def check_user(username, password):
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users WHERE username=? AND password=?", 
+                   (username, password))
+    user = cursor.fetchone()
+    conn.close()
+    return user is not None  # True if found
+
+Flow:
+
+Input → SQL query → Match? → True/False
+"admin","secret" → Row exists → Login success ✅
+
+
+
+5. What changes are needed to support more users or password hashing in future?
+
+Easy upgrades:
+
+| Current         | Future                             |
+| --------------- | ---------------------------------- |
+| Plain passwords | bcrypt.hashpw() + bcrypt.checkpw() |
+| Single table    | Add id, email, role columns        |
+| SQLite          | PostgreSQL/MySQL                   |
+| Functions       | Class-based (User model)           |
+
+Hashing example:
+
+python
+import bcrypt
+
+# Store hashed
+hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+
+# Check login
+if bcrypt.checkpw(password.encode(), stored_hash):
+    return True
+
+SQLite3.py scales perfectly → Just edit functions! 🗄️🚀
+
+

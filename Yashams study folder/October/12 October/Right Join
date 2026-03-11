@@ -1,0 +1,27 @@
+ 1. What is the difference between LEFT JOIN and RIGHT JOIN?
+	LEFT JOIN returns all rows from the left (first) table plus matching rows from the right table; non-matching right rows show as NULLs in right columns. RIGHT JOIN does the opposite: all rows from the right (second) table plus left matches, with NULLs in left columns for non-matches. LEFT prioritizes FROM table; RIGHT prioritizes JOIN table.
+ 
+
+ 2. When would you use RIGHT JOIN in real projects?
+	Use RIGHT JOIN when the reference table (e.g., master lookup like Departments) must appear completely, even without related records—like ensuring all product categories show in sales reports regardless of sales data, or including all departments in headcount queries even if empty. Rare due to readability; LEFT JOIN with table reordering is preferred convention.​
+
+
+ 3. Can RIGHT JOIN and LEFT JOIN produce the same result? How?
+	Yes, identical results by swapping table order: t1 LEFT JOIN t2 ON cond matches t2 RIGHT JOIN t1 ON cond. Example: Customers LEFT JOIN Orders (all customers + orders) = Orders RIGHT JOIN Customers (all orders + customers, but flipped). Query optimizer often rewrites anyway, so use LEFT for consistency.
+
+
+ 4. What happens if both tables have no matching data in RIGHT JOIN?
+	RIGHT JOIN returns all rows from the right table with NULLs across all left table columns, preserving right dataset completely despite zero matches. Example: Empty Customers vs populated Departments → every department row appears with NULL customer data. No rows lost from priority table.
+ 
+
+ 5. Can RIGHT JOIN be replaced by LEFT JOIN? Explain how.
+	Yes, universally replace RIGHT JOIN by reversing table positions and using LEFT: t1 RIGHT JOIN t2 ON cond becomes t2 LEFT JOIN t1 ON cond—exact equivalent since LEFT preserves the new "left" (original right). Encourages LEFT-only coding standard, improving team readability and avoiding RIGHT confusion.
+
+
+
+
+
+
+
+# 
+

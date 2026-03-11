@@ -1,0 +1,30 @@
+ 
+
+ 1. What is the main purpose of using commit() in sqlite3?
+	The main purpose of commit() is to permanently save all pending database changes (INSERT, UPDATE, DELETE operations) from the current transaction to disk, making them visible to other connections and surviving crashes. SQLite operates in auto-commit mode by default for DDL but uses implicit transactions for DML—each modify starts a transaction that commit() finalizes.
+ 
+
+ 2. When do you need to use commit() in a Python program?
+	Call commit() after every set of data modification operations (INSERT/UPDATE/DELETE) where you want changes persisted—especially in loops, batch operations, or before close(). Use it in try-finally blocks or context managers: with conn: cursor.execute("INSERT..."); conn.commit() auto-commits. Skip for read-only SELECT queries.​	
+
+
+ 3. What happens if you don’t call commit() before closing the database?
+	Uncommitted changes are automatically rolled back when conn.close() executes—all modifications lost without error. Data appears saved during the session but vanishes for other processes/readers. Critical bug source in scripts: "changes disappeared after running"—always commit() explicitly before closing or exiting.
+
+
+ 4. Can we use commit() after a SELECT statement? Why or why not?
+	No practical need—SELECT is read-only, never starts transactions, so commit() does nothing (safe but redundant). SQLite ignores it silently. Use only after DML; calling post-SELECT wastes cycles but won't error.
+
+
+ 5. What is the difference between commit() and rollback()?
+
+    commit(): Saves transaction permanently to disk, ends transaction, starts new one for next statement.
+
+
+
+    rollback(): Discards/reverts all uncommitted changes since last commit/begin, restores prior state, ends transaction.
+
+
+
+Pattern: try: modify ops; conn.commit() except: conn.rollback() ensures atomicity—either all changes succeed or none apply.​
+

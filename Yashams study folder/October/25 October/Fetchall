@@ -1,0 +1,101 @@
+ 
+
+ 1. What is fetchall() in sqlite3 and what does it return?
+	fetchall() is a cursor method in sqlite3 that retrieves all remaining rows from the most recent SELECT query result as a list of tuples. Each tuple represents one database row with column values in order.
+
+Example:
+
+python
+
+cursor.execute("SELECT name, age FROM users")
+
+all_rows = cursor.fetchall()   Returns: [('Alice', 30), ('Bob', 25), ('Carol', 35)]
+
+
+Consumes entire result set; subsequent fetch calls return empty list.
+
+
+ 2. What is the difference between fetchone(), fetchmany(), and fetchall()?
+
+
+| Method          | Returns               | Use Case                                 |
+
+| --------------- | --------------------- | ---------------------------------------- |
+
+| fetchone()      | 1 row (tuple) or None | Row-by-row processing (memory efficient) |
+
+| fetchmany(size) | N rows list or []     | Batched processing (pagination)          |
+
+| fetchall()      | All rows list or []   | Small complete datasets                  |
+
+
+python
+
+cursor.execute("SELECT * FROM users")
+
+print(cursor.fetchone())      ('Alice', 30)
+
+print(cursor.fetchmany(2))    [('Bob', 25), ('Carol', 35)]
+
+print(cursor.fetchall())      [] (exhausted)
+
+
+ 3. What happens if fetchall() is used when no data exists?
+
+	fetchall() returns [] (empty list) when no rows match the query—no errors thrown. Safe for "SELECT * FROM nonexistent_table" or filtered queries:
+
+
+python
+
+cursor.execute("SELECT * FROM users WHERE age < 0")
+
+empty_result = cursor.fetchall()   []
+
+len(empty_result) == 0   True
+
+
+ 4. Why should you avoid using fetchall() on large datasets?
+	Memory explosion—fetchall() loads entire result set into RAM at once. 10M-row table = gigabytes consumed, crashes apps, slows servers.
+
+Better alternatives:
+
+   fetchmany(1000) in loops (streaming)
+
+   for row in cursor: (iterator)
+
+   Pandas pd.read_sql_query() (chunked)
+
+
+Rule: Use fetchall() only for small/known datasets (<10k rows).
+
+
+ 5. Can we loop directly over cursor after executing SELECT instead of using fetchall()?
+
+	Yes—most memory-efficient method:
+
+
+python
+
+cursor.execute("SELECT * FROM large_table")
+
+for row in cursor:   Iterator, no full load
+
+   print(row)       Process 1 row at a time
+
+
+Equivalent to:
+
+
+python
+
+cursor.execute("SELECT * FROM large_table")
+
+while row := cursor.fetchone():
+
+   print(row)
+
+
+Advantages: Streams results, constant memory usage regardless of table size, perfect for large datasets or exports.
+
+
+

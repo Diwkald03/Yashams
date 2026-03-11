@@ -1,0 +1,83 @@
+
+1. Why do we use a virtual environment for Python projects?
+
+Isolates project dependencies - different projects can use different package versions without conflicts.
+
+| Problem Without venv | Solution With venv   |
+| -------------------- | -------------------- |
+| Project A: Flask 2.0 | Project A: Flask 2.0 |
+| Project B: Flask 1.0 | Project B: Flask 1.0 |
+| Version conflict ❌  | Isolated ✅         |
+
+
+
+2. What is the purpose of `pip install streamlit`?
+
+Installs Streamlit library + all dependencies into active environment.
+
+bash
+pip install streamlit  # Adds to current venv/global Python
+
+Creates: streamlit command + Python module.
+
+
+
+3. How do you activate and deactivate a virtual environment?
+
+Create first:
+
+bash
+python -m venv myproject
+
+Activate:
+
+bash
+# Windows
+myproject\Scripts\activate
+
+# Mac/Linux  
+source myproject/bin/activate
+
+Deactivate:
+
+bash
+deactivate  # Works everywhere
+
+Visual indicator: (myproject) prefix in terminal.
+
+
+
+4. What happens when you run `streamlit hello`?
+
+Launches demo app showcasing Streamlit features:
+
+    Charts, maps, buttons
+
+    Layout options
+
+    Widgets
+
+    Perfect for beginners to see capabilities
+
+bash
+streamlit hello  # Opens browser automatically
+
+
+
+5. How can beginners check if Streamlit installed correctly?
+
+Test commands:
+
+bash
+# 1. Check if command works
+streamlit hello
+
+# 2. Python import test
+python -c "import streamlit; print('✅ Installed:', streamlit.__version__)"
+
+# 3. Pip list
+pip list | grep streamlit
+
+Success: Version number displays (ex: 1.38.0).
+
+Virtual environments = Professional Python workflow! 🐍✨

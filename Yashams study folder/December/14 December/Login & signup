@@ -1,0 +1,181 @@
+
+1. Why should passwords not be stored in plain ?
+
+Storing passwords as readable  allows instant account takeover if database is breached. Attackers gain immediate access to every user account across all services using same credentials.
+
+Real-world breach math:
+
+1M user breach × 70% password reuse = 700K compromised accounts
+LinkedIn 2012 → 117M plain- passwords → Mass account takeovers
+
+
+
+2. What is hashing and how is it used in login systems?
+
+Hashing transforms passwords into fixed-length, irreversible strings using algorithms like bcrypt or Argon2:
+
+"myPassword123" → bcrypt($2b$12$...) → "a1b2c3d4e5f6..."
+Same input → Same hash ✓
+Reverse impossible → Secure ✓
+
+Login verification process:
+
+python
+def verify_password(plain_, hashed):
+    return bcrypt.checkpw(plain_.encode(), hashed.encode())
+
+Salt protection: Each user gets unique random salt preventing rainbow table attacks.​
+
+
+
+3. How does `st.session_state` help in authentication?
+
+Streamlit reruns entire script on every click → session_state persists login across reruns:
+
+python
+import streamlit as st
+import bcrypt
+import sqlite3
+
+# === PERSISTENT AUTH STATE ===
+if 'is_logged_in' not in st.session_state:
+    st.session_state.is_logged_in = False
+if 'user_id' not in st.session_state:
+    st.session_state.user_id = None
+
+# === LOGIN FUNCTION ===
+def login(username, password):
+    conn = sqlite3.connect('users.db')
+    cur = conn.cursor()
+    cur.execute("SELECT id, password_hash FROM users WHERE username=?", (username,))
+    user = cur.fetchone()
+    
+    if user and bcrypt.checkpw(password.encode(), user[1].encode()):
+        st.session_state.is_logged_in = True
+        st.session_state.user_id = user[0]
+        st.rerun()  # Refresh UI
+    else:
+        st.error("Invalid credentials")
+
+State persistence flow:
+
+
+User clicks Login → Script reruns → session_state.is_logged_in = True
+Next interaction → Script checks state → User stays logged in ✓
+
+
+
+4. What happens if two users signup with same username?
+
+UNIQUE constraint prevents duplicate usernames at database level:
+
+sql
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    username  UNIQUE NOT NULL,
+    password_hash  NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+Signup error handling:
+
+python
+def signup(username, password):
+    try:
+        pwd_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+        with sqlite3.connect('users.db') as conn:
+            conn.execute("INSERT INTO users (username, password_hash) VALUES (?, ?)",
+                        (username, pwd_hash))
+        st.success("Account created!")
+    except sqlite3.IntegrityError:
+        st.error("❌ Username already exists. Choose another.")
+
+
+
+5. How would you add “Forgot Password” in this system?
+
+Email-based reset with time-limited tokens:
+
+python
+import secrets, smtplib
+from datetime import datetime, timedelta
+import streamlit as st
+
+def forgot_password(username):
+    # 1. Generate secure reset token
+    reset_token = secrets.token_urlsafe(32)
+    expires = datetime.now() + timedelta(hours=1)
+    
+    # 2. Store token (expires automatically)
+    with sqlite3.connect('users.db') as conn:
+        conn.execute("""
+            INSERT INTO password_resets (username, token, expires_at) 
+            VALUES (?, ?, ?)
+        """, (username, reset_token, expires))
+    
+    # 3. Send email (production: use SMTP service)
+    send_reset_email(username, reset_token)
+    st.success("Reset link sent to your email!")
+
+def reset_password(token, new_password):
+    with sqlite3.connect('users.db') as conn:
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT username FROM password_resets 
+            WHERE token=? AND expires_at > datetime('now')
+        """, (token,))
+        result = cur.fetchone()
+        
+        if result:
+            # Update password
+            pwd_hash = bcrypt.hashpw(new_password.encode(), bcrypt.gensalt())
+            cur.execute("UPDATE users SET password_hash=? WHERE username=?",
+                       (pwd_hash, result[0]))
+            
+            # Cleanup expired token
+            cur.execute("DELETE FROM password_resets WHERE token=?", (token,))
+            conn.commit()
+            return True
+        return False
+
+Complete auth UI:
+
+python
+# === STREAMLIT AUTH APP ===
+if not st.session_state.is_logged_in:
+    tab1, tab2, tab3 = st.tabs(["Login", "Signup", "Forgot Password"])
+    
+    with tab1:
+        username = st._input("Username")
+        password = st._input("Password", type="password")
+        if st.button("Login"):
+            login(username, password)
+    
+    with tab2:
+        new_user = st._input("New Username")
+        new_pwd = st._input("New Password", type="password")
+        if st.button("Create Account"):
+            signup(new_user, new_pwd)
+    
+    with tab3:
+        forgot_user = st._input("Username")
+        if st.button("Send Reset Link"):
+            forgot_password(forgot_user)
+
+else:
+    st.success(f"Welcome, {st.session_state.user_id}!")
+    if st.button("Logout"):
+        st.session_state.is_logged_in = False
+        st.rerun()
+
+Production Security Checklist
+
+🔐 bcrypt/Argon2 (not MD5/SHA1)
+🧂 Unique salt per user
+⏱️ Session state persistence
+🛡️ UNIQUE username constraint
+🔗 Time-limited reset tokens
+📧 SMTP email delivery
+📊 Audit logging
+
+Hashing + session_state = Production authentication in 100 LOC. Perfect final-year project deliverable. 🔐✅

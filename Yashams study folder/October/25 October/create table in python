@@ -1,0 +1,69 @@
+ 
+
+ 1. What is the purpose of CREATE TABLE in SQL?
+	The CREATE TABLE statement in SQL defines and creates a new table structure within a database, specifying column names, data types, sizes, constraints (PRIMARY KEY, FOREIGN KEY, NOT NULL, UNIQUE, CHECK), defaults, indexes, and relationships. Unlike INSERT which adds data to existing tables, CREATE TABLE establishes the schema blueprint—the foundation for data storage, ensuring type safety, integrity, and efficient querying from the outset.
+
+Without it, databases couldn't organize information relationally; it's the first DDL command in design workflows, enabling subsequent operations like INSERT, SELECT, or JOIN.
+
+
+ 2. What does the IF NOT EXISTS option do in CREATE TABLE?
+	CREATE TABLE IF NOT EXISTS table_name (...) prevents errors if the table already exists—silently skips creation when detected, avoiding "table already exists" exceptions during schema migrations, automated deployments, or repeated script runs. Without it, duplicate CREATE attempts fail hard; IF NOT EXISTS makes scripts idempotent (safe to rerun), crucial for CI/CD pipelines, database seeding, or team development where table state varies.
+
+Example: CREATE TABLE IF NOT EXISTS Users (id INT PRIMARY KEY, name VARCHAR(100)); succeeds whether Users exists or not.
+
+
+ 3. What are common data types used in SQLite?
+	SQLite uses dynamic typing (type affinity) with 5 main storage classes, simpler than strict RDBMS:
+
+
+
+| Type Affinity | Examples                  | Usage                                           |
+
+| ------------- | ------------------------- | ----------------------------------------------- |
+
+| INTEGER       | INT, INTEGER              | Whole numbers (1, 42, -5); auto-sized 1-8 bytes |
+
+| TEXT          | TEXT, CHAR, VARCHAR, CLOB | Strings ("hello", "user@domain.com")            |
+
+| REAL          | REAL, FLOAT, DOUBLE       | Decimals (3.14, -0.001); 8-byte float           |
+
+| BLOB          | BLOB                      | Binary (images, files); stored as-is            |
+
+| NUMERIC       | NUMERIC, DECIMAL(10,2)    | Exact decimals; SQLite stores as TEXT/INT/REAL  |
+
+
+Key quirks: No strict enforcement—INSERT INTO t(text_col) VALUES(5); succeeds but stores "5" as text. Use CHECK constraints for validation.
+
+
+ 4. Can we create two tables with the same name? Why or why not?
+	No—SQL prohibits creating two tables with identical names in the same schema/database to prevent ambiguity, namespace collisions, and accidental overwrites. Table names must be unique within scope (database/schema); attempting CREATE TABLE users (...) twice fails with "table already exists" (unless IF NOT EXISTS).
+
+
+Why? Relational model requires unambiguous references—SELECT * FROM users must resolve uniquely. Different schemas/databases allow reuse (schema1.users, schema2.users).
+
+
+ 5. What is the difference between CREATE TABLE and INSERT INTO?
+
+| Aspect        | CREATE TABLE                                    | INSERT INTO                             |
+
+| ------------- | ----------------------------------------------- | --------------------------------------- |
+
+| Purpose       | Defines structure (columns, types, constraints) | Adds data rows to existing table        |
+
+| Prerequisites | Database exists                                 | Table already created                   |
+
+| Syntax        | CREATE TABLE t (id INT PRIMARY KEY, name TEXT)  | INSERT INTO t VALUES (1, 'Alice')       |
+
+| Effect        | Creates empty table schema                      | Populates rows; errors if table missing |
+
+| DDL/DML       | DDL (Data Definition—structural)                | DML (Data Manipulation—content)         |
+
+| Auto-commit   | Yes (immediate)                                 | No (needs COMMIT in transactions)       |
+
+| Use Case      | Design phase, migrations                        | Daily operations, ETL                   |
+
+
+Workflow: CREATE TABLE → INSERT INTO → SELECT/UPDATE/DELETE. Never use INSERT without prior CREATE.
+
+
+

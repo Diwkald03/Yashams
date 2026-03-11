@@ -1,0 +1,70 @@
+
+1. What is the difference between HLOOKUP and VLOOKUP?
+
+	HLOOKUP searches horizontally (top row → down column). VLOOKUP searches vertically (left column → right column).
+
+| Function | Searches          | Returns                | Example Data Layout                 |
+| -------- | ----------------- | ---------------------- | ----------------------------------- |
+| VLOOKUP  | Column (vertical) | Same row, right column | =VLOOKUP("Apple", A1:D10, 3, FALSE) |
+| HLOOKUP  | Row (horizontal)  | Same column, lower row | =HLOOKUP("Q1", A1:J5, 3, FALSE)     |
+
+
+VLOOKUP: 📋↓   HLOOKUP: ➡️📋
+Column    Row
+search    search
+
+
+
+2. Why is it important that your lookup value exists in the first row?
+
+	HLOOKUP starts search from TOP ROW ONLY - it scans left→right across row 1, then drops down to specified row.
+
+❌ WRONG:  Product  Q1   Q2
+           Apple   100  150  ← HLOOKUP finds here (row 2)
+✅ CORRECT: Q1     Q2   Q3
+           Apple  100  150  ← Top row for search
+
+Rule: Lookup value must exist in row 1 of table_array.
+
+
+
+3. Can HLOOKUP fetch data from another sheet?
+
+	YES - full sheet reference works perfectly:
+
+text
+=HLOOKUP("Q1", SalesSheet!A1:J10, 3, FALSE)
+=HLOOKUP("North", '2026 Data'!B1:Z5, 2, FALSE)
+
+Same syntax as VLOOKUP - just add sheet name before range.
+
+
+
+4. What happens if “is_sorted” is set to TRUE?
+
+	Approximate match - finds closest value ≤ lookup_value (requires sorted data).​
+
+text
+Data (sorted): 10, 20, 35, 50, 75
+=HLOOKUP(25, A1:E3, 2, TRUE)  → Returns value for 20
+=HLOOKUP(80, A1:E3, 2, TRUE)  → Returns value for 75 (largest ≤80)
+
+DANGER: Unsorted data = wrong results! Use FALSE for exact matches.
+
+
+
+5. How can you handle errors in HLOOKUP results?
+
+	Wrap with IFERROR for clean results:
+
+| Error               | Fix                                 | Example                         |
+| ------------------- | ----------------------------------- | ------------------------------- |
+| #N/A (not found)    | =IFERROR(HLOOKUP(...), "Not Found") | Clean message                   |
+| #REF! (bad row num) | Check row_index_num ≤ table rows    | row_index_num=5 but only 3 rows |
+| #VALUE!             | Wrong data types                    | Text vs numbers mismatch        |
+
+Pro Formula:
+
+=IFERROR(HLOOKUP(A1, B1:F10, 2, FALSE), "No Match")
+
+HLOOKUP perfect for horizontal headers (months, quarters)! 📊

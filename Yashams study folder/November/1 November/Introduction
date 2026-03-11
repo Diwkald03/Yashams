@@ -1,0 +1,170 @@
+
+
+1. What is Google Sheet and how is it different from Excel?
+
+
+
+| Aspect        | Google Sheets                 | Excel                     |
+
+| ------------- | ----------------------------- | ------------------------- |
+
+| Access        | Browser/mobile, always online | Desktop app + web version |
+
+| Cost          | Free                          | $6.99+/month              |
+
+| Collaboration | Real-time multi-user editing  | OneDrive needed           |
+
+| Row Limit     | 10M cells total               | 1M+ rows/sheet            |
+
+| Speed         | Slower for big data           | Faster processing         |
+
+| Formulas      | 200+ functions                | 450+ advanced             |
+
+
+
+Best: Sheets for teams, Excel for data scientists.​
+
+
+
+
+
+
+
+2. How can multiple people work together in a single sheet?
+
+
+
+	Real-time editing with colored cursors showing who's typing:
+
+
+
+Steps:
+
+
+
+1.    Click Share (top-right)
+   
+2.    Add emails or copy link
+   
+3.    Set permissions: Viewer/Commenter/Editor
+   
+4.    Chat panel for discussion
+   
+5.    @mentions notify people
+
+
+
+Features:
+
+
+
+✅ Live changes appear instantly
+
+✅ Version history (File → Version history)
+
+✅ Offline mode available
+
+✅ Mobile editing
+
+
+
+
+
+
+
+3. What are some commonly used formulas in Google Sheet?
+
+
+
+| Category  | Formula                  | Example         |
+
+| --------- | ------------------------ | --------------- |
+
+| Totals    | =SUM(A1:A10)             | Add range       |
+
+| Average   | =AVERAGE(B1:B5)          | Mean value      |
+
+| Condition | =IF(C1>50,"Pass","Fail") | Logic test      |
+
+| Text      | =JOIN(" ",A1,B1)         | "Rahul Kumar"   |
+
+| Today     | =TODAY()                 | 2/18/2026       |
+
+| Count     | =COUNTA(D1:D10)          | Non-empty cells |
+
+
+
+
+
+
+
+4. How can you protect a specific cell or range in a Google Sheet?
+
+
+
+	Lock formulas while allowing data entry:
+
+
+
+Steps:
+
+
+
+1.    Select range (formulas like C1:C10)
+   
+2.    Data → Protect sheets and ranges
+   
+3.    Add rule → Set permissions
+   
+4.    Choose: "Only you" or "Custom list"
+   
+5.    Save - others get warning/edit blocked
+
+
+
+Example: Protect totals column, free data columns.
+
+
+
+
+
+
+
+5. What are the benefits of using Google Sheet in daily work?
+
+
+
+    Free forever + auto-backup
+
+
+
+    Team access anywhere (phone/laptop)
+
+
+
+    No install - just browser
+
+
+
+    Templates for budgets/projects
+
+
+
+    Google Forms → auto-fill sheets
+
+
+
+    IMPORTRANGE between files
+
+
+
+    Apps Script for automation
+
+
+
+Perfect for: Small business, students, remote teams, daily trackers.
+
+
+
+Excel better for: Financial modeling, huge datasets, VBA macros.​
+

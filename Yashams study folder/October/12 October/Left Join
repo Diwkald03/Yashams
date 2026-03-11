@@ -1,0 +1,22 @@
+
+1. What is the difference between LEFT JOIN and RIGHT JOIN?
+	LEFT JOIN returns all rows from the left table (first table in FROM) plus matching rows from the right table; unmatched right rows fill with NULLs in right columns. RIGHT JOIN mirrors this but preserves all rows from the right table, filling NULLs in left columns for non-matches. Functionally equivalent by flipping table order—LEFT JOIN t1 LEFT JOIN t2 = RIGHT JOIN t2 RIGHT JOIN t1—but LEFT is conventional for readability.
+
+
+2. When would you use LEFT JOIN instead of INNER JOIN?
+	Choose LEFT JOIN when you need complete data from the primary table regardless of matches, like listing all customers (even without orders) for marketing reports or auditing gaps. INNER JOIN excludes non-matches entirely, missing "zero-activity" records; LEFT reveals them via NULLs, crucial for completeness analysis, data validation, or outer-dependent queries without filtering out orphans.
+
+
+3. What happens to unmatched rows in LEFT JOIN?
+	Unmatched rows from the left table appear fully with NULL values across all right table columns, ensuring the left dataset remains intact while indicating missing relationships. Example: Customers C1 (no orders) + Orders → row: (C1.name, NULL order_id, NULL date). Right table non-matches get excluded entirely, prioritizing left completeness.​
+
+
+4. Can you use WHERE after LEFT JOIN? How does it affect results?
+	Yes, WHERE applies post-join as a filter on the entire result set, potentially eliminating left-only rows if conditions target right columns—e.g., LEFT JOIN orders o ON c.id=o.c_id WHERE o.date > '2025-01-01' excludes customers without recent orders, converting it to INNER JOIN behavior. Fix by moving right-specific filters to ON clause: ON c.id=o.c_id AND o.date > '2025-01-01' to preserve left rows with NULLs.
+
+
+5. Can LEFT JOIN be used with more than two tables?
+	Yes, extend LEFT JOIN sequentially across 3+ tables, preserving all rows from the first (leftmost) table through cumulative matches: FROM customers c LEFT JOIN orders o ON c.id=o.c_id LEFT JOIN products p ON o.p_id=p.id. Result includes all customers, their orders (NULL if none), and products (NULL if no order match). Each JOIN builds left-to-right; use for hierarchical "main table + optional details" queries.
+
+
+

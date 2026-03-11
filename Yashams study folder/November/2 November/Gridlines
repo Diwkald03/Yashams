@@ -1,0 +1,146 @@
+1. What is the main purpose of gridlines in Google Sheets?
+
+
+Gridlines are the faint horizontal/vertical lines separating cells, creating a visual grid structure. Their main purpose is data organization and cell boundary definition for easier navigation and entry.​
+
+Core Functions:
+
+
+
+   Define cell boundaries
+
+
+
+   Guide eye alignment across rows/columns
+
+
+
+   Help during data entry/formatting
+
+
+
+   Maintain visual structure
+
+
+2. How do gridlines help in data readability?
+
+Gridlines prevent "wall of text" effect by breaking data into neat cells:
+
+
+| Without Gridlines   | With Gridlines             |
+
+| ------------------- | -------------------------- |
+
+| Data runs together  | Clear cell separation      |
+
+| Hard to follow rows | Easy horizontal tracking   |
+
+| Columns blur        | Vertical alignment obvious |
+
+| Eye strain          | Structured appearance      |
+
+
+
+Especially helpful for:
+
+   Large datasets
+
+   Number-heavy sheets
+
+   Team collaboration
+
+   Dense tables
+
+
+
+3. What is the difference between gridlines and borders?
+
+
+
+| Aspect        | Gridlines              | Borders                   |
+
+| ------------- | ---------------------- | ------------------------- |
+
+| Default       | Always on (faint gray) | Must be added manually    |
+
+| Print         | Optional setting       | Always prints             |
+
+| Customization | Show/hide only         | Color, thickness, style   |
+
+| Purpose       | Screen navigation      | Printed reports, emphasis |
+
+| Location      | View → Show gridlines  | Format → Borders          |
+
+
+
+Toggle Gridlines: View → Show → Gridlines ✅​
+
+
+4. How do you print gridlines?
+
+
+
+Enable for printing:
+
+
+
+1.    File → Print (or Ctrl+P)
+   
+2.    Formatting section → Show gridlines checkbox
+   
+3.    Preview shows gridlines
+   
+4.    Print → Lines appear on paper
+
+
+
+Pro Tip: Use borders instead for reliable printing (gridlines sometimes fail).
+
+
+
+
+
+
+
+5. When should gridlines be hidden for better design?
+
+
+
+Hide for cleaner design when:
+
+
+
+| Scenario            | Why Hide                         |
+
+| ------------------- | -------------------------------- |
+
+| Final reports       | Custom borders look professional |
+
+| Charts-heavy sheets | Less visual clutter              |
+
+| Dashboard design    | Focus on data highlights         |
+
+| Printed documents   | Borders give better control      |
+
+| Colorful formatting | Gridlines fight with colors      |
+
+
+
+Hide: View → Show → Gridlines ❌
+
+
+
+Best Practice:
+
+
+
+text
+
+Data entry → Gridlines ON
+
+Final presentation → Gridlines OFF + Custom borders
+
+
+
+Gridlines = working tool, borders = presentation polish! ✨
+

@@ -1,0 +1,26 @@
+ 
+
+ 1. What are constraints, and why are they used?
+ SQL constraints are predefined rules applied to table columns or entire tables during creation or modification to enforce data integrity, consistency, and business logic by restricting invalid entries like duplicates, nulls, or out-of-range values. They prevent errors at the database level—such as orphaned records or negative ages—reducing application-side validation needs, improving performance through optimized storage/indexing, and ensuring reliability across concurrent users or migrations. Common types include NOT NULL (mandatory values), UNIQUE (no duplicates), PRIMARY KEY (unique identifier), FOREIGN KEY (referential links), CHECK (custom conditions), and DEFAULT (fallback values), all vital for robust relational designs.
+
+
+ 2. What is the difference between PRIMARY KEY and UNIQUE?
+
+ A PRIMARY KEY uniquely identifies each row, implicitly enforces NOT NULL, and allows only one per table (often indexed for speed); it's the cornerstone for relationships. A UNIQUE constraint also prevents duplicates but permits NULL values (typically one per column), supports multiples per table, and doesn't auto-imply NOT NULL—ideal for secondary identifiers like emails. PRIMARY KEY implicitly creates UNIQUE + NOT NULL + table-default index; UNIQUE suits flexible uniqueness without row ownership.
+
+
+ 3. Can a table have multiple UNIQUE constraints?
+ Yes, tables can have multiple UNIQUE constraints on different columns or column sets (composites), enforcing uniqueness across various fields—e.g., CREATE TABLE Users (id INT PRIMARY KEY, email VARCHAR(255) UNIQUE, phone VARCHAR(20) UNIQUE). Each generates an index for enforcement, allowing one NULL per UNIQUE column (or set), unlike PRIMARY KEY. This flexibility supports business rules like unique usernames alongside unique product codes without a single rigid identifier.
+
+
+ 4. What happens if a CHECK constraint condition is violated?
+ Attempting to INSERT or UPDATE data failing a CHECK condition—like CHECK (age >= 18) with age = 15—triggers a constraint violation error (e.g., "CHECK constraint failed"), rolling back the operation entirely to maintain integrity without partial changes. No data persists; the DBMS rejects it atomically, logging details for debugging, and applications must handle the exception via try-catch or validation. This proactive gatekeeping avoids corrupt states, unlike triggers which react post-facto.
+
+
+ 5. Can a FOREIGN KEY be NULL? Explain with example.
+ Yes, FOREIGN KEY columns can be NULL unless combined with NOT NULL, signifying "no relationship" or optional links—e.g., in Orders table: FOREIGN KEY (customer_id) REFERENCES Customers(id) allows customer_id = NULL for guest orders, but NOT NULL mandates a valid reference. Example: CREATE TABLE Orders (order_id INT PRIMARY KEY, customer_id INT NULL, FOREIGN KEY (customer_id) REFERENCES Customers(id)); INSERT INTO Orders VALUES (1, NULL); succeeds, enabling flexible schemas like optional profiles while preventing invalid IDs via CASCADE/RESTRICT on deletes.
+
+ 
+
+
+

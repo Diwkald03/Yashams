@@ -1,0 +1,28 @@
+1. What is the main goal of First Normal Form?
+
+First Normal Form (1NF) ensures every database table stores data in the simplest relational structure by requiring atomic values in cells and eliminating repeating groups.
+
+Main Goal of 1NF
+
+The primary goal of First Normal Form is to eliminate nested data structures like multi-valued attributes or arrays within cells, ensuring each column holds only indivisible single values and each row uniquely represents one record without duplication groups. This foundational normalization step, defined by Edgar Codd, converts unnormalized tables (e.g., spreadsheets with comma-separated phone lists) into proper relations where queries like SELECT, JOIN, and GROUP BY work reliably, preventing anomalies and setting up higher forms like 2NF/3NF. Without 1NF, databases suffer from inconsistent data handling and inefficient storage.
+
+
+2. What is meant by atomic values?
+Atomic values mean indivisible, single pieces of data that cannot be meaningfully split further within a cell—e.g., "John" in a name column rather than "John, Doe" or a JSON array. Unlike composite values (multi-part like addresses in one field) or multi-valued attributes (multiple phones: "123-456,789-012"), atomicity mandates one value per cell, enabling precise indexing, searching, and relational operations. Standard SQL assumes atomicity by default, rejecting arrays unless using non-relational extensions.
+
+
+3. Can a table have duplicate rows and still be in 1NF?
+No, a table cannot have duplicate rows and remain in 1NF because normalization requires each row to be a unique tuple—exact duplicates violate the relational model's distinctness rule, even if cells contain atomic values. While 1NF focuses mainly on atomicity and no repeating groups, true relational tables implicitly need unique rows (often enforced by PRIMARY KEY in practice), as duplicates cause ambiguity in identification and queries. Use DISTINCT or keys to ensure row uniqueness alongside atomic columns.
+
+
+4. What problems occur when a table is not in 1NF?
+Non-1NF tables cause update anomalies (change one phone in a list but miss others), insert anomalies (cannot add partial records without placeholders), delete anomalies (lose unrelated data when removing rows), and query complexity (parsing lists with string functions instead of SQL joins). Redundancy explodes storage, slows performance, and risks inconsistencies—e.g., a "skills" column "Python,SQL,R" requires custom splitting for analysis, breaking relational algebra. Converting to 1NF via separate tables (e.g., Employee\_Skills) fixes these.
+
+
+5. How does 1NF differ from 2NF?
+1NF only demands atomic values and no repeating groups with unique rows, allowing partial dependencies (non-key attributes relying on part of a composite key). 2NF builds on 1NF by eliminating these partial dependencies—every non-key column must depend fully on the entire primary key, requiring table splits for composites. Example: 1NF table with key (Order\_ID, Product\_ID) and attribute "Product\_Color" (depends only on Product\_ID) violates 2NF; split into Orders and Order\_Products tables. 2NF assumes 1NF compliance.
+
+
+
+
+

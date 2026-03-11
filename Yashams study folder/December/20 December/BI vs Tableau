@@ -1,0 +1,92 @@
+
+1. Difference between Power BI and Tableau.
+
+| Aspect         | Power BI                           | Tableau                                         |
+| -------------- | ---------------------------------- | ----------------------------------------------- |
+| Pricing        | $10/user/moFree Desktop            | $70/user/moCreator tier                         |
+| Data Volume    | Billions rowsVertiPaq compression  | Large datasetsIn-memory processing simplilearn​ |
+| Visuals        | 400+ custom visualsMarketplace     | Advanced chartsHeatmaps, treemaps               |
+| Learning Curve | Excel-likeFamiliar to Office users | Visualization-firstDrag-drop mastery            |
+| Connectivity   | 150+ sourcesMicrosoft ecosystem    | 100+ sourcesExcel, SQL, APIs                    |
+
+
+
+2. Which tool would you choose for business reporting and why?
+
+Power BI wins 80% of enterprise reporting due to:
+
+
+✅ Microsoft 365 integration (Teams, Excel, SharePoint)
+✅ Lower cost ($10 vs $70/user)
+✅ Power BI Service (sharing + mobile)
+✅ DAX for complex calculations
+✅ Automatic refreshes + row-level security
+
+Tableau better for: Creative agencies, advanced geospatial analysis.
+
+
+
+3. What is DAX and where is it used?
+
+DAX (Data Analysis Expressions) = Formula language for Power BI + Power Pivot:
+
+
+Excel: =SUMIFS(A:A, B:B, ">100")
+DAX: Total Sales = CALCULATE(SUM(Sales[Amount]), Sales[Region] = "North")
+
+DAX power: Con-aware calculations across related tables:
+
+
+YTD Growth = 
+DIVIDE(
+    [Total Sales] - CALCULATE([Total Sales], SAMEPERIODLASTYEAR(Date[Date])),
+    CALCULATE([Total Sales], SAMEPERIODLASTYEAR(Date[Date]))
+)
+
+
+
+4. Why is Tableau preferred for data visualization?
+
+Tableau excels in exploratory analysis and visual storytelling:​
+
+
+✅ Show Me (auto chart selection)
+✅ Advanced visuals (waterfall, bullet, treemap)
+✅ Pixel-perfect formatting
+✅ Custom territories/heatmaps
+✅ Viz in Tooltips (drill-down richness)
+
+Tableau philosophy: "Ask questions of data through visuals first."
+
+
+
+5. Explain a real-life scenario where Tableau is better than Power BI.
+
+Scenario: Agency tracks 50 clients × 12 campaigns × daily metrics = Complex visualization needs
+
+Power BI limitations:
+
+
+❌ Single-page dashboards
+❌ Limited chart variety
+❌ Manual custom visual imports
+❌ Complex layout requirements fail
+
+Tableau wins:
+
+✅ Multi-panel storytelling layouts
+✅ Custom color palettes per client
+✅ Interactive treemaps (campaign hierarchy)
+✅ Geospatial client territories
+✅ Motion charts (campaign lifecycle)
+✅ Viz-in-tooltip (daily metrics drill)
+
+Client deliverable: Tableau dashboard → Executive wows → 30% contract renewal boost.
+Production Decision Matrix
+
+
+Microsoft Stack + Budget → Power BI ✅
+Creative Visuals + Large Budget → Tableau ✅
+Final Year Project → Power BI (free + impressive) ✅
+
+Power BI = Enterprise reporting king. Tableau = Visualization artistry. 📊🎨

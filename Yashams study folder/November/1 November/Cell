@@ -1,0 +1,181 @@
+ 
+
+ 1. What is a cell in Google Sheet?
+   A cell is the smallest individual unit in Google Sheets - the intersection point where one column meets one row. It's a rectangular box that holds:
+
+   Data: Text, numbers, dates, currency
+
+   Formulas: =SUM(A1:A10), =A1+B1
+
+   Formatting: Colors, fonts, borders, alignment
+
+Visual Structure:
+
+text
+
+  A   B   C
+
+1 [ ] [ ] [ ]  ← Row 1
+
+2 [ ] [ ] [ ]  ← Row 2 (Cell B2 is column B + row 2)
+
+3 [ ] [ ] [ ]  ← Row 3
+
+Total cells: 18,278 columns × 1,048,576 rows = ~19 billion cells per sheet!
+
+
+ 2. How can you identify a cell address?
+   Cell Address = Column Letter(s) + Row Number
+
+text
+
+A1     ← Column A, Row 1 (Top-left cell)
+
+B2     ← Column B, Row 2
+
+Z10    ← Column Z, Row 10
+
+AA100  ← Column AA, Row 100
+
+ZZZ999 ← Column ZZZ, Row 999
+
+How to see current cell address:
+
+   Name Box (top-left corner): Shows active cell address
+
+   Click any cell: Address appears in Name Box
+
+   Ctrl+G (Windows) / Cmd+G (Mac): Go To dialog shows address
+
+   Formula bar: Shows cell content + address
+
+Pro Tip: F5 = Go To specific cell by typing address!
+
+
+ 3. Can a cell hold both text and numbers together?
+
+	YES, but with specific formats:
+
+
+| Type           | Examples                          | How it works                                |
+
+| -------------- | --------------------------------- | ------------------------------------------- |
+
+| Text + Numbers | "Q1 Sales: 1500", "$5,000 profit" | Text format - numbers as characters         |
+
+| Mixed Formula  | ="Total: "&SUM(A1:A10)            | Formula returns text                        |
+
+| Number Format  | 1,234.56, $1,234.56               | Display formatting - actual value is number |
+
+| Date/Time      | 1/15/2026 14:30                   | Special number format                       |
+
+
+Cell A1: "Sales: 1500 units"
+
+Cell B1: =A1+100  ❌ ERROR (#VALUE!)
+
+Cell C1: ="₹"&5000  ✅ "₹5000"
+
+
+
+Key Rule: Text + Number = Text, Number + Number = Number
+
+
+ 4. What is the use of merging cells?
+
+	Merging combines multiple adjacent cells into one larger cell for:
+
+
+| Use Case        | Example                           | Benefit            |
+
+| --------------- | --------------------------------- | ------------------ |
+
+| Headers/Titles  | Merge A1:D1 for "Monthly Report"  | Visual hierarchy   |
+
+| Centered Labels | Merge A10:B10 for "Total"         | Perfect alignment  |
+
+| Report Layout   | Merge A1:A3 for company logo      | Design consistency |
+
+| Form Layouts    | Merge B2:D2 for "Enter Name Here" | Clean input areas  |
+
+
+How to Merge:
+
+    Select cells → Format → Merge cells
+
+    Shortcuts: Alt+O, M (Windows), Cmd+Shift+M (Mac)
+
+    Types:
+
+
+
+1.        Merge all (default)
+   
+2.        Merge horizontally
+   
+3.        Merge vertically
+   
+4.        Unmerge
+
+
+⚠️ Warning: Merged cells cause problems with sorting/filtering/charts!
+
+
+ 5. How can you enter a formula inside a cell?
+
+Method 1: Manual Entry
+
+
+1. Click cell (e.g., B2)
+
+2. Type: =SUM(A1:A10)    ← ALWAYS starts with =
+
+3. Press ENTER
+
+
+Method 2: Auto-complete
+
+
+Type: =SU → Select SUM from dropdown → Tab
+
+Type: =A1+A2 → Reference appears automatically
+
+
+Method 3: Function Wizard
+
+Insert → Function → SUM → Select range → Done
+
+
+Common Formula Patterns:
+
+Basic Math:           =A1+A2, =B1B2
+
+SUM Range:           =SUM(A1:A10)
+
+AVERAGE:             =AVERAGE(B1:B5)  
+
+IF Condition:        =IF(A1>100, "Pass", "Fail")
+
+VLOOKUP:             =VLOOKUP(C1, A1:B10, 2, FALSE)
+
+TODAY/DATE:          =TODAY(), =NOW()
+
+CONCATENATE:         ="Total: "&SUM(A1:A10)
+
+
+Pro Tips:
+
+
+🔥 Double-click cell → Edit formula directly
+
+🔥 F2 = Edit active cell formula
+
+🔥 Ctrl+` = Show all formulas (not results)
+
+🔥 Alt+T,U,F = Paste formula only (no values)
+
+
+Golden Rule: Every formula starts with = - otherwise treated as TEXT! 🚀
+
+
+

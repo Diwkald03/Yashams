@@ -1,0 +1,121 @@
+ 1. Why is Python called an interpreted language?
+
+Python is interpreted because it executes code line-by-line through the Python interpreter (CPython) without requiring pre-compilation to machine code.
+
+Process:
+
+.py file → Bytecode (.pyc) → Python Virtual Machine → Machine Code (at runtime)
+
+
+Key Traits:
+- No separate compile step like C++ (no `.exe` file)
+- Interactive shell (`python` command) executes immediately
+- Errors found at runtime (line-by-line execution)
+- Cross-platform bytecode runs anywhere Python is installed
+
+vs Compiled (C++):
+
+C++:  .cpp → gcc compiler → .exe → Run directly
+Python: .py → python interpreter → Execute instantly
+
+
+
+
+ 2. What makes Python easier for beginners compared to other languages?
+
+| Feature 	 | Python             | Java/C++                       |
+|----------------|--------------------|--------------------------------|
+| Syntax         | `print("Hello")`   | `System.out.println("Hello");` |
+| No semicolons  | ✅ Simple          | ❌ Required                   |
+| Readable       | Like English       | Verbose                        |
+| Dynamic typing | `x = 5` (auto int) | `int x = 5;`                   |
+| No compilation | Run instantly      | Compile → Run                  |
+| 1-class files  | Single `.py`       | Complex project structure      |
+
+Examples:
+python
+# Python (5 lines)
+name = "Rahul"
+age = 25
+print(f"Hello {name}, age {age}")
+
+# Java (15+ lines)
+public class Hello {
+    public static void main(String[] args) {
+        String name = "Rahul";
+        // ... verbose setup
+    }
+}
+
+
+
+
+ 3. What are some real-life applications of Python?
+
+| Industry        | Applications                           |
+|-----------------|----------------------------------------|
+| Web Development | Django, Flask (Instagram, Pinterest)   |
+| Data Science    | Pandas, NumPy, Jupyter (NASA, Netflix) |
+| AI/ML           | TensorFlow, PyTorch (Google, Tesla)    |
+| Automation      | Selenium, PyAutoGUI (testing, bots)    |
+| DevOps          | Ansible, Docker SDK                    |
+| Game Development| Pygame (small games)                   |
+
+Big Names Using Python:
+
+🐍 YouTube (video transcoding)
+🐍 Spotify (recommendation engine)  
+🐍 Dropbox (file sync)
+🐍 Reddit (backend)
+🐍 NASA (data analysis)
+
+
+
+
+ 4. Name a few Python libraries you know.
+
+| Category        | Libraries                                  |
+|--------------   |--------------------------------------------|
+| Data Analysis   | `pandas`, `numpy`, `matplotlib`, `seaborn` |
+| Web Scraping    | `requests`, `beautifulsoup`, `scrapy`      |
+| Web Development | `flask`, `django`, `fastapi`               |
+| Database        | `sqlite3`, `sqlalchemy`, `pymysql`         |
+| AI/ML           | `tensorflow`, `scikit-learn`, `pytorch`    |
+| Automation      | `selenium`, `openpyxl`, `pyautogui`        |
+
+Most Popular (2026):
+python
+pip install pandas numpy flask requests beautifulsoup4
+
+
+
+
+ 5. Why do big companies like Google use Python?
+
+Google's Love for Python:
+
+✅ RAPID DEVELOPMENT: 10x faster than Java/C++
+✅ PRODUCTIVITY: Less code = fewer bugs  
+✅ HIREABILITY: Easier to find Python devs
+✅ CROSS-FUNCTIONAL: Web → AI → DevOps (one language)
+✅ LIBRARY ECOSYSTEM: 400K+ packages on PyPI
+✅ INTERNAL TOOLS: YouTube, Google Search use Python
+
+
+Google's Python Usage:
+- YouTube: Video processing, recommendations
+- Google Search: Crawling, data analysis  
+- TensorFlow: Python-first AI framework
+- Google Cloud: Python SDKs everywhere
+
+Quotes from Google Engineers:
+
+"Python is our Swiss Army knife" - Google VP
+"Default choice for new projects" - Internal policy
+
+
+Economic Reason: Python dev = $120K/year, C++ dev = $160K/year, 10x productivity = Cheaper overall!
+
+
+
+Python = Perfect balance of power + simplicity! 🐍🚀

@@ -1,0 +1,185 @@
+
+1. What is MAE in simple words?
+
+MAE measures average prediction error magnitude in the same units as target variable:
+
+
+MAE = (1/n) × Σ |actualᵢ - predictedᵢ|
+
+Example: Salary predictions off by ₹50K on average → MAE = ₹50K.
+
+
+
+2. Why is MAE preferred over MSE sometimes?
+
+MAE treats all errors linearly, MSE squares errors (outlier sensitive):
+
+| Error | MAE Penalty | MSE Penalty | Impact    |
+| ----- | ----------- | ----------- | --------- |
+| ₹10K  | ₹10K        | ₹100M       | Linear    |
+| ₹100K | ₹100K       | ₹10B        | Explodes  |
+| ₹1M   | ₹1M         | ₹1T         | Dominates |
+
+MAE preferred when:
+
+    Outliers expected (CEO salaries, rare events)
+
+    Linear error costs (₹1K error = ₹1K loss)
+
+    Business stakeholders need interpretable metrics
+
+python
+# Salary prediction example
+errors = [10_000, 20_000, 1_500_000]  # Normal + outlier CEO
+mae = np.mean(np.abs(errors))         # ₹510K (reasonable)
+mse = np.mean(np.square(errors))      # ₹730B (CEO dominates)
+
+
+
+3. How do you calculate MAE using actual and predicted values?
+
+Manual vs scikit-learn implementation:
+
+python
+import numpy as np
+from sklearn.metrics import mean_absolute_error
+
+# Sample data: Actual vs Predicted salaries (₹)
+y_true = np.array([25_00_000, 12_00_000, 8_00_000, 30_00_000])
+y_pred = np.array([24_50_000, 11_80_000, 8_20_000, 28_00_000])
+
+# Manual calculation
+mae_manual = np.mean(np.abs(y_true - y_pred))
+print(f"MAE: ₹{mae_manual/100_000:.1f}L")  # ₹62.5K
+
+# Scikit-learn (production standard)
+mae_sklearn = mean_absolute_error(y_true, y_pred)
+assert np.isclose(mae_manual, mae_sklearn)
+
+Vectorized Formula:
+
+
+MAE = np.mean(np.abs(y_true - y_pred))
+
+
+
+4. What does a high MAE indicate?
+
+High MAE indicates systematic prediction bias or insufficient model capacity:
+MAE Level	Diagnosis	Action
+Low (<10% scale)	Good fit	Monitor drift
+Medium (10-25%)	Underfitting	Add features
+High (>25%)	Poor model	Retrain/ensemble
+
+Salary Example (scale: ₹25L):
+
+
+MAE = ₹2.5L → 10% error → Production acceptable
+MAE = ₹6.25L → 25% error → Needs improvement  
+MAE = ₹12.5L → 50% error → Replace model
+
+Root Cause Analysis:
+
+python
+# High MAE diagnostics
+residuals = y_true - y_pred
+print(f"Mean bias: ₹{np.mean(residuals)/1e5:.1f}L")  # Systematic error
+print(f"Median bias: ₹{np.median(residuals)/1e5:.1f}L")  # Outlier effect
+
+
+
+5. How can Streamlit display MAE to users?
+
+Production-grade metric display with business con:
+
+python
+import streamlit as st
+import plotly.express as px
+import numpy as np
+from sklearn.metrics import mean_absolute_error
+
+st.set_page_config(layout="wide")
+
+# Simulated salary predictions
+@st.cache_data
+def load_sample_data():
+    np.random.seed(42)
+    y_true = np.random.lognormal(16, 1, 1000)  # ₹10-50L salaries
+    y_pred = y_true * (1 + np.random.normal(0, 0.15, 1000))  # 15% error
+    return y_true, y_pred
+
+y_true, y_pred = load_sample_data()
+
+# === KPI DISPLAY ===
+st.header("📊 Model Performance: MAE Analysis")
+col1, col2, col3 = st.columns(3)
+
+mae = mean_absolute_error(y_true, y_pred)
+mae_percent = mae / np.mean(y_true) * 100
+
+col1.metric("MAE", f"₹{mae/1e5:.1f}L", "Target: <₹2L")
+col2.metric("MAE %", f"{mae_percent:.1f}%", "Target: <10%")
+col3.metric("Outlier MAE", f"₹{np.mean(np.abs(y_true[y_true>np.mean(y_true)*2] - y_pred[y_true>np.mean(y_true)*2]))/1e5:.1f}L")
+
+# === RESIDUALS VISUALIZATION ===
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("Residuals Distribution")
+    residuals = y_true - y_pred
+    fig1 = px.histogram(x=residuals/1e5, nbins=50, 
+                       labels={'x':'Error (₹L)'} ,
+                       title="Prediction Error Distribution")
+    st.plotly_chart(fig1, height=400)
+
+with col2:
+    st.subheader("Predictions vs Actual")
+    fig2 = px.scatter(x=y_pred/1e5, y=y_true/1e5,
+                     labels={'x':'Predicted Salary ₹L', 'y':'Actual ₹L'},
+                     trendline="ols")
+    st.plotly_chart(fig2, height=400)
+
+# === BUSINESS IMPACT ===
+st.subheader("💰 Business Impact")
+impact_df = pd.DataFrame({
+    'Segment': ['All Employees', 'Mid-Level', 'Senior Leadership'],
+    'MAE': [f'₹{mae/1e5:.1f}L', '₹1.8L', '₹4.2L'],
+    'Annual Cost': ['₹62Cr', '₹18Cr', '₹42Cr']
+})
+st.dataframe(impact_df, use_container_width=True)
+
+
+Stakeholder-Friendly Display:
+
+
+Technical: MAE = ₹2.1L (8.4% of avg salary)
+Business:  "Average salary prediction off by ₹2.1L per employee"
+Impact:    "₹62Cr annual payroll error across 3000 employees"
+
+
+MAE vs Alternative Metrics Decision Matrix
+
+| Metric | Outlier Sensitivity | Unit           | Business Use             |
+| ------ | ------------------- | -------------- | ------------------------ |
+| MAE    | Low                 | Same as target | Budgeting, forecasting   |
+| MSE    | High                | Squared        | Model optimization       |
+| RMSE   | High                | Same as target | Penalty for large errors |
+| MAPE   | Medium              | Percentage     | Relative accuracy        |
+
+
+Production Guidelines:
+
+
+Salary prediction: MAE (direct ₹ impact)
+Revenue forecast:  MAPE (growth con)
+Energy demand:     RMSE (safety-critical)
+
+Final Year Project Recommendation:
+
+
+✅ Display MAE + business cost impact
+✅ Residuals histogram (error patterns)  
+✅ Comparison vs baseline (mean predictor)
+✅ Interactive sliders for "what-if" analysis
+
+MAE = Business stakeholder's regression metric. Translates model error into ₹₹₹ impact. 📈💰

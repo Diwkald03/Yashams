@@ -1,0 +1,126 @@
+
+1. What is encapsulation in Python?
+
+Encapsulation wraps data (attributes) and methods within a class, hiding internal implementation details and exposing only necessary interfaces through public methods.
+
+Core principle: "Tell me what, not how" - users call employee.get_salary() without knowing internal storage logic.
+
+
+
+2. Difference between public, protected, and private members.
+
+Python uses convention-based access control (no strict enforcement):
+
+| Modifier  | Syntax      | Access             | Convention                            |
+| --------- | ----------- | ------------------ | ------------------------------------- |
+| Public    | self.name   | Anywhere           | External use OK                       |
+| Protected | self._name  | Class + subclasses | Internal use (warning)                |
+| Private   | self.__name | Class only         | Name mangling: _ClassName__name mimo​ |
+
+Implementation:
+
+python
+class Employee:
+    def __init__(self, name, salary):
+        self.name = name                    # Public
+        self._dept = "Engineering"         # Protected  
+        self.__salary = salary             # Private
+    
+    def get_salary(self):                  # Public interface
+        return self.__salary
+
+
+
+3. How does encapsulation improve security?
+
+Prevents invalid states and unauthorized modifications:
+
+
+❌ Direct access: emp.__salary = -1000  # Invalid!
+✅ Controlled: emp.set_salary(1000)     # Validates first
+
+Protection layers:
+
+    Validation: set_salary(salary) checks range (₹0-₹1Cr)
+
+    Abstraction: Internal changes (DB → Redis) don't break UI
+
+    Information hiding: Users can't accidentally corrupt data
+
+
+
+4. Can we access private variables in Python? 
+How?
+
+Python's "private" is convention-only - accessible via _ClassName__attribute:
+
+python
+emp = Employee("Alice", 50000)
+print(emp._Employee__salary)  # 50000 (works but discouraged)
+
+# Proper way:
+print(emp.get_salary())       # 50000 (recommended)
+
+Why it exists: Subclasses access parent private data without conflicts.
+
+
+
+5. Give a real-life example of encapsulation.
+
+class BankAccount:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.__balance = balance      # Private: Can't directly modify
+    
+    def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+            print(f"Deposited ₹{amount}")
+        else:
+            print("Invalid deposit")
+    
+    def withdraw(self, amount):
+        if 0 < amount <= self.__balance:
+            self.__balance -= amount
+            print(f"Withdrew ₹{amount}")
+        else:
+            print("Insufficient funds")
+    
+    def get_balance(self):
+        return self.__balance
+
+# Production usage
+account = BankAccount("Alice", 10000)
+account.deposit(5000)    # ✅ Works
+account.withdraw(20000)  # ❌ "Insufficient funds"
+print(account.get_balance())  # 15000
+
+
+Without encapsulation (disaster):
+
+python
+# Direct access breaks everything
+account.__balance = -999999  # Bank robbery!
+
+Production HR System Example
+
+python
+class EmployeeManager:
+    def __init__(self):
+        self.__employees = {}  # Private employee database
+    
+    def add_employee(self, id, name, salary):
+        if id in self.__employees:
+            raise ValueError("Employee exists")
+        if not 0 <= salary <= 100000000:  # ₹1Cr max
+            raise ValueError("Invalid salary")
+        self.__employees[id] = {"name": name, "salary": salary}
+    
+    def get_employee(self, id):
+        return self.__employees.get(id, None)
+
+hr = EmployeeManager()
+hr.add_employee(1, "Bob", 500000)  # Works
+# hr.__employees[1] = {"salary": -1}  # Impossible!
+
+Encapsulation = Data integrity guarantee. Production systems fail without it. 🔒✅

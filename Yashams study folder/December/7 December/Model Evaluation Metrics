@@ -1,0 +1,181 @@
+
+1. Why is accuracy important in ML model evaluation?
+
+Accuracy measures correct prediction proportion in classification tasks: (TP + TN) / Total. It's the primary baseline metric for balanced datasets where classes occur with similar frequency.​
+
+Engineering Con:
+
+
+✅ Effective: Spam (50/50), Image classification (balanced)
+❌ Misleading: Fraud detection (0.1% positive), Medical diagnosis (rare disease)
+
+Decision Threshold: Use accuracy when positive/negative class balance > 80:20.
+
+
+
+2. What is the difference between classification accuracy and regression error?
+
+Fundamental Task Differences:
+
+| Aspect     | Classification             | Regression                        |
+| ---------- | -------------------------- | --------------------------------- |
+| Output     | Discrete labels (cat, dog) | Continuous values (₹25.5L salary) |
+| Metric     | Accuracy (0-1)             | Error (MSE, MAE, RMSE)            |
+| Perfect    | 100% correct labels        | 0 error (exact predictions)       |
+| Evaluation | Confusion matrix           | Residual plots                    |
+
+
+Mathematical Distinction:
+
+
+Classification: Accuracy = Σ(I[ŷᵢ = yᵢ]) / N
+Regression:     MSE = (1/N) × Σ(yᵢ - ŷᵢ)²    # Lower is better
+
+
+
+3. How do you display model accuracy in Streamlit?
+
+Production-grade metric dashboard:
+
+python
+import streamlit as st
+from sklearn.metrics import accuracy_score, r2_score
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+st.header("📊 Model Performance Dashboard")
+
+# Simulated results
+col1, col2 = st.columns(2)
+with col1:
+    y_true_class = [0,1,1,0,1,0]
+    y_pred_class = [0,1,0,0,1,0]
+    acc = accuracy_score(y_true_class, y_pred_class)
+    st.metric("Classification Accuracy", f"{acc:.1%}", "▲ 2.3%")
+
+with col2:
+    y_true_reg = [100, 250, 300, 150]
+    y_pred_reg = [110, 240, 290, 160] 
+    r2 = r2_score(y_true_reg, y_pred_reg)
+    st.metric("R² Score", f"{r2:.3f}", "▲ 0.12")
+
+# Progress bars for interpretability
+st.subheader("Performance Benchmarks")
+col1, col2, col3 = st.columns(3)
+col1.progress(acc)
+col1.metric("Model", f"{acc:.1%}", "Industry Avg: 85%")
+col2.progress(min(r2 + 0.2, 1.0))
+col2.metric("Baseline", f"{r2:.1%}", "Naive: -∞")
+
+
+
+4. Why is R² score useful in linear regression?
+
+R² (Coefficient of Determination) quantifies variance explained by the model:
+
+
+R² = 1 - (SS_res / SS_tot) = 1 - (Σ(yᵢ - ŷᵢ)² / Σ(yᵢ - ȳ)²)
+
+Interpretation Ranges:
+
+| R² Value  | Quality   | Salary Prediction Example    |
+| --------- | --------- | ---------------------------- |
+| 0.90-1.00 | Excellent | Explains 95% salary variance |
+| 0.70-0.90 | Good      | Experience + education       |
+| 0.50-0.70 | Fair      | Single feature (experience)  |
+| 0.00-0.50 | Poor      | Random guessing              |
+
+Critical Insight: R² = 0 → Model no better than mean predictor. R² < 0 → Model worse than baseline.
+
+Streamlit Implementation:
+
+python
+# Model comparison
+naive_r2 = r2_score(y_true_reg, [y_true_reg.mean()] * len(y_true_reg))
+model_r2 = r2_score(y_true_reg, y_pred_reg)
+
+st.info(f"✅ Model beats baseline by {model_r2 - naive_r2:.3f} R² points")
+
+
+
+5. How can visualization help understand model performance better?
+
+Visuals reveal patterns that scalar metrics conceal:
+
+python
+# === 1. RESIDUALS PLOT (Regression diagnostics) ===
+fig1 = make_subplots(rows=2, cols=2, 
+                    subplot_titles=("Residuals", "Q-Q Plot", 
+                                 "Pred vs Actual", "Confusion Matrix"))
+
+# Residuals (heteroscedasticity detection)
+residuals = y_true_reg - y_pred_reg
+fig1.add_trace(go.Scatter(x=y_pred_reg, y=residuals, 
+                         mode='markers', name='Residuals'), row=1, col=1)
+
+# === 2. CONFUSION MATRIX (Classification errors) ===
+cm = confusion_matrix(y_true_class, y_pred_class)
+fig1.add_trace(go.Heatmap(z=cm, colorscale='Blues'), row=2, col=2)
+
+st.plotly_chart(fig1, height=600)
+
+Visualization ROI:
+
+
+Scalar metrics: "85% accuracy" → Surface-level
+Residual plots: "High variance at low predictions" → Actionable fix
+Confusion matrix: "FN=15% in high-value segment" → Business priority
+
+
+Diagnostic Patterns Detected:
+
+| Visual Pattern   | Problem              | Solution            |
+| ---------------- | -------------------- | ------------------- |
+| Funnel residuals | Heteroscedasticity   | Log-transform Y     |
+| Step function    | Non-linearity        | Polynomial features |
+| Class imbalance  | Bias toward majority | SMOTE/undersampling |
+| Outlier cluster  | Data quality         | Winsorize/remove    |
+
+
+Production Evaluation Framework
+
+
+CLASSIFICATION (Imbalanced): Precision/Recall/F1 > Accuracy
+CLASSIFICATION (Balanced):  Accuracy + Confusion Matrix
+REGRESSION:                 R² + RMSE + Residual plots
+
+THRESHOLDS:
+✅ Production: R² > 0.75, Accuracy > 0.85
+⚠️  Review:    R² 0.60-0.75, Accuracy 0.75-0.85  
+❌ Reject:     R² < 0.60, Accuracy < 0.75
+
+Streamlit Production Template:
+
+python
+# Auto-generate evaluation suite
+def model_evaluation_suite(y_true, y_pred, task_type):
+    if task_type == "classification":
+        return {
+            'accuracy': accuracy_score(y_true, y_pred),
+            'precision': precision_score(y_true, y_pred),
+            'recall': recall_score(y_true, y_pred)
+        }
+    else:  # regression
+        return {
+            'r2': r2_score(y_true, y_pred),
+            'rmse': np.sqrt(mean_squared_error(y_true, y_pred))
+        }
+
+# One-liner dashboard
+metrics = model_evaluation_suite(y_test, y_pred, "classification")
+for name, value in metrics.items():
+    st.metric(name.title(), f"{value:.3f}")
+
+Final Year Deliverable Strategy:
+
+
+Week 1: Accuracy + R² implementation
+Week 2: Confusion matrix + residual plots  
+Week 3: Automated evaluation suite + business metrics
+
+Metrics without visualization = Incomplete story. Always pair numbers with patterns. 📊🎯

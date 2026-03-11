@@ -1,0 +1,82 @@
+1. What is mysql-connector-python and why is it used?
+	mysql-connector-python is the official MySQL driver for Python, enabling seamless communication between Python applications and MySQL databases via the MySQL Client/Server protocol. It's a pure Python implementation (no C extensions needed) that implements Python DB-API 2.0, supporting connection pooling, transactions, stored procedures, and advanced features like SSL and compression.
+
+Used for: Web apps (Django/Flask), data analysis, ETL pipelines, microservices—any Python project needing MySQL integration.
+
+
+
+2. How can you connect Python with a MySQL database?
+
+python
+import mysql.connector
+from mysql.connector import Error
+
+try:
+    connection = mysql.connector.connect(
+        host='localhost',      # or remote IP
+        database='shop_db',
+        user='root',
+        password='your_password',
+        port=3306
+    )
+    
+    if connection.is_connected():
+        print("Connected to MySQL")
+        cursor = connection.cursor()
+        
+except Error as e:
+    print(f"Error: {e}")
+finally:
+    if connection.is_connected():
+        cursor.close()
+        connection.close()
+
+Install: pip install mysql-connector-python
+
+3. What is the role of cursor() in MySQL connector?
+
+	Role: cursor() creates a cursor object from the connection—your handle for executing SQL queries and fetching results. Methods include:
+
+    execute(sql) / executemany()
+
+    fetchall() / fetchone() / fetchmany()
+
+    close() to free resources
+
+Example: cursor.execute("SELECT * FROM users"); results = cursor.fetchall()
+
+Multiple cursors per connection possible for concurrent operations.
+
+
+
+4. Why do we need commit() after inserting data?
+
+	MySQL uses transactional behavior—INSERT/UPDATE/DELETE execute but remain uncommitted until connection.commit(). Without it:
+
+    Changes rollback on close() or error
+
+    Other connections can't see your data
+
+    Data lost on crash
+
+SELECT auto-commits (read-only). Always: cursor.execute("INSERT..."); connection.commit()
+
+
+
+5. What are some differences between sqlite3 and mysql-connector-python?
+
+| Feature      | sqlite3                      | mysql-connector-python                    |
+| ------------ | ---------------------------- | ----------------------------------------- |
+| Architecture | File-based (single .db file) | Client-server (MySQL daemon)              |
+| Installation | Built-in Python              | pip install mysql-connector-python        |
+| Connection   | sqlite3.connect('file.db')   | mysql.connector.connect(host, user, pass) |
+| Concurrency  | Limited (file locking)       | High (server handles multiple users)      |
+| Scale        | Small apps/prototypes        | Enterprise (millions records)             |
+| Network      | Local only                   | Remote access over TCP                    |
+| Setup        | Zero-config                  | MySQL server + users/permissions          |
+| Performance  | Fast for reads               | Optimized + connection pooling            |
+| Transactions | Implicit                     | Explicit control                          |
+
+Choose sqlite3: Quick prototypes, mobile/desktop apps
+
+Choose MySQL: Web apps, teams, production systems

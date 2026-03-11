@@ -1,0 +1,146 @@
+
+1. What is Train–Test Split?
+
+	Train-Test Split divides dataset into training set (model learning) and testing set (performance evaluation) to simulate real-world deployment on unseen data.​
+
+Technical Implementation:
+
+python
+from sklearn.model_selection import train_test_split
+
+# 80% training, 20% testing
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y  # Reproducible + balanced
+)
+
+Data Flow:
+
+
+Raw Dataset (100%) → Training (80%) → Model learns patterns
+                   → Testing (20%)  → Unbiased performance estimate
+
+
+
+2. Why do we need a testing set?
+
+	Testing set provides unbiased performance estimate by ensuring model encounters never-seen-before data, detecting overfitting and generalization capability.​
+
+Critical Failure Modes Without Testing:
+
+
+Training Accuracy: 99% → Model memorized training data
+Testing Accuracy:  65% → Cannot generalize → Production failure
+
+Production Reality Check:
+
+
+Training R²: 0.95 → Perfect fit to training data
+Testing R²:  0.78 → Realistic deployment performance
+
+
+
+3. What is a common ratio for Train–Test Split?
+
+	Common splits based on dataset size and reliability requirements:
+
+| Dataset Size | Recommended Split         | Rationale             |
+| ------------ | ------------------------- | --------------------- |
+| <1K samples  | 60/20/20 (train/val/test) | Limited data          |
+| 1K-10K       | 80/20 (train/test)        | Industry standard     |
+| 10K-100K     | 85/15                     | Ample training data   |
+| >100K        | 90/10                     | Statistical stability |
+
+Scikit-learn Default: test_size=0.25 (75/25 split).
+
+
+
+4. What happens if we only train the model and never test it?
+
+	Training-only evaluation produces optimistic bias and hidden overfitting:
+
+
+Scenario: Salary prediction model
+✅ Training only: R²=0.98, MAE=₹50K → "Perfect model!"
+❌ Reality:     R²=0.65, MAE=₹3.2L → Production disaster
+
+Business Impact:
+• Wrong hiring decisions (overestimate junior salaries)
+• Budget misallocation (₹32Cr annual payroll error)
+• Stakeholder loss of trust
+
+Classic Example: Titanic survival - training accuracy 98%, test 78%.
+
+
+
+5. Can a model be perfect on training but bad on testing? Why?
+
+	Overfitting occurs when model memorizes training data noise instead of learning generalizable patterns:
+
+| Underfitting                            | Good Fit                               | Overfitting                                 |
+| --------------------------------------- | -------------------------------------- | ------------------------------------------- |
+| High biasTraining R²: 0.60Test R²: 0.58 | BalancedTraining R²: 0.82Test R²: 0.79 | High varianceTraining R²: 0.98Test R²: 0.65 |
+
+Root Causes:
+
+
+1. Excessive model complexity (deep trees, high-degree polynomials)
+2. Insufficient regularization (no L1/L2 penalty)
+3. Small training sets (<500 samples)
+4. No early stopping
+
+Streamlit Overfitting Visualization:
+
+python
+# Training vs Testing curves
+fig = px.line(df_performance, x='Complexity', y=['Train_R2', 'Test_R2'],
+             title="Overfitting Detection: Train vs Test Gap")
+st.plotly_chart(fig)
+
+# Gap > 0.10 → Overfitting detected
+train_gap = train_r2 - test_r2
+st.warning(f"Overfitting Gap: {train_gap:.3f} → Add regularization")
+
+Production Train-Test Split Implementation
+
+python
+# === ENTERPRISE-GRADE PIPELINE ===
+def production_train_test_split(X, y, target_col=None):
+    """Stratified split with reproducibility"""
+    
+    # Time-based split (production realistic)
+    if 'date' in X.columns:
+        train_mask = X['date'] < '2025-12-31'
+    else:
+        # Standard stratified split
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=42, stratify=y if target_col else None
+        )
+    
+    print(f"Training: {len(X_train):,} | Testing: {len(X_test):,}")
+    print(f"Train class balance: {y_train.value_counts(normalize=True).round(3)}")
+    print(f"Test class balance:  {y_test.value_counts(normalize=True).round(3)}")
+    
+    return X_train, X_test, y_train, y_test
+
+# Salary prediction example
+X_train, X_test, y_train, y_test = production_train_test_split(X, y, 'salary_band')
+
+
+Decision Framework: When to Adjust Ratios
+
+| Scenario                | Test Size | Rationale          |
+| ----------------------- | --------- | ------------------ |
+| Rapid prototyping       | 30%       | Quick feedback     |
+| Production model        | 20%       | Balance            |
+| High-stakes (fraud)     | 15%       | Statistical power  |
+| Regulatory (healthcare) | 30%+      | Audit requirements |
+
+Final Year Project Checklist:
+
+✅ 80/20 split (industry standard)
+✅ random_state=42 (reproducible results)  
+✅ Stratify by target (class balance)
+✅ Training vs test performance comparison
+✅ Gap analysis (<0.10 acceptable)
+
+Train-test split = Reality check gate. 95% of production ML failures trace back to poor validation strategy. 🎯✅

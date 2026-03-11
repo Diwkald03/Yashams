@@ -1,0 +1,111 @@
+
+1. How does Flask receive form data from HTML?
+
+Flask uses request.form to access HTML form data. Import request from Flask and check request.method == 'POST'.
+
+python
+from flask import Flask, request, render_template
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        return f'Logged in: {username}'
+    return render_template('login.html')
+
+HTML form:
+
+xml
+<form method="POST">
+    <input type="text" name="username">
+    <input type="password" name="password">
+    <button type="submit">Login</button>
+</form>
+
+
+
+2. What is the purpose of using POST in form submission?
+
+	POST sends data securely (not visible in URL) and handles sensitive info like passwords, unlike GET which shows data in URL.
+
+| POST                 | GET                       |
+| -------------------- | ------------------------- |
+| Data in request body | Data in URL (?name=rahul) |
+| Secure (passwords)   | Bookmarks, search         |
+| No length limit      | 255 char limit            |
+| Form submissions     | Page parameters           |
+
+<form method="POST">  # Login forms
+<form method="GET">   # Search forms
+
+
+
+3. How do you compare login details in Flask?
+
+	Check form data against stored credentials:
+
+python
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form['username']
+    password = request.form['password']
+    
+    if username == 'admin' and password == 'secret123':
+        return 'Login Successful!'
+    else:
+        return 'Invalid credentials'
+
+Better (secure):
+
+python
+users = {'admin': 'hashed_password_here'}
+if username in users and check_password(password, users[username]):
+    return 'Welcome!'
+
+
+
+4. How do you send error messages back to templates?
+
+Pass error message as variable to template:
+
+python
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        if request.form['username'] != 'admin':
+            return render_template('login.html', error="Invalid username!")
+    
+    return render_template('login.html')
+
+HTML displays error:
+
+xml
+{% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+<form method="POST">...</form>
+
+
+
+5. Why is a templates folder important for login pages?
+
+	Flask automatically looks for HTML files in templates/ folder. Login pages need dynamic content (error messages, user data) that only templates can handle.
+
+templates/
+└── login.html     # Dynamic login form
+static/
+└── style.css      # Static styling
+
+Without templates folder:
+
+❌ FileNotFoundError: login.html not found
+❌ Can't pass variables to plain HTML
+
+Login workflow:
+
+Flask → templates/login.html → User fills form → POST → Check → Redirect or error
+
+Forms + Templates = Complete login system! 🔐✨
+
+

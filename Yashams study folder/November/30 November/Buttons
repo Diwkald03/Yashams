@@ -1,0 +1,78 @@
+
+1. How does a button work internally in Streamlit?
+
+Buttons trigger full script re-execution on click. Streamlit returns True for one run only, then False until next click.
+
+text
+Click button → Script restarts top-to-bottom → button=True → Code runs → Next run button=False
+
+
+
+2. What happens if two buttons are placed one after another?
+
+Each button works independently - clicking one doesn't affect others:
+
+python
+if st.button("Save"):
+    st.write("Data saved!")
+    
+if st.button("Load"):  
+    st.write("Data loaded!")
+
+Result: Click "Save" → Only first block runs. Click "Load" → Only second block runs.
+
+3. Can a button trigger a long Python function? How?
+
+
+
+YES - use on_click callback or session state:
+
+python
+# Callback (runs immediately)
+def long_process():
+    progress = st.progress(0)
+    for i in range(100):
+        time.sleep(0.1)
+        progress.progress(i+1)
+    st.success("Done!")
+
+st.button("Start Long Task", on_click=long_process)
+
+# OR Session State
+if 'processing' not in st.session_state:
+    st.session_state.processing = False
+
+if st.button("Process") and not st.session_state.processing:
+    st.session_state.processing = True
+    # Long function here
+
+
+
+4. Why do buttons return True only once?
+
+Streamlit's re-execution model - prevents infinite loops:
+
+text
+1. Button clicked → Returns True → Script runs
+2. Script finishes → Button resets to False
+3. Next interaction needed → Button clicked again
+
+Without this: Button would trigger continuously = crash!
+
+
+
+5. When should you use buttons instead of forms?
+
+| Use BUTTONS when                         | Use FORMS when           |
+| ---------------------------------------- | ------------------------ |
+| Single actions (Save, Delete, Calculate) | Multiple inputs + submit |
+| Quick tasks                              | Data validation          |
+| Independent clicks                       | All-or-nothing submit    |
+| if st.button("Run"):                     | with st.form():          |
+
+Examples:
+
+✅ BUTTON: "Generate Report" 
+✅ FORM:  Name+Email+Phone → Submit
+
+Buttons = Simple actions, Forms = Complex data entry! 🚀

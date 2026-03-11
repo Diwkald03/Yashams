@@ -1,0 +1,7 @@
+USE Fact_table
+
+SELECT * FROM fact24
+
+SELECT *
+FROM fact24
+WHERE COGS = (SELECT MAX(COGS) FROM fact24);

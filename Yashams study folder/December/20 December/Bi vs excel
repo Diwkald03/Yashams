@@ -1,0 +1,108 @@
+
+1. Difference between Power BI and Excel.
+
+| Aspect        | Excel                           | Power BI                                                 |
+| ------------- | ------------------------------- | -------------------------------------------------------- |
+| Data Capacity | 1M rows maxSlows/crashes beyond | Billions of rowsColumnar compression ccslearningacademy​ |
+| Visualization | Static chartsManual updates     | Interactive dashboardsReal-time slicers                  |
+| Connectivity  | Manual imports                  | 150+ live sourcesScheduled refresh                       |
+| Collaboration | Email/OneDrive                  | Power BI ServiceApps + workspaces                        |
+| Cost          | Office 365 included             | Pro: $10/user/month                                      |
+
+
+
+2. When would you prefer Excel over Power BI?
+
+Excel wins for individual, ad-hoc analysis:
+
+✅ Quick calculations (VLOOKUP, SUMIFs)
+✅ Financial modeling (NPV, IRR)
+✅ <100K rows (pivots still responsive)
+✅ No IT support needed
+✅ Offline work
+✅ VBA automation
+
+Power BI overkill: Personal budgeting, classroom grades, small team reports.
+
+
+
+3. What is DAX and how is it different from Excel formulas?
+
+DAX = Columnar calculation language optimized for analytics:
+
+| Feature       | Excel Formula           | DAX                                                   |
+| ------------- | ----------------------- | ----------------------------------------------------- |
+| Con       | Cell-based =SUM(A1:A10) | Row/filter con [Total Sales] = SUM(Sales[Amount]) |
+| Reusability   | Copy-paste per cell     | Single measure → All visuals                          |
+| Performance   | Row-by-row              | Vectorized (millions of rows)                         |
+| Relationships | Manual VLOOKUP          | Automatic via model                                   |
+
+Same calculation:
+
+
+=SUMIFS(Sales!B:B, Sales!C:C, ">2025-01-01")
+
+
+YTD Sales = TOTALYTD(SUM(Sales[Amount]), Date[Date])
+
+
+
+4. How does Power BI handle large datasets better than Excel?
+
+Power BI's columnar storage + VertiPaq engine crushes Excel:
+
+
+1M row sales data:
+Excel → 15min pivot refresh → Crashes
+Power BI → 3sec slicer response → Smooth
+
+Technical advantages:
+
+    Compression: 10x smaller file sizes
+
+    In-memory: SSD-speed queries
+
+    Aggregations: Pre-calculated summaries
+
+    Query folding: Database pushes work
+
+Excel limitation: Row-oriented storage → Sequential scans → Memory thrashing.
+
+
+
+5. Explain one real-life use case where Power BI is better than Excel.
+
+Scenario: 50 stores × 1M transactions/year = 50M rows
+
+Excel approach (fails):
+
+
+✅ Import 1st quarter (250K rows)
+✅ Pivot crashes at 6 slicers
+❌ Can't handle full year
+❌ Manual monthly updates
+❌ Email spreadsheets to execs
+
+Power BI solution (production-ready):
+
+✅ Connect live to SQL + POS systems
+✅ Star schema: Sales → Store → Product → Date
+✅ Executive dashboard: 12 slicers (Store/Region/Product/Category)
+✅ Mobile layout for regional managers
+✅ Daily auto-refresh 2AM
+✅ Row-level security (Store123 sees own data only)
+✅ Teams app distribution
+
+Business impact:
+
+Before Power BI: Monthly Excel → 2 days work
+After Power BI: Real-time dashboard → 2min insights
+ROI: ₹5Cr inventory optimization (3 months)
+
+Decision Framework
+
+<100K rows + Personal use → Excel
+>1M rows + Teams → Power BI
+Both skills → Hybrid (Excel → Power BI pipeline)
+
+Final-year project: Build HR dashboard in Power BI, import Excel source files. Demonstrates both tools + real enterprise workflow. 📊✅

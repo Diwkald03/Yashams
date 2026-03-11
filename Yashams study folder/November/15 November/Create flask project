@@ -1,0 +1,83 @@
+
+1. Why do we create a folder before starting a Flask project?\
+
+	Organizes code, templates, and assets into a professional structure that scales as your app grows. Prevents mixing HTML/CSS/Python files in one messy directory.​
+
+Standard Flask structure:
+
+my_flask_app/
+├── app.py          # Main app
+├── templates/      # HTML files
+├── static/         # CSS, JS, images
+├── requirements.txt # Dependencies
+└── README.md
+
+
+2. What is the purpose of the `app.py` file?
+
+	Central file that creates Flask app instance and defines all routes. Contains the app.run() command to start server.
+
+Basic app.py:
+
+python
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return 'Hello World!'
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+
+3. How does Flask know which page to show for a route?
+
+	Decorator @app.route('/path') maps URLs to functions. Flask checks incoming URL against all route decorators.
+
+@app.route('/')         → http://localhost/ → home()
+@app.route('/about')    → http://localhost/about → about()
+@app.route('/user/<id>')→ http://localhost/user/123 → user(id=123)
+
+Dynamic routing with <variable> captures URL parts as parameters.
+
+
+
+4. How do you run a Flask project using the terminal?
+
+	Terminal commands:
+
+bash
+cd my_flask_app        # Enter project folder
+python app.py          # OR
+flask run              # Modern way
+
+Output:
+
+* Running on http://127.0.0.1:5000
+* Debug mode: on
+
+Production: flask run --host=0.0.0.0 --port=5000
+
+
+
+5. What happens when you open `http://127.0.0.1:5000/` in a browser?
+
+	Browser sends GET request to localhost port 5000 (Flask's default):
+
+    Flask receives request
+
+    Matches @app.route('/') → calls home() function
+
+    Returns HTML/text to browser
+
+    Browser renders the page
+
+URL → Route Matcher → Function → Response → Browser
+/home → @app.route('/') → home() → "Hello World!" → Displayed
+
+127.0.0.1 = localhost = your computer. Port 5000 = Flask's default server port.
+
+Folder + app.py = Complete web app ready in 5 minutes! 🚀🐍
+

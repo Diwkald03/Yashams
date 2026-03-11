@@ -1,0 +1,112 @@
+ 1. What is the main difference between Excel and Google Sheet?
+
+| Aspect | Excel | Google Sheets |
+|------------|-----------|------------------|
+| Type | Desktop app (Windows/Mac) | Web-based (browser) |
+| Cost | Paid (Microsoft 365, ~₹500/month) | FREE (Google account) |
+| Performance | Faster, handles millions of rows | Slower with large data |
+| Formulas | 480+ functions, advanced analysis | 400+ functions, basic-advanced |
+| Offline | ✅ Full offline | ❌ Limited offline |
+
+Core Difference: Excel = Power tool, Sheets = Team tool
+
+
+
+ 2. Which one is better for teamwork and why?
+
+Google Sheets 🏆 100x better for teams!
+
+| Feature | Google Sheets | Excel |
+|-------------|------------------|-----------|
+| Real-time editing | ✅ Multiple users simultaneously | ❌ One at a time (or complex OneDrive setup) |
+| Live chat | ✅ Built-in comments/chat | ❌ Requires Teams |
+| Version history | ✅ Every keystroke tracked | ❌ Manual save versions |
+| Permissions | ✅ View/Edit/Comment per user | ❌ File sharing only |
+| Notifications | ✅ @mentions, email alerts | ❌ No live notifications |
+
+Example: 5 people editing sales report → Sheets = Perfect, Excel = Nightmare
+
+
+
+ 3. Can Google Sheet work without internet?
+
+Limited offline support:
+
+| ✅ Works Offline | ❌ Needs Internet |
+|---------------------|---------------------|
+| View existing sheets | Complex formulas |
+| Basic editing | Real-time collaboration |
+| Simple formulas | Large datasets |
+| Charts formatting | Publishing/sharing |
+
+Enable Offline:
+
+File → Settings → Offline → Turn on
+Chrome Extension: Google Docs Offline
+
+
+Excel wins: Full offline power anytime!
+
+
+
+ 4. What are the file extensions used by Excel and Google Sheet?
+
+| Platform | Native Format | Export Options |
+|--------------|------------------|-------------------|
+| Excel | `.xlsx` (XML), `.xls` (old) | `.csv`, `.pdf`, `.txt` |
+| Google Sheets | No local file (cloud) | `.xlsx`, `.csv`, `.pdf`, `.ods` |
+
+Conversion:
+
+Sheets → File → Download → Microsoft Excel (.xlsx)
+Excel → Upload to Drive → Converts to Sheets
+
+
+
+
+ 5. How can you share a Google Sheet with others?
+
+5 Ways to Share (Easiest → Advanced):
+
+# Method 1: Share Button (90% cases)
+
+🔘 Click green "SHARE" button (top-right)
+🔘 Enter email addresses
+🔘 Set permissions:
+   ✅ VIEWER (read-only)
+   ✅ COMMENTER (comments only)  
+   ✅ EDITOR (full access)
+🔘 Click "Send"
+
+
+# Method 2: Link Sharing
+
+🔘 Share → "Copy link"
+🔘 Change to: "Anyone with link" → Viewer/Editor/Commenter
+🔘 Copy & paste link
+
+
+# Method 3: Add-on Protection
+
+🔘 Protect specific sheets/ranges
+🔘 "Only you" can edit critical formulas
+🔘 Others see but can't break
+
+
+# Method 4: Publish to Web
+
+File → Share → Publish to web → Embed link
+
+
+# Method 5: Google Workspace Admin
+
+Domain-wide permissions
+Audit logs
+Access restrictions
+
+
+Pro Tip: "Notify people" checkbox → Auto-email with link! 🚀
+
+
+
+Summary: Sheets = Teamwork king, Excel = Solo power user 🏆

@@ -1,0 +1,117 @@
+ 1. What is the purpose of the IF function in Google Sheet?
+
+IF function performs conditional logic - returns different results based on whether a condition is TRUE or FALSE.
+
+Purpose:
+- Decision making: Grades (Pass/Fail), Status (Complete/Pending)
+- Data categorization: High/Medium/Low priority
+- Calculations: Discounts (if sales > target), Taxes
+- Clean reporting: Hide zeros, show messages
+
+Simple Example:
+excel
+=IF(A1>=50, "Pass", "Fail")
+75 → "Pass"    45 → "Fail"
+
+
+
+
+ 2. What is the difference between CONCATENATE and JOIN?
+
+| Function     | Syntax                   | Joins             | Use Case              |
+|--------------|--------------------------|-------------------|-----------------------|
+| CONCATENATE  | `=CONCATENATE(A1,B1,C1)` | Fixed arguments   | Simple 2-3 text joins |
+| JOIN         | `=JOIN(", ", A1:A10)`    | Range + delimiter | Lists, CSV data       |
+
+Examples:
+
+A1: Rahul  B1: Kumar
+=CONCATENATE(A1," ",B1)  → "Rahul Kumar"
+
+Names range A1:A3: ["Ram","Shyam","Geeta"]
+=JOIN(", ", A1:A3)  → "Ram, Shyam, Geeta"
+
+
+JOIN wins for dynamic lists!
+
+
+
+ 3. Can LEN function count spaces also?
+
+YES - LEN counts ALL characters including spaces, punctuation, everything!
+
+excel
+="Rahul Kumar"    → LEN() = 11 (R-a-h-u-l- -K-u-m-a-r)
+="A B C"          → LEN() = 5 (A-space-B-space-C)
+="Hello!!!"       → LEN() = 8 (H-e-l-l-o-!-!-!)
+
+
+Practical:
+
+Full Name: "Rahul   Kumar" (3 spaces)
+=LEN(A1)  → 13 characters total
+
+
+TRIM removes spaces first:
+excel
+=TRIM("Rahul   Kumar") → "Rahul Kumar"
+=LEN(TRIM(A1)) → 11
+
+
+
+
+ 4. How does TODAY() update itself?
+
+TODAY() is a volatile function - automatically recalculates:
+
+| When               | TODAY() Updates         |
+|--------------------|-------------------------|
+| Sheet opens        | ✅ Current date        |
+| Cell edited        | ✅ Updates instantly   |
+| Sheet recalculates | ✅ Every time          |
+| Time passes        | ✅ Next day = new date |
+
+Example:
+
+B1: =TODAY()           → 2/18/2026
+C1: ="Age: "&DATEDIF(A1,B1,"Y")  → Updates daily!
+
+
+TODAY() vs Static Date:
+
+=TODAY()     → Live (2/18/2026)
+="2/18/2026" → Text (stays forever)
+
+
+
+
+ 5. Give an example of using two functions together.
+
+Example: Grade calculator with IF + AVERAGE:
+
+
+Marks: A1=85, B1=92, C1=78
+
+D1: =AVERAGE(A1:C1)     → 85 (Average marks)
+E1: =IF(D1>=75, "Pass", "Fail")  → "Pass"
+
+Complete formula in ONE cell:
+F1: =IF(AVERAGE(A1:C1)>=75, "Pass", "Fail")
+
+
+Real Project Example:
+
+Sales data → AVERAGE sales → IF bonus eligibility
+
+G1: =IF(AVERAGE(B1:B12)>5000, "Bonus ₹5000", "No Bonus")
+
+
+Power Combo Examples:
+excel
+=IF(LEN(A1)>0, "Filled", "Empty")      # Check non-blank
+=IF(TODAY()>B1, "Overdue", "OK")       # Date check
+=CONCAT("ID: ", ROW(), " - ", A1)      # Dynamic labels
+=IF(SUM(B1:B10)>1000, B110.1, 0)      # Conditional discount
+
+
+Two functions = 10x more powerful! 🚀

@@ -1,0 +1,140 @@
+
+
+1. Why do we install Python before Flask?
+
+
+
+Flask is a Python library - you need Python interpreter first to run pip install flask and execute Python code. Without Python, pip and Flask won't work.​
+
+
+
+text
+
+Python = Engine    Flask = Car built on engine
+
+No Python → No Flask execution possible
+
+
+
+
+
+2. What is the purpose of pip in Python?
+
+
+
+pip = Python package installer - downloads/installs Python libraries from PyPI (Python Package Index).
+
+
+
+text
+
+pip install flask      → Downloads Flask + dependencies
+
+pip install requests   → Web requests library
+
+pip list              → Shows installed packages
+
+
+
+Comes with Python 3.4+ (or install separately).
+
+
+
+
+
+3. How do you check your Python version?
+
+
+
+Terminal commands:
+
+
+
+bash
+
+python --version     # OR
+
+python3 --version    # OR  
+
+python -V
+
+
+
+Expected output:
+
+
+
+text
+
+Python 3.11.5
+
+
+
+Multiple versions? Use py -3.11 --version (Windows) or python3.11 --version.
+
+
+
+
+
+4. What command is used to install Flask?
+
+
+
+bash
+
+pip install flask
+
+
+
+Virtual environment (recommended):
+
+
+
+bash
+
+python -m venv myenv
+
+source myenv/bin/activate  # Linux/Mac
+
+myenv\\Scripts\\activate     # Windows
+
+pip install flask
+
+
+
+Verify: python -c "import flask; print(flask.\_\_version\_\_)"
+
+
+
+
+
+5. What happens if “Add Python to PATH” is not checked?
+
+
+
+Python commands won't work from terminal (python, pip give "not recognized"):
+
+With PATH	Without PATH
+
+python app.py ✅	'python' is not recognized ❌
+
+pip install flask ✅	pip command not found ❌
+
+Works everywhere	Full path required
+
+
+
+Fix after install:
+
+
+
+Windows: Edit Environment Variables → Add Python folder
+
+OR reinstall → Check "Add Python to PATH"
+
+
+
+Python → pip → Flask = Perfect setup sequence! 🐍📦
+
+
+

@@ -1,0 +1,96 @@
+ 
+
+ 1. What is the purpose of exporting data from a database?
+
+	Exporting data extracts structured information from databases into portable formats (SQL, CSV, Excel, JSON) for backup/archiving, analysis (Excel/Power BI), migration between systems, reporting, data sharing across teams/tools, and disaster recovery. It creates independent copies surviving server failures, enables offline processing, and ensures compliance through historical snapshots.
+
+
+
+
+
+
+
+ 2. How can you export a MySQL database using XAMPP?
+
+1.    Launch phpMyAdmin: Open XAMPP Control Panel → Start Apache/MySQL → Click "Admin" beside MySQL.
+   
+2.    Select Database: phpMyAdmin dashboard → Click database name (e.g., "shop_db").
+   
+3.    Export Tab: Top menu → "Export" tab.
+   
+4.    Choose Format: "Quick" for full DB dump → Format: SQL (schema+data) or CSV → Go.
+   
+5.    Download: File saves as shop_db.sql or CSV. For custom: "Custom" → select tables → Add WHERE → Compress (gzip).
+
+
+Command line alternative: mysqldump -u root -p shop_db > backup.sql from XAMPP's mysql/bin.
+
+
+ 3. What are the advantages of exporting data to Excel?
+
+
+    User-friendly: Non-technical users analyze/sort/filter with familiar interface—no SQL needed.
+
+    Visualization: Built-in charts/pivot tables for instant insights.
+
+    Offline analysis: Works without database connectivity.
+
+    Sharing: Easy email/collaboration via Excel files.
+
+    Rapid prototyping: Quick calculations, formulas for business users before advanced BI tools.
+
+    Integration: Imports to Power BI/Tableau/CRM systems seamlessly.
+
+
+Limitations: Row limits (1M+), poor scalability vs databases.
+
+
+ 4. Which PHP library can be used to generate PDF reports?
+
+	TCPDF (free, most popular) or FPDF (lightweight, no dependencies):
+
+
+php
+
+require_once('tcpdf/tcpdf.php');
+
+$pdf = new TCPDF();
+
+$pdf->AddPage();
+
+$pdf->Cell(0, 10, 'Sales Report', 0, 1);
+
+$pdf->Output('report.pdf', 'D'); // Download
+
+
+Commercial: mPDF (HTML-to-PDF), Dompdf. TCPDF handles tables/charts/barcodes natively.
+
+
+ 5. What is the difference between exporting data as SQL and Excel?
+
+
+| Aspect    | SQL Export                             | Excel Export                     |
+
+| --------- | -------------------------------------- | -------------------------------- |
+
+| Content   | Schema + Data (CREATE TABLE + INSERTs) | Data only (tabular rows/columns) |
+
+| Purpose   | Full backup/reimport to any MySQL      | Analysis/sharing/visualization   |
+
+| Format    | .sql text file                         | .xlsx/.csv spreadsheet           |
+
+| Size      | Compact (binary possible)              | Larger (formatting overhead)     |
+
+| Restore   | mysql -u root < backup.sql             | Import wizard/manual             |
+
+| Tools     | Database migration                     | Excel/Power BI/Tableau           |
+
+| Structure | Preserves keys/constraints             | Flattens relationships           |
+
+
+SQL = complete database clone; Excel = human-readable data slice.
+
+
+
+
+

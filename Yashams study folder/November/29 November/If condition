@@ -1,0 +1,89 @@
+
+1. What is the purpose of using if conditions in templates?
+
+If conditions create dynamic content based on data - show/hide elements, change text, personalize pages without multiple HTML files.​
+
+Examples:
+
+xml
+{% if user.is_logged_in %}
+  <p>Welcome, {{ user.name }}!</p>
+{% else %}
+  <a href="/login">Login</a>
+{% endif %}
+
+
+
+2. How is `{% if %}` different from `{{ variable }}`?
+
+| Syntax         | Purpose       | Example                          |
+| -------------- | ------------- | -------------------------------- |
+| {{ variable }} | Display value | {{ username }} → "Rahul"         |
+| {% if %}       | Control flow  | {% if age > 18 %} → Show content |
+
+{{ }} = Print something
+{% %} = Do logic (if/for)
+
+
+
+3. How do you write multiple conditions in Jinja2?
+
+Use and, or, elif, else:
+
+xml
+{% if score >= 90 and attempts < 3 %}
+  <span style="color: green;">Excellent!</span>
+{% elif score >= 70 or is_vip %}
+  <span style="color: blue;">Good Job</span>
+{% else %}
+  <span style="color: red;">Try Again</span>
+{% endif %}
+
+Operators: ==, !=, >, <, and, or, in
+
+
+
+4. Why do we need to send variables from Flask to HTML?
+
+Templates need data to be dynamic - user info, lists, settings:
+
+Flask (app.py):
+
+python
+@app.route('/profile')
+def profile():
+    user = {'name': 'Rahul', 'age': 25, 'is_premium': True}
+    return render_template('profile.html', user=user)
+
+HTML uses data:
+
+xml
+<h1>{{ user.name }}</h1>
+{% if user.is_premium %}
+  <p>Premium Member!</p>
+{% endif %}
+
+No variables = static boring page.
+
+
+
+5. What happens if you forget `{% endif %}` in a template?
+
+Template rendering fails with TemplateSyntaxError:
+
+TemplateSyntaxError: expected token 'end of statement block', got 'div'
+
+Broken HTML result:
+
+xml
+{% if is_premium %}
+  <div>Premium content...  <!-- Cuts off here ❌
+No closing </div>, page breaks
+
+Always match tags:
+
+{% if %}     → {% endif %}
+{% for %}    → {% endfor %}
+{% block %}  → {% endblock %}
+
+If conditions = Smart dynamic pages! 🧠✨

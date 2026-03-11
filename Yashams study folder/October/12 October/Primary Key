@@ -1,0 +1,25 @@
+ 
+
+ 1. What is a Primary Key and why is it important?
+	A Primary Key is a unique identifier column (or set of columns) in a database table that ensures every row is distinctly recognizable, enforcing entity integrity by prohibiting NULL values and duplicate entries. It's crucial for data integrity (preventing orphans/duplicates), efficient querying (automatic indexing speeds lookups), relationships (served as reference for Foreign Keys), and anomaly prevention during CRUD operations—without it, updates could multiply errors across rows, and joins would fail ambiguously.
+
+
+ 2. What is the difference between Primary Key and Unique Key?
+	Primary Key mandates uniqueness + NOT NULL, allows only one per table, auto-creates a clustered index (physical row ordering), and serves as the default FK target. Unique Key enforces uniqueness but allows NULLs (usually one per column), supports multiple per table, creates non-clustered indexes, and works for FKs if explicitly UNIQUE. Primary owns identity; Unique provides secondary uniqueness like emails.
+ 
+
+ 3. Can a Primary Key be changed after table creation?
+	Yes, but it's disruptive: use ALTER TABLE table_name DROP CONSTRAINT pk_name; ALTER TABLE table_name ADD CONSTRAINT pk_name PRIMARY KEY (new_col);. This rebuilds indexes, cascades to dependent FKs (may fail if children exist), locks the table, and risks downtime/data loss without backups. Best practice: design Primary Keys immutably upfront (e.g., auto-increment IDs); changing signals poor initial modeling—use views or new tables instead for major shifts.
+
+ 
+ 4. What is a Composite Primary Key?
+	A Composite Primary Key combines 2+ columns to uniquely identify rows when no single column suffices—e.g., CREATE TABLE OrderDetails (OrderID INT, ProductID INT, PRIMARY KEY (OrderID, ProductID)); ensures no duplicate line items per order. Pros: natural business keys (no surrogates needed); cons: complex joins/FKs, wider indexes slowing performance. Common in junction tables (M:N relationships) like StudentCourses.
+
+ 
+ 5. Can a table have both Primary Key and Foreign Key? Explain.
+	Absolutely yes—tables routinely have both: Primary Key identifies its rows uniquely, while Foreign Key(s) reference other tables' Primary/Unique Keys for relationships. Example: Orders table: PRIMARY KEY (order_id), FOREIGN KEY (customer_id) REFERENCES Customers(customer_id). This models hierarchies (child points to parent), enforcing referential integrity—e.g., no order without valid customer—while Orders remain uniquely identifiable.​
+
+
+
+ 
+

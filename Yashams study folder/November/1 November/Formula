@@ -1,0 +1,130 @@
+ 1. What is a formula in Google Sheet?
+
+A formula is a calculation or expression that starts with `=` and performs operations on cell values, returning a result. Formulas auto-update when referenced cells change.
+
+Examples:
+excel
+=5+3           → 8
+=A1+B1         → Adds cells A1+B1
+=SUM(A1:A10)   → Total range
+=IF(A1>50,"Pass","Fail")  → Logic
+
+
+Key Rules:
+- Always starts with `=` (text without `=` stays as text)
+- Live calculation - changes instantly
+- Cell references auto-adjust when copied
+
+
+
+ 2. What is the use of the SUM function?
+
+SUM adds numbers in a range:
+
+Syntax: `=SUM(range1, range2, ...)`
+
+Examples:
+excel
+=SUM(A1:A10)         → Adds entire column range
+=SUM(10,20,30)       → Adds individual values
+=SUM(B2:B5,D2:D5)    → Multiple ranges
+=SUM(A1:A10,C1)      → Range + single cell
+
+
+Practical:
+
+Sales: [100, 250, 75, 300]
+=SUM(B1:B4)  → 725 (Total Sales)
+
+
+Ignores: Text, blanks, errors in range.
+
+
+
+ 3. How do you calculate the average in Google Sheet?
+
+AVERAGE calculates mean (sum ÷ count of numbers):
+
+Syntax: `=AVERAGE(range1, range2, ...)`
+
+excel
+=AVERAGE(A1:A10)     → Mean of 10 cells
+=AVERAGE(10,20,30)   → 20 (Mean of 3 numbers)
+=AVERAGE(B1:B5,D1)   → Multiple inputs
+
+
+Example:
+
+Marks: [85, 92, 78, 96, 88]
+=AVERAGE(B1:B5)  → 87.8
+
+
+Smart Behavior:
+- Ignores blanks/text
+- Counts only numbers
+- Perfect for grades, sales averages
+
+
+
+ 4. What is the difference between COUNT and COUNTA?
+
+| Function | Counts                   | Ignores          | Use Case           |
+|----------|--------------------------|------------------|--------------------|
+| COUNT    | Numbers only             | Text, blanks     | Numeric data       |
+| COUNTA   | Everything except blanks | Only empty cells | Total filled cells |
+
+Example:
+
+A    B     C
+10   "Hi"  (blank)
+20   50    "No"
+(blank) "Yes" 30
+
+
+excel
+=COUNT(A1:C3)    → 4  (10,20,50,30)
+=COUNTA(A1:C3)   → 6 (All non-blank)
+
+
+Perfect Pair:
+
+Total Students: =COUNTA(B2:B100)
+Total Marks Entered: =COUNT(C2:C100)
+
+
+
+
+ 5. Can you use formulas on text data?
+
+YES! Many text functions work perfectly:
+
+| Function | Purpose          | Example                     |
+|----------|------------------|-----------------------------|
+| CONCAT   | Join text        | `=CONCAT(A1," ",B1)`        |
+| LEN      | Character count  | `=LEN("Hello")` → 5         |
+| UPPER    | All caps         | `=UPPER("hello")`           |
+| LOWER    | Lowercase        | `=LOWER("HELLO")`           |
+| LEFT     | First characters | `=LEFT("Google",3)` → "Goo" |
+
+Real Example:
+
+A1: Rahul    B1: Kumar
+=CONCAT(A1," ",B1)  → "Rahul Kumar"
+
+C1: rahul@email.com
+=LEN(C1)  → 14 characters
+
+
+Math + Text:
+excel
+="Total: "&SUM(A1:A10)  → "Total: 500"
+="₹"&ROUND(A11.18,0)   → "₹1180"
+
+
+Power Combo:
+excel
+=UPPER(LEFT(A1,1))&LOWER(RIGHT(A1,LEN(A1)-1))
+"rahul" → "Rahul"  (Title Case)
+
+
+Text formulas = Data cleaning superpowers! ✨

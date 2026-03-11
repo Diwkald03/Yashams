@@ -1,0 +1,15 @@
+
+1. What is Linear Regression in simple words? 
+	Linear regression is a fundamental machine learning and statistical technique that predicts a continuous target variable based on one or more predictor variables by fitting a straight line (or hyperplane in multiple dimensions) through the data points. It works by minimizing the sum of squared differences between observed values and predictions, known as ordinary least squares (OLS) method. The goal is to find the best-fitting line represented by the equation y=β0+β1x1+⋯+βnxn+ϵy=β0+β1x1+⋯+βnxn+ϵ, where yy is the output, ββ are coefficients learned from data, xx are inputs, and ϵϵ is error.
+
+2. What kind of data does linear regression work best on? 
+	Linear regression performs best on continuous numerical data with a roughly linear relationship between inputs and output, low noise, and no extreme outliers that skew the fit. Key assumptions include linearity, independence of errors, homoscedasticity (constant error variance), and no perfect multicollinearity among predictors. It suits scenarios like predicting sales from advertising spend or temperature from humidity, but preprocess categorical data via one-hot encoding first.
+
+3. Why do we use a line instead of a curve for linear regression? 
+	The straight line simplifies modeling by assuming a constant rate of change, making results interpretable (e.g., "1 unit increase in x raises y by β") and computationally efficient without needing complex functions. Curves arise in nonlinear data, requiring polynomial regression (adding x2x2 terms) or other models like decision trees; forcing a line on curved data leads to poor predictions and high residuals.
+
+4. Can linear regression predict values it has never seen before? 
+	Yes, linear regression extrapolates to new, unseen values using the trained coefficients, but reliability drops outside the training feature range due to potential nonlinearity or instability. It generalizes well within bounds if assumptions hold, enabling predictions on test sets; for example, a model trained on historical house sizes predicts prices for new listings of similar scale.
+
+5. Give one real-life example of using linear regression. 
+	Real estate agents use linear regression to forecast house prices from features like square footage, bedrooms, and location: train on past sales data to get price ≈ 200 × sqft + 50,000 × bedrooms - 10,000 × distance_to_city. This helps buyers budget, sellers price competitively, and banks assess mortgage risks, with libraries like scikit-learn making implementation straightforward in Python.

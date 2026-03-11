@@ -1,0 +1,106 @@
+
+1. What is the main purpose of using Named Range in Google Sheets?
+
+	Named Ranges assign human-readable names to cells/ranges, replacing complex references like A1:A100 with simple names like SalesData.
+
+Purpose:
+
+    Simplify formulas (=SUM(SalesData) vs =SUM(A1:A100))
+
+    Reduce errors when copying formulas
+
+    Team collaboration - others understand instantly
+
+    Dynamic updates - change range once, affects all formulas
+
+
+
+2. How do Named Ranges make formulas easier?
+
+Before Named Range:
+
+text
+=SUM(A2:A100)+AVERAGE(A2:A100)*COUNT(A2:A100)
+# Tedious to type, error-prone, hard to read
+
+After Named Range "MonthlySales":
+
+text
+=SUM(MonthlySales)+AVERAGE(MonthlySales)*COUNT(MonthlySales)
+# Clean, fast autocomplete, obvious meaning
+
+Benefits:
+
+    Autocomplete - type "Mon" → picks MonthlySales
+
+    Copy-paste safe - no broken references
+
+    Readable - like variables in programming
+
+    Dynamic - expand range once, everywhere updates
+
+
+
+3. What rules must be followed for naming a range?
+
+| ✅ ALLOWED     | ❌ NOT ALLOWED                   |
+| ------------- | ------------------------------- |
+| Sales2026     | 2Sales (no numbers first)       |
+| Total_Amount  | Total Amount (no spaces)        |
+| Q1_Revenue    | Total-Sales (no hyphens)        |
+| IndiaSales    | sales data (no lowercase start) |
+| Max 250 chars | Special chars except _          |
+
+Best Practices:
+
+✅ Descriptive: Sales_Jan2026
+✅ Short: Q1, Budget
+✅ Consistent: snake_case or CamelCase
+
+
+
+4. Can you edit or delete a Named Range? How?
+
+Access Named Ranges:
+
+    Data → Named ranges (sidebar opens)
+
+    See all names with their ranges
+
+Edit:
+
+Click name → Change range → Done
+"Sales" was A1:A10 → Now A1:A20
+All formulas using "Sales" update automatically!
+
+Delete:
+
+Click name → Remove → All formulas still work (convert to cell refs)
+
+
+
+5. When should you prefer Named Range over normal cell reference?
+
+| Scenario            | Example                        |
+| ------------------- | ------------------------------ |
+| Repeated references | Same range in 3+ formulas      |
+| Team sheets         | Others need to understand      |
+| Long/complex ranges | Sheet1!A2:B1000 → Database     |
+| Dynamic data        | Monthly sales that grows       |
+| Dashboards          | KPI ranges like Revenue, Costs |
+
+Skip for:
+
+    One-off calculations
+
+    Disposable analysis
+
+    Simple 1-cell refs
+
+Pro Example:
+
+Named: "Employees", "Salaries", "Departments"
+Dashboard: =SUM(Salaries)/COUNTA(Employees)
+Add new employee → Update "Employees" range once → Done!
+
+Named Ranges = Professional spreadsheets! 🚀

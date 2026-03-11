@@ -1,0 +1,45 @@
+ 1. What is a Schema Diagram and why is it used?
+	A Schema Diagram visually represents a database's structure, displaying tables, columns, data types, keys, indexes, and relationships as a blueprint for implementation. Used primarily during design, maintenance, and documentation phases, it helps developers generate SQL DDL, communicate architecture to stakeholders, reverse-engineer existing databases, and verify integrity before deployment.
+ 
+
+ 2. How does a Schema Diagram help in database design?
+	Schema Diagrams guide database design by illustrating entity relationships (via lines/keys), highlighting normalization issues (redundancy), and clarifying constraints upfront—preventing costly rework. They facilitate collaboration (DBAs, analysts, devs), enable performance planning (index placement), support migration strategies, and serve as living docs for onboarding or audits, ensuring scalable, consistent data models.
+
+
+ 3. What is the difference between Logical Schema and Physical Schema?
+	Logical Schema defines the abstract organization—tables, columns, relationships, constraints—independent of storage details, focusing on business logic and queries (e.g., "Customer has Orders"). Physical Schema specifies implementation: storage engines, filegroups, partitioning, data types (VARCHAR(50)), indexes, hardware mapping. Logical is DBMS-agnostic; physical is vendor-specific (MySQL InnoDB vs PostgreSQL B-tree).
+
+ 
+ 4. What types of relationships can a Schema Diagram show?
+
+	Schema Diagrams depict:
+
+ 
+
+    1:1: Single line or unique FK (User ↔ Profile).
+
+ 
+
+    1:N: FK in "many" table with crow's foot notation (Department → Employees).
+
+ 
+
+    M:N: Junction table with two FKs (Students ↔ Courses via Enrollments).
+
+ Lines show cardinality, optionality (solid/dashed), and FK links; tools like ERDPlus auto-generate SQL.
+
+
+ 5. Explain One-to-Many and Many-to-Many relationships with examples.
+
+	One-to-Many (1:N): Publisher (1) → Books (N)—one publisher produces many books; Books.publisher_id FK references Publishers.id. Query: all books per publisher.
+
+ 
+
+	Many-to-Many (M:N): Authors ↔ Books—authors write multiple books, books have multiple authors; resolved via BookAuthors bridge table (book_id FK, author_id FK, composite PK). Query: Books JOIN BookAuthors JOIN Authors.		
+
+
+
+
+
+
+

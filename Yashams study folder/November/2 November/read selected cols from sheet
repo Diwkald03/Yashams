@@ -1,0 +1,111 @@
+
+1. How do you read only specific columns from a Google Sheet in Colab?
+
+	Use usecols parameter in pd.read_csv() after mounting Google Drive:
+
+python
+import pandas as pd
+from google.colab import drive
+drive.mount('/content/drive')
+
+# Read ONLY specific columns (by name or position)
+url = 'https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/export?format=csv'
+df = pd.read_csv(url, usecols=['Name', 'Sales', 'Date'])  # By column names
+# OR usecols=[0,2,4] for columns A,C,E
+
+Direct from Sheet ID:
+
+python
+sheet_id = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
+sheet_name = 'Sheet1'
+url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+df = pd.read_csv(url, usecols=['Product', 'Revenue'])
+
+
+
+2. What is the difference between `.loc` and `.iloc` in pandas?
+
+| Aspect   | .loc                            | .iloc                         |
+| -------- | ------------------------------- | ----------------------------- |
+| Indexing | Label-based (names)             | Position-based (numbers)      |
+| Syntax   | df.loc['row_label', 'col_name'] | df.iloc[0, 2]                 |
+| Slicing  | Inclusive end (:5 includes 5)   | Exclusive end (:5 excludes 5) |
+| Boolean  | ✅ Supports conditions           | ❌ Numbers only              |
+
+Examples:
+
+python
+# loc: by name
+df.loc[0:3, 'Sales']      # Rows 0-3, Sales column
+df.loc[df['Sales']>100]   # Filter condition
+
+# iloc: by position  
+df.iloc[0:3, 1]           # Rows 0-2, 2nd column (excludes 3)
+
+
+
+3. Can you select non-adjacent columns? If yes, how?
+
+python
+# Method 1: List of column names
+df[['Name', 'Sales', 'Date']]  # Non-adjacent columns
+
+# Method 2: List of positions
+df.iloc[:, [0, 2, 5]]         # 1st, 3rd, 6th columns
+
+# Method 3: Mixed loc/iloc
+df.loc[:, ['Name', 'Revenue']] # Names anywhere
+
+# Method 4: Conditions
+df[['Name', 'Sales']].query('Sales > 1000')
+
+
+
+4. How do you save only selected columns as a new file?
+
+python
+# Select columns first
+subset = df[['Name', 'Sales', 'Region']]
+
+# Save to CSV
+subset.to_csv('important_data.csv', index=False)
+
+# Save to Excel (specific sheet)
+subset.to_excel('report.xlsx', sheet_name='Summary', index=False)
+
+# Colab: Download file
+from google.colab import files
+subset.to_csv('clean_data.csv', index=False)
+files.download('clean_data.csv')
+
+5. Why is it useful to limit the number of columns during analysis?
+
+Performance + Focus:
+
+| Problem            | Solution                | Impact           |
+| ------------------ | ----------------------- | ---------------- |
+| Slow loading       | usecols=['key1','key2'] | 10x faster       |
+| Memory crash       | Load 5/50 columns       | Fits in RAM      |
+| Confusing analysis | Focus on relevant data  | Clear insights   |
+| Colab timeouts     | Smaller dataset         | No disconnects   |
+| Cost savings       | Less cloud processing   | Cheaper BigQuery |
+
+Real Example:
+
+text
+Original: 1M rows × 50 columns = 500MB
+Limited:  1M rows × 5 columns  = 50MB (10x smaller!)
+
+Pro Workflow:
+
+python
+# 1. Load minimal columns
+df = pd.read_csv(url, usecols=['id','date','sales'])
+
+# 2. Analyze
+insights = df.groupby('date')['sales'].sum()
+
+# 3. Save results only
+insights.to_csv('daily_sales.csv')
+
+Smaller data = Faster analysis = Better results! 🚀

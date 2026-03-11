@@ -1,0 +1,21 @@
+ 1. What is the purpose of an alias in SQL?
+ 	SQL aliases provide temporary, shorter, or more descriptive names for columns or tables in queries, improving readability, especially in complex statements with long names, repeated references, or calculated fields. They allow renaming like CustomerName AS Cust in SELECT or Customers AS c for tables, making code cleaner without altering the database schema. This shorthand simplifies maintenance and sharing of queries in reports, joins, or subqueries where fully qualified names become verbose.
+
+
+ 2. What is the difference between a column alias and a table alias?
+ 	A column alias renames output columns in the SELECT clause for the result set only—e.g., SELECT salary * 1.1 AS increased_salary FROM employees—affecting display labels but not table structure. A table alias shortens table references throughout the query—e.g., FROM employees e lets you use e.salary instead of employees.salary—essential for self-joins or multi-table queries to avoid ambiguity. Column aliases are result-only; table aliases are query-scope, enabling prefixed column access like e.name, d.dept_name.
+
+
+ 3. Is the keyword ‘AS’ mandatory while defining aliases?
+ 	No, the AS keyword is optional in most SQL dialects (MySQL, PostgreSQL, SQL Server); you can write SELECT name Cust FROM Customers or FROM Customers c interchangeably with AS. It's included for readability, especially with spaces or multi-word aliases like ContactName AS "Contact Person", but some databases (e.g., Oracle) may vary slightly. Omitting it keeps syntax concise without changing functionality.
+
+
+ 4. Can you use aliases in WHERE or GROUP BY clauses? Explain.
+ 	No, column aliases cannot be used directly in WHERE, GROUP BY, HAVING, or ORDER BY clauses because SQL processes logical clauses (FROM/WHERE/GROUP BY) before SELECT, so aliases aren't defined yet—e.g., SELECT salary AS s FROM emp WHERE s > 50000 fails with "unknown column 's'". Workarounds include repeating expressions (WHERE salary > 50000), CTEs (WITH aliased AS (SELECT salary AS s FROM emp) SELECT * FROM aliased WHERE s > 50000), or subqueries. Table aliases work fine anywhere after FROM since they're defined early. HAVING supports SELECT aliases in some DBMS like MySQL as it follows GROUP BY.
+
+
+ 5. How do aliases make JOIN queries more readable?
+ 	Aliases shine in JOINs by shortening repeated table names and resolving ambiguities—e.g., without aliases: SELECT Customers.CustomerName, Orders.OrderDate FROM Customers INNER JOIN Orders ON Customers.CustomerID = Orders.CustomerID; with aliases: SELECT c.CustomerName, o.OrderDate FROM Customers c INNER JOIN Orders o ON c.CustomerID = o.CustomerID. This cuts verbosity in multi-way joins (e.g., 10 tables become t1 JOIN t2 ON t1.id = t2.t1_id), clarifies ownership (e.g., emp.name vs dept.name), and prevents errors from same-named columns, making complex queries self-documenting and easier to debug.
+
+ 
+

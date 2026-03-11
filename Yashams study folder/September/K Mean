@@ -1,0 +1,16 @@
+
+
+1. What is the role of K in K-Means?
+K defines the number of clusters the algorithm creates by partitioning data points into groups based on similarity, initializing that many centroids and iteratively refining them
+
+2. Is K-Means supervised or unsupervised learning?
+K-Means is unsupervised learning since it works on unlabeled data to discover patterns automatically without any target variables guiding the process.
+
+3. Can K-Means work with numbers only or also with words?
+It primarily uses numerical data for distance metrics like Euclidean, but can handle text after preprocessing into numerical vectors via techniques such as TF-IDF or word embeddings.
+
+4. How do we decide the best value of K?  
+Apply the elbow method by plotting Within-Cluster Sum of Squares (WCSS) versus different K values, picking the K where the drop in WCSS slows sharply, or use silhouette analysis for cluster quality scores.
+
+5. What happens if we choose the wrong K?
+Choosing too small a K merges unrelated groups leading to underfitting and poor separation, while too large a K splits noise into extra clusters causing overfitting and fragmented meaningful groups.
